@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:FunctionalOption xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7a306b4e-21d9-48c0-966a-9c43208800ac">
+  <name>кфкИспользоватьИнтеграцию</name>
+  <synonym>
+    <key>ru</key>
+    <value>Использовать интеграцию (Kafka)</value>
+  </synonym>
+  <location>Constant.кфкИспользоватьИнтеграцию</location>
+  <privilegedGetMode>true</privilegedGetMode>
+  <content>Catalog.кфкПродюсеры</content>
+  <content>Catalog.кфкКонсьюмеры</content>
+  <content>InformationRegister.кфкВходящиеСообщения</content>
+  <content>Catalog.кфкБрокеры</content>
+  <content>InformationRegister.кфкИсходящиеСообщения</content>
+  <content>InformationRegister.кфкОчередьПотоков</content>
+  <content>DataProcessor.кфкИнтеграция</content>
+  <content>Constant.кфкБлокировкаИнтеграции</content>
+  <content>Constant.кфкФорматИмениФайловЛогированияКомпоненты</content>
+  <content>Enum.кфкСтатусыСообщений</content>
+  <content>DataProcessor.кфкРегистрацияИзменений</content>
+  <content>InformationRegister.кфкПозицииОпераций</content>
+  <content>Constant.кфкКаталогЛогированияКомпоненты</content>
+  <content>InformationRegister.кфкПараметрыОчисткиХранилища</content>
+  <content>Constant.кфкИспользоватьКонтрольИнтеграции</content>
+  <content>InformationRegister.кфкПараметрыКонтроляИнтеграции</content>
+  <content>Constant.кфкИспользоватьПотоковыйРежим</content>
+</mdclass:FunctionalOption>

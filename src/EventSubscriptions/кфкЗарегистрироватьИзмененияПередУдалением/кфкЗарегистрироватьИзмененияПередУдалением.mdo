@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:EventSubscription xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3356ff05-8073-44a3-9280-756906a6a64d">
+  <name>кфкЗарегистрироватьИзмененияПередУдалением</name>
+  <synonym>
+    <key>ru</key>
+    <value>Зарегистрировать изменения перед удалением (Kafka)</value>
+  </synonym>
+  <source>
+    <types>BusinessProcessObject</types>
+    <types>ChartOfCalculationTypesObject</types>
+    <types>ChartOfAccountsObject</types>
+    <types>ChartOfCharacteristicTypesObject</types>
+    <types>ExchangePlanObject</types>
+    <types>CatalogObject</types>
+    <types>TaskObject</types>
+    <types>DocumentObject</types>
+  </source>
+  <event>BeforeDelete</event>
+  <handler>CommonModule.кфкОбработкаСобытийСлужебный.ЗарегистрироватьИзмененияПередУдалением</handler>
+</mdclass:EventSubscription>

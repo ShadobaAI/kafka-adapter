@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DefinedType xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bc110c0b-acad-4d91-a1c0-be10b102925b">
+  <producedTypes>
+    <containerType typeId="3105b73c-bdd1-4f99-b766-3b4aaefa16f2" valueTypeId="afd56f7c-3750-4cfd-9379-68ca5c705d4d"/>
+  </producedTypes>
+  <name>кфкПользователь</name>
+  <synonym>
+    <key>ru</key>
+    <value>Пользователь (Kafka)</value>
+  </synonym>
+  <type>
+    <types>CatalogRef.Пользователи</types>
+  </type>
+</mdclass:DefinedType>

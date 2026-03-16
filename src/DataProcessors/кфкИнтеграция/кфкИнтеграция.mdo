@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0832e0da-54d0-4932-af84-aa57d24765ce">
+  <producedTypes>
+    <objectType typeId="82d18697-d535-4e76-a77d-9c9de35bf92e" valueTypeId="bac64328-cf8a-492e-8ab1-0249c160be15"/>
+    <managerType typeId="a6b9eda1-c778-4116-9031-27d158d345df" valueTypeId="3b2f359b-32fe-487f-b207-aaeb84a40ab4"/>
+  </producedTypes>
+  <name>кфкИнтеграция</name>
+  <synonym>
+    <key>ru</key>
+    <value>Интеграция Kafka</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <attributes uuid="519dd660-23c8-486d-acdb-395605ddccd0">
+    <name>Продюсер</name>
+    <synonym>
+      <key>ru</key>
+      <value>Продюсер</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.кфкПродюсеры</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="529a479f-bcf3-4e6e-af10-a59d3755db7f">
+    <name>Консьюмер</name>
+    <synonym>
+      <key>ru</key>
+      <value>Консьюмер</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.кфкКонсьюмеры</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+</mdclass:DataProcessor>

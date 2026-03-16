@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:EventSubscription xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a8a17ddc-31ed-456b-8ea2-da8a02343414">
+  <name>кфкЗарегистрироватьИзмененияПриЗаписи</name>
+  <synonym>
+    <key>ru</key>
+    <value>Зарегистрировать изменения при записи (Kafka)</value>
+  </synonym>
+  <source>
+    <types>BusinessProcessObject</types>
+    <types>ChartOfCalculationTypesObject</types>
+    <types>ChartOfAccountsObject</types>
+    <types>ChartOfCharacteristicTypesObject</types>
+    <types>ExchangePlanObject</types>
+    <types>CatalogObject</types>
+    <types>TaskObject</types>
+    <types>DocumentObject</types>
+  </source>
+  <event>OnWrite</event>
+  <handler>CommonModule.кфкОбработкаСобытийСлужебный.ЗарегистрироватьИзмененияПриЗаписи</handler>
+</mdclass:EventSubscription>

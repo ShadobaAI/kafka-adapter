@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="2a277631-117e-4442-b387-983a0f3e5b18">
+  <producedTypes>
+    <managerType typeId="88f93cd9-3918-4ede-a379-178a70e78631" valueTypeId="f9dba269-8ac6-461c-a5a4-0c94f30f1e12"/>
+    <valueManagerType typeId="0733eef9-6f26-46cb-82ec-425009462442" valueTypeId="77957841-5da5-4444-b690-80709f9409af"/>
+    <valueKeyType typeId="980b4b34-bfad-48f1-be1e-90a311701372" valueTypeId="37efc0a6-d28d-485e-a195-5f06a90387de"/>
+  </producedTypes>
+  <name>кфкКаталогЛогированияКомпоненты</name>
+  <synonym>
+    <key>ru</key>
+    <value>Каталог логирования компоненты (Kafka)</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers/>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1baf18a0-83ef-4602-9459-913dde86893d">
+  <producedTypes>
+    <objectType typeId="0eaa3082-2bbe-4252-8781-24ec9ed35fa1" valueTypeId="beb6ac3f-9e0f-45cb-90e4-478f43305756"/>
+    <managerType typeId="633b2786-630a-4f40-9470-1a6600a2a1c7" valueTypeId="0dd5ffa6-bdee-4f7c-9e66-4134ca818c70"/>
+  </producedTypes>
+  <name>кфкПанельАдминистрирования</name>
+  <synonym>
+    <key>ru</key>
+    <value>Администрирование (Kafka)</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>DataProcessor.кфкПанельАдминистрирования.Form.Форма</defaultForm>
+  <forms uuid="e5eba4c4-c08a-456d-93db-060cc192d999">
+    <name>Форма</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="874ab854-2925-44a2-a8e4-6ebfcf26bfcb">
+    <name>ФоновыеЗадания</name>
+    <synonym>
+      <key>ru</key>
+      <value>Фоновые задания</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="4e61c006-46b9-4c85-a5b8-879c4408c959">
+    <name>РегламентноеЗадание</name>
+    <synonym>
+      <key>ru</key>
+      <value>Регламентное задание</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="46f537fe-b8b5-4414-a52f-fef1f96e78bd">
+    <name>Очереди</name>
+    <synonym>
+      <key>ru</key>
+      <value>Очереди</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="133300c5-b4f8-4f5d-9fda-08610b68196b">
+    <name>Логирование</name>
+    <synonym>
+      <key>ru</key>
+      <value>Логирование</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <commands uuid="14a34569-f60c-46bd-addd-2d98c8daa061">
+    <name>ФоновыеЗадания</name>
+    <synonym>
+      <key>ru</key>
+      <value>Фоновые задания</value>
+    </synonym>
+    <group>NavigationPanelSeeAlso</group>
+    <representation>Auto</representation>
+  </commands>
+</mdclass:DataProcessor>

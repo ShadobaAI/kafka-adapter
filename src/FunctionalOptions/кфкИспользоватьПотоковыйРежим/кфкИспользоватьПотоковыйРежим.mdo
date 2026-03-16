@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:FunctionalOption xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5493784a-ebe0-4592-ab0f-2ae0f8188503">
+  <name>кфкИспользоватьПотоковыйРежим</name>
+  <synonym>
+    <key>ru</key>
+    <value>Использовать потоковый режим (Kafka)</value>
+  </synonym>
+  <location>Constant.кфкИспользоватьПотоковыйРежим</location>
+  <privilegedGetMode>true</privilegedGetMode>
+</mdclass:FunctionalOption>

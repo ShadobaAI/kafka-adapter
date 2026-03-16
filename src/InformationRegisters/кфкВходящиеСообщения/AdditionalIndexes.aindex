@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aindex:AdditionalIndexes xmlns:aindex="http://g5.1c.ru/v8/dt/md/aindex">
+  <indexes>
+    <id>47a5fb96-e84e-48c5-8689-4f2ebf776d57</id>
+    <name>ЧтениеОчереди</name>
+    <table>InformationRegister.кфкВходящиеСообщения</table>
+    <indexedFields>
+      <path>МеткаИзмененияМС</path>
+    </indexedFields>
+    <additionalFields>
+      <path>КлючЗаписи</path>
+    </additionalFields>
+    <additionalFields>
+      <path>ДатаЗагрузкиМС</path>
+    </additionalFields>
+    <additionalFields>
+      <path>Статус</path>
+    </additionalFields>
+    <additionalFields>
+      <path>Консьюмер</path>
+    </additionalFields>
+  </indexes>
+  <indexes>
+    <id>9ee762f3-6df0-412e-858a-c4d04a863c8b</id>
+    <name>КоличествоЗагруженных</name>
+    <table>InformationRegister.кфкВходящиеСообщения</table>
+    <indexedFields>
+      <path>ДатаЗагрузкиМС</path>
+    </indexedFields>
+    <additionalFields>
+      <path>Консьюмер</path>
+    </additionalFields>
+  </indexes>
+</aindex:AdditionalIndexes>

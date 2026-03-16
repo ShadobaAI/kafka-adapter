@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c81b1be8-e59b-4f1d-8a80-fea0c06e9d6d">
+  <name>кфкАдаптерKafka</name>
+  <synonym>
+    <key>ru</key>
+    <value>Адаптер Kafka</value>
+  </synonym>
+  <comment>https://github.com/NuclearAPK/Simple-Kafka_Adapter/releases/tag/v1.8.1</comment>
+  <templateType>BinaryData</templateType>
+</mdclass:CommonTemplate>

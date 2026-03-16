@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c621cf0c-64ab-43d3-a9ab-fd8de66c7c6f">
+  <producedTypes>
+    <managerType typeId="e60bfcd7-20bc-4ba8-a398-36ee7bba8355" valueTypeId="a9c11e95-9d6f-4c9e-9f1a-b6fc3c4015e3"/>
+    <valueManagerType typeId="57725047-5ead-4efd-b4d5-0d8b2434be6b" valueTypeId="d92981c3-0998-4ec0-abc2-f51a3b1e404e"/>
+    <valueKeyType typeId="cb9491cc-db44-4c25-abbe-8ac7a005a0d6" valueTypeId="86c10053-459a-4149-b250-70993747d318"/>
+  </producedTypes>
+  <name>кфкИспользоватьПотоковыйРежим</name>
+  <synonym>
+    <key>ru</key>
+    <value>Использовать потоковый режим (Kafka)</value>
+  </synonym>
+  <type>
+    <types>Boolean</types>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

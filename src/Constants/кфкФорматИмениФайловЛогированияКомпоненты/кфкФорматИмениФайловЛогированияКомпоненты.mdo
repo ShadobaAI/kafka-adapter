@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="725b1c3c-c6f6-4f8d-90df-0ceffaef5701">
+  <producedTypes>
+    <managerType typeId="58a3a23b-f42a-4673-b43c-2afa3dde6942" valueTypeId="cc88c2bc-59a9-4456-8b25-5ec55c2d3147"/>
+    <valueManagerType typeId="9d88319d-db66-4e51-a51d-e3b19e89a14e" valueTypeId="2d8cd7ee-d19d-453e-8af9-e8f9c621f59a"/>
+    <valueKeyType typeId="c9dc57d2-8f43-41d6-a1b4-17808e0ab4d2" valueTypeId="884c2205-11dc-4d7a-b98a-4514e6087f8e"/>
+  </producedTypes>
+  <name>кфкФорматИмениФайловЛогированияКомпоненты</name>
+  <synonym>
+    <key>ru</key>
+    <value>Формат имени файлов логирования компоненты (Kafka)</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>150</length>
+    </stringQualifiers>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

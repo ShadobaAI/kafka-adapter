@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ecc6e9fd-5018-41f2-bafd-ffed1cfad199">
+  <name>кфкОбменДаннымиXDTOСервер</name>
+  <synonym>
+    <key>ru</key>
+    <value>Обмен данными XDTOСервер (Kafka)</value>
+  </synonym>
+  <server>true</server>
+  <externalConnection>true</externalConnection>
+  <clientOrdinaryApplication>true</clientOrdinaryApplication>
+</mdclass:CommonModule>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5f4cd191-8f0e-4d95-a021-4c8e1445ea7a">
+  <producedTypes>
+    <refType typeId="1326bcd4-2a48-4215-b9e4-2c955b7022c8" valueTypeId="711f4aa8-76e5-470f-871d-7de778299864"/>
+    <listType typeId="388a0b5c-1ed4-4d27-a3d9-8f75122b404e" valueTypeId="94c33a8e-8f04-427d-abb4-02d4924cebc0"/>
+    <managerType typeId="9b9d8699-e262-4616-85db-020b71f5f4fb" valueTypeId="55291968-228f-421c-8188-1b7d6d5b0024"/>
+  </producedTypes>
+  <name>кфкТипыОбработчиков</name>
+  <synonym>
+    <key>ru</key>
+    <value>Типы обработчиков (Kafka)</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="9d58d8e2-3a63-4011-9344-427a7d5f6ce4">
+    <name>ПроизвольныйОбработчик</name>
+    <synonym>
+      <key>ru</key>
+      <value>Произвольный обработчик</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="14611e53-cb91-4bcc-b696-7a28887d82eb">
+    <name>КонвертацияДанных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Конвертация данных</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

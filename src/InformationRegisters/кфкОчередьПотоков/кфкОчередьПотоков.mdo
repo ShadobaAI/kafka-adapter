@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a2abe30d-a833-4c35-b740-2265f9dcb783">
+  <producedTypes>
+    <selectionType typeId="f77e3501-bbc5-4622-92e1-30759f1ad8d9" valueTypeId="34113644-45e3-43f2-9282-4dd116c28490"/>
+    <listType typeId="d96060a6-5823-4436-8b24-f29ea4b97803" valueTypeId="81ec8de7-d475-45aa-b805-6fe5cc9eea2e"/>
+    <managerType typeId="c7a54439-d69b-4cca-888b-3cd187e32283" valueTypeId="5ccaf1b0-7ba1-4526-9814-dd32c8901d41"/>
+    <recordSetType typeId="4ed82795-8acd-469c-b3ac-4e2413b63e82" valueTypeId="2178afee-e8e4-4568-a9ff-9dd76b9730ad"/>
+    <recordKeyType typeId="a1586c62-d868-4db1-976b-11389d20178f" valueTypeId="31328615-78e0-4d3d-b036-be0a58b62c63"/>
+    <recordType typeId="e5afadbd-b298-435e-8ad2-1d4694b3e6b4" valueTypeId="86c730aa-fc7c-4966-9a9e-38c26d511d18"/>
+    <recordManagerType typeId="b6cadc09-263a-4dba-afdd-dea653360561" valueTypeId="f8739eb6-c7d2-49df-9fb0-6f41ca571e37"/>
+  </producedTypes>
+  <name>кфкОчередьПотоков</name>
+  <synonym>
+    <key>ru</key>
+    <value>Очередь потоков (Kafka)</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <defaultRecordForm>InformationRegister.кфкОчередьПотоков.Form.ФормаЗаписи</defaultRecordForm>
+  <defaultListForm>InformationRegister.кфкОчередьПотоков.Form.ФормаСписка</defaultListForm>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Очередь потока</value>
+  </recordPresentation>
+  <dimensions uuid="125e4d81-0618-47c9-a737-be2d4b6b2f90">
+    <name>Ключ</name>
+    <synonym>
+      <key>ru</key>
+      <value>Ключ</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>64</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="3ceb7e45-150b-414a-aaf6-d472e49b9fc9">
+    <name>ВременнаяМетка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Временная метка</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>19</precision>
+        <scale>4</scale>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="1214bbca-cb30-4834-bc2f-d5a2820d7ed8">
+    <name>ИдентификаторПотока</name>
+    <synonym>
+      <key>ru</key>
+      <value>Идентификатор потока</value>
+    </synonym>
+    <type>
+      <types>UUID</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <forms uuid="894fb97e-157c-47a2-8286-5a3059849e90">
+    <name>ФормаСписка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="1b03fc64-3f82-486f-ac9a-7ad6c6318536">
+    <name>ФормаЗаписи</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма записи</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:InformationRegister>

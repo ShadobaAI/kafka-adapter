@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppress:SuppressGenericObject xmlns:suppress="http://g5.1c.ru/v8/dt/check/suppress/model" fqn="DataProcessor.кфкРегистрацияИзменений.Form.Форма.Form">
+  <containments fqn="items:ГруппаРабочаяОбласть">
+    <containments fqn="items:ГруппаОтбор">
+      <containments fqn="items:СписокОтбор">
+        <suppressions key="com.e1c.v8codestyle.form:form-list-field-ref-not-added" value="true"/>
+      </containments>
+      <containments fqn="items:Список">
+        <suppressions key="com.e1c.v8codestyle.form:form-list-field-ref-not-added" value="true"/>
+      </containments>
+    </containments>
+  </containments>
+  <containments fqn="attributes:Список">
+    <suppressions key="com.e1c.v8codestyle.form:form-list-ref-use-always-flag-disabled" value="true"/>
+  </containments>
+</suppress:SuppressGenericObject>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="2bb53325-dcf8-43ab-a383-ae1d6e01a928">
+  <producedTypes>
+    <objectType typeId="c1cddcbe-9969-42f8-96ff-2ed9ec75f4f1" valueTypeId="a3b5bbd1-a551-4ff8-ac14-bca41c30638d"/>
+    <managerType typeId="e5cb1a4b-b2a7-4ad9-b87b-712dda2fcb55" valueTypeId="6abf244e-1b07-4e8e-a45b-2b31fd6cf1e1"/>
+  </producedTypes>
+  <name>кфкРегистрацияИзменений</name>
+  <synonym>
+    <key>ru</key>
+    <value>Регистрация изменений (Kafka)</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>DataProcessor.кфкРегистрацияИзменений.Form.Форма</defaultForm>
+  <forms uuid="4ea788eb-ede1-49a5-ba3d-0727082e1a1e">
+    <name>Форма</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="eb2173cd-2d9d-410a-80e7-ac7be461003c">
+    <name>ФормаПакетнаяРегистрация</name>
+    <synonym>
+      <key>ru</key>
+      <value>Пакетная регистрация (Kafka)</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <commands uuid="13012f58-c879-4881-b951-470dc828d41c">
+    <name>ПакетнаяРегистрацияИзменений</name>
+    <synonym>
+      <key>ru</key>
+      <value>Пакетная регистрация изменений (Kafka)</value>
+    </synonym>
+    <group>ActionsPanelTools</group>
+    <representation>Auto</representation>
+  </commands>
+</mdclass:DataProcessor>

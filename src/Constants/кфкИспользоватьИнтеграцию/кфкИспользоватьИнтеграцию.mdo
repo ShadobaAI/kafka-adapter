@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ec87ff43-0f20-42d3-abcd-8880483b9123">
+  <producedTypes>
+    <managerType typeId="e69e1d16-6659-4aff-a1f0-fca215e5485d" valueTypeId="d93e04d2-3f33-496b-a190-3e65fd7f48a9"/>
+    <valueManagerType typeId="dc3e335e-2a03-4294-81b4-d72f34cd3ccf" valueTypeId="42721e67-73db-406a-94e5-9776c51e831e"/>
+    <valueKeyType typeId="e85ab8da-24b2-47f6-8d18-9bd81a6ec910" valueTypeId="07a1afce-600e-42a0-b592-ecbccb6146b2"/>
+  </producedTypes>
+  <name>кфкИспользоватьИнтеграцию</name>
+  <synonym>
+    <key>ru</key>
+    <value>Использовать интеграцию (Kafka)</value>
+  </synonym>
+  <type>
+    <types>Boolean</types>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

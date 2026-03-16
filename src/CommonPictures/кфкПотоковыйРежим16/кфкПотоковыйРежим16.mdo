@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8f1e350a-2980-4299-986c-5744a2fb2103">
+  <name>кфкПотоковыйРежим16</name>
+  <synonym>
+    <key>ru</key>
+    <value>Потоковый режим 16х16</value>
+  </synonym>
+</mdclass:CommonPicture>

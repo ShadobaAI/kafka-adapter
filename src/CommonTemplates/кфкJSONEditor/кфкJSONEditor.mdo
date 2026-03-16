@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3b0be599-1745-4289-9510-1f4dddcea1f0">
+  <name>кфкJSONEditor</name>
+  <synonym>
+    <key>ru</key>
+    <value>JSON Editor (Kafka)</value>
+  </synonym>
+  <comment>https://github.com/josdejong/jsoneditor/releases/tag/v10.4.1</comment>
+  <templateType>BinaryData</templateType>
+</mdclass:CommonTemplate>

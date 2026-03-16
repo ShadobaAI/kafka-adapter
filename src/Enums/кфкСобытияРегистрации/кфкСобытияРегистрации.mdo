@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5f962ff8-8042-41d2-b1ec-caaafc280953">
+  <producedTypes>
+    <refType typeId="e2685d19-e641-40c1-9447-0ad4ba1b398e" valueTypeId="618e3a87-0493-4df8-a17d-10d3a14463c4"/>
+    <listType typeId="01db912e-bcc8-492a-bf9e-a3077175433a" valueTypeId="dba44835-1336-4a15-8b54-802b6fe4fd4a"/>
+    <managerType typeId="0594f1aa-d022-4aa4-a6c0-b81810459904" valueTypeId="6990dde1-2a7a-4a4d-a953-0ba1f0819be0"/>
+  </producedTypes>
+  <name>кфкСобытияРегистрации</name>
+  <synonym>
+    <key>ru</key>
+    <value>События регистрации (Kafka)</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="0fbf150a-0471-429a-8475-4dd177ffe512">
+    <name>ПриЗаписи</name>
+    <synonym>
+      <key>ru</key>
+      <value>При записи</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="b98d3d58-06fd-4afd-bee4-142bedb6bfc9">
+    <name>Программно</name>
+    <synonym>
+      <key>ru</key>
+      <value>Программно</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="b0c1ff5f-7922-4a31-908a-5420fd19b9e2">
+    <name>Принудительно</name>
+    <synonym>
+      <key>ru</key>
+      <value>Принудительно</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

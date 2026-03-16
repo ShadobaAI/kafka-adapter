@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="faa5bd69-5508-4172-8a14-461ddf34cd40">
+  <name>АдаптерKafka</name>
+  <synonym>
+    <key>ru</key>
+    <value>Адаптер Kafka</value>
+  </synonym>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <defaultLanguage>Checked</defaultLanguage>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <logo>Extended</logo>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="37ec6b0a-6c07-44ee-b8b8-83f3ba0ade3b"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="bcf21175-b06d-49d6-9174-9a6aebd84468"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="61fbc15d-afde-409a-b401-59505d074611"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="b7dce090-04a3-4c6d-8d6a-c6892bb61b3e"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="590ef79b-6e0b-4e4b-a3ec-4ad8dd02b30c"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="3440927e-28d3-4270-b0ea-bb7cb502301e"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="78d37f7c-2422-493a-8401-3ab62529b43c"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>кфк</namePrefix>
+  <configurationExtensionCompatibilityMode>8.3.21</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <scriptVariant>Russian</scriptVariant>
+  <vendor>ООО &quot;ФСК ЛАБ&quot;</vendor>
+  <version>9.9.9.9</version>
+  <defaultLanguage>Language.Русский</defaultLanguage>
+  <logo/>
+  <interfaceCompatibilityMode>TaxiEnableVersion8_2</interfaceCompatibilityMode>
+  <compatibilityMode>8.3.21</compatibilityMode>
+  <languages uuid="25982e3c-c02f-4173-97dc-1e5fa58c1eac">
+    <name>Русский</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:LanguageExtension">
+      <languageCode>Checked</languageCode>
+    </extension>
+    <languageCode>ru</languageCode>
+  </languages>
+  <subsystems>Subsystem.кфкИнтеграция</subsystems>
+  <commonPictures>CommonPicture.кфкЗаблокироватьПотоки16</commonPictures>
+  <commonPictures>CommonPicture.кфкЗапуск16</commonPictures>
+  <commonPictures>CommonPicture.кфкПауза16</commonPictures>
+  <commonPictures>CommonPicture.кфкПотоковыйРежим16</commonPictures>
+  <commonPictures>CommonPicture.кфкРазблокироватьПотоки16х16</commonPictures>
+  <commonPictures>CommonPicture.кфкРазделИнтеграция16</commonPictures>
+  <commonPictures>CommonPicture.кфкРегламентноеЗадание16</commonPictures>
+  <roles>Role.кфкБазовыеПрава</roles>
+  <roles>Role.кфкПолныеПрава</roles>
+  <commonTemplates>CommonTemplate.кфкАдаптерKafka</commonTemplates>
+  <commonTemplates>CommonTemplate.кфкJSONEditor</commonTemplates>
+  <commonTemplates>CommonTemplate.кфкСвойстваLibrdKafka</commonTemplates>
+  <commonModules>CommonModule.кфкИнтеграция</commonModules>
+  <commonModules>CommonModule.кфкИнтеграцияКлиент</commonModules>
+  <commonModules>CommonModule.кфкИнтеграцияСлужебный</commonModules>
+  <commonModules>CommonModule.кфкИнтеграцияСлужебныйВызовСервера</commonModules>
+  <commonModules>CommonModule.кфкИнтеграцияСлужебныйКлиент</commonModules>
+  <commonModules>CommonModule.кфкИнтеграцияСлужебныйПовтИсп</commonModules>
+  <commonModules>CommonModule.кфкОбменДаннымиXDTOСервер</commonModules>
+  <commonModules>CommonModule.кфкОбработкаСобытийСлужебный</commonModules>
+  <commonModules>CommonModule.кфкОбщегоНазначенияСлужебный</commonModules>
+  <commonModules>CommonModule.кфкФоновыеОперацииСлужебный</commonModules>
+  <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияНабораПриЗаписи</eventSubscriptions>
+  <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияПередУдалением</eventSubscriptions>
+  <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияПриЗаписи</eventSubscriptions>
+  <scheduledJobs>ScheduledJob.кфкЗапускИнтеграции</scheduledJobs>
+  <functionalOptions>FunctionalOption.кфкБлокировкаИнтеграции</functionalOptions>
+  <functionalOptions>FunctionalOption.кфкИспользоватьВнешнееЛогирование</functionalOptions>
+  <functionalOptions>FunctionalOption.кфкИспользоватьИнтеграцию</functionalOptions>
+  <functionalOptions>FunctionalOption.кфкИспользоватьКонтрольИнтеграции</functionalOptions>
+  <functionalOptions>FunctionalOption.кфкИспользоватьПотоковыйРежим</functionalOptions>
+  <definedTypes>DefinedType.кфкПользователь</definedTypes>
+  <constants>Constant.кфкБлокировкаИнтеграции</constants>
+  <constants>Constant.кфкИспользоватьИнтеграцию</constants>
+  <constants>Constant.кфкИспользоватьКонтрольИнтеграции</constants>
+  <constants>Constant.кфкИспользоватьПотоковыйРежим</constants>
+  <constants>Constant.кфкКаталогЛогированияКомпоненты</constants>
+  <constants>Constant.кфкФорматИмениФайловЛогированияКомпоненты</constants>
+  <commonForms>CommonForm.кфкФормаВыбораСвойстваLibrdKafka</commonForms>
+  <catalogs>Catalog.кфкБрокеры</catalogs>
+  <catalogs>Catalog.кфкКонсьюмеры</catalogs>
+  <catalogs>Catalog.кфкПродюсеры</catalogs>
+  <catalogs>Catalog.Пользователи</catalogs>
+  <enums>Enum.кфкСобытияРегистрации</enums>
+  <enums>Enum.кфкТипыОбработчиков</enums>
+  <enums>Enum.кфкСтатусыСообщений</enums>
+  <dataProcessors>DataProcessor.кфкИнтеграция</dataProcessors>
+  <dataProcessors>DataProcessor.кфкПанельАдминистрирования</dataProcessors>
+  <dataProcessors>DataProcessor.кфкРегистрацияИзменений</dataProcessors>
+  <informationRegisters>InformationRegister.кфкВходящиеСообщения</informationRegisters>
+  <informationRegisters>InformationRegister.кфкИсходящиеСообщения</informationRegisters>
+  <informationRegisters>InformationRegister.кфкОчередьПотоков</informationRegisters>
+  <informationRegisters>InformationRegister.кфкПараметрыКонтроляИнтеграции</informationRegisters>
+  <informationRegisters>InformationRegister.кфкПараметрыЛогирования</informationRegisters>
+  <informationRegisters>InformationRegister.кфкПараметрыОчисткиХранилища</informationRegisters>
+  <informationRegisters>InformationRegister.кфкПозицииОпераций</informationRegisters>
+</mdclass:Configuration>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e3ba188a-da64-4b49-a56a-f984b3f937c7">
+  <producedTypes>
+    <managerType typeId="1ee6c062-9129-4416-a24e-84845bd2e201" valueTypeId="782c6cde-0a0e-4bf2-b4de-066cb84275ec"/>
+    <valueManagerType typeId="c056e905-ad5c-4770-8a37-45cd0cae89ab" valueTypeId="c359582b-496b-4efc-8f70-cc03c549e210"/>
+    <valueKeyType typeId="b6228625-732f-4e5a-9af0-7921d0ca1489" valueTypeId="4fef8a5f-a52a-453e-8d35-b2b3c6402ecd"/>
+  </producedTypes>
+  <name>кфкБлокировкаИнтеграции</name>
+  <synonym>
+    <key>ru</key>
+    <value>Блокировка интеграции (Kafka)</value>
+  </synonym>
+  <type>
+    <types>Boolean</types>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

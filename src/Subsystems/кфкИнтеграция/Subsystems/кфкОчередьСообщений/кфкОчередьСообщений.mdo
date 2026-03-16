@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ec744c6b-be8a-400e-9f0c-8602eb6ae2f7">
+  <name>кфкОчередьСообщений</name>
+  <synonym>
+    <key>ru</key>
+    <value>Очередь сообщений</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>InformationRegister.кфкВходящиеСообщения</content>
+  <content>InformationRegister.кфкИсходящиеСообщения</content>
+  <parentSubsystem>Subsystem.кфкИнтеграция</parentSubsystem>
+</mdclass:Subsystem>

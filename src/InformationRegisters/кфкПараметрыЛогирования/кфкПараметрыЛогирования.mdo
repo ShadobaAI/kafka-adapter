@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="45ec0e4a-7539-47d8-be12-a22fccb6be6a">
+  <producedTypes>
+    <selectionType typeId="7e769ad6-9ed4-47ef-b170-323099deecd7" valueTypeId="fb717e42-76c4-4266-b42e-fe85a0c3b353"/>
+    <listType typeId="baae0839-3032-478d-82ce-d6833bf08bb8" valueTypeId="3e35d4a0-8bbc-42b7-afc7-61f51d312da8"/>
+    <managerType typeId="6d8719d0-9c15-4468-9e41-0aeddd19941a" valueTypeId="32510a75-2280-4d70-a4d1-873f0f323d48"/>
+    <recordSetType typeId="7affe0fe-ad93-48c2-bdc3-9d2ee82f25be" valueTypeId="c576335c-46a3-42c6-894e-631507f0d990"/>
+    <recordKeyType typeId="621a2092-3274-4263-aa5a-13b446729d35" valueTypeId="d44dc973-32d7-425f-ac63-fba7a1047753"/>
+    <recordType typeId="903a99cc-cb6c-4108-980e-f05e187797ea" valueTypeId="f1841d67-56a1-4f2f-92a6-6381bc363c59"/>
+    <recordManagerType typeId="4bf45cca-248e-4eb1-8900-b348e01a7c9a" valueTypeId="1eb025e0-846e-4b9c-91c8-c61c23fe09f0"/>
+  </producedTypes>
+  <name>кфкПараметрыЛогирования</name>
+  <synonym>
+    <key>ru</key>
+    <value>Параметры логирования (Kafka)</value>
+  </synonym>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Параметр логирования</value>
+  </recordPresentation>
+  <resources uuid="053ad893-b7e6-4dc0-a7ca-36a81e160d9b">
+    <name>Использовать</name>
+    <synonym>
+      <key>ru</key>
+      <value>Использовать</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="ea542090-b71d-47be-af56-c659669b2cfd">
+    <name>АдресСервиса</name>
+    <synonym>
+      <key>ru</key>
+      <value>Адрес сервиса</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="1b94d699-3efd-4256-b786-bb0cf641db26">
+    <name>Префикс</name>
+    <synonym>
+      <key>ru</key>
+      <value>Префикс</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="616c8855-fa97-4d53-80a3-02079b412965">
+    <name>ВыгружатьЗаголовкиСообщенияВходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгружать заголовки сообщения входящих</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="122fe975-7473-468f-abde-feeeb7058b40">
+    <name>ВыгружатьЗаголовкиСообщенияИсходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгружать заголовки сообщения исходящих</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="870bb118-8ad5-4be3-b16c-c8a0bf8f5384">
+    <name>ВыгружатьИсходныеДанныеИсходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгружать исходные данные исходящих</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="4444ad05-639d-4daa-8576-599be1b6e942">
+    <name>ВыгружатьТелоСообщенияВходящие</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгружать тело сообщения входящие</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="9c1f6e56-2128-4e16-88fb-374160d6eae7">
+    <name>ВыгружатьТелоСообщенияИсходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгружать тело сообщения исходящих</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+</mdclass:InformationRegister>

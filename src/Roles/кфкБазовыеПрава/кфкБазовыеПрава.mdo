@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Role xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f7846f3c-efb0-43ef-aec5-a39fa3011030">
+  <name>кфкБазовыеПрава</name>
+  <synonym>
+    <key>ru</key>
+    <value>Базовые права (Kafka)</value>
+  </synonym>
+</mdclass:Role>

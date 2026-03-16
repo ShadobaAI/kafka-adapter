@@ -1,0 +1,143 @@
+stages:
+  - build
+  - deploy
+
+default:
+  before_script:
+    - chcp 65001
+
+.check_tag_format: &check_tag_format
+  - |
+    $ver_pattern = '^\d+\.\d+\.\d+\.\d+(-rc\d+)?$' # if ($CI_COMMIT_BRANCH -eq 'main') {'^\d+\.\d+\.\d+\.\d+(-rc\d+)?$'} else {'^\d+\.\d+\.\d+\.\d+-pre$'}
+    if (-not ($CI_COMMIT_TAG -match $ver_pattern)) {Write-Error 'Неправильный формат версии!'}
+
+.set_version: &set_version
+  # SET Version
+  - |
+    $version = if ($CI_COMMIT_TAG -match '\d+\.\d+\.\d+\.\d+') {$matches[0]} else {$CI_COMMIT_TAG}
+    (Get-Content $CI_PROJECT_DIR\src\Configuration\Configuration.mdo -Encoding UTF8 -Raw).Replace('9.9.9.9', $version) | Set-Content $CI_PROJECT_DIR\src\Configuration\Configuration.mdo -Encoding UTF8
+  # SET Version UI
+  - (Get-Content $CI_PROJECT_DIR\src\CommonModules\кфкОбщегоНазначенияСлужебный\Module.bsl -Encoding UTF8 -Raw).Replace('9.9.9.9', $CI_COMMIT_TAG) | Set-Content $CI_PROJECT_DIR\src\CommonModules\кфкОбщегоНазначенияСлужебный\Module.bsl -Encoding UTF8
+
+build_cfe:
+  stage: build
+  script:
+    # check CI_COMMIT_TAG
+    - *check_tag_format
+    # SET Version
+    - *set_version
+    # MOVE PROJECT TO NEW DIR
+    - New-Item -ItemType Directory -Force -Path "project" | Out-Null
+    - Move-Item "$CI_PROJECT_DIR\.project", "$CI_PROJECT_DIR\.settings\", "$CI_PROJECT_DIR\DT-INF\", "$CI_PROJECT_DIR\src\" "project"
+    # EDT to ZIP
+    - Compress-Archive "$CI_PROJECT_DIR\project\*" edt_cfe.zip -Force
+    # EDT to XML
+    - 1cedtcli -data $CI_PROJECT_DIR\tmp -vmargs -Xmx2g -command export --project $CI_PROJECT_DIR\project --configuration-files $CI_PROJECT_DIR\xml
+    # XML to CFE
+    - vrunner compileexttocfe -s $CI_PROJECT_DIR\xml -o $CI_PROJECT_DIR\config.cfe --ibcmd
+  rules:
+    - if: $CI_COMMIT_TAG
+  artifacts:
+    paths:
+      - edt_cfe.zip
+      - config.cfe
+    expire_in: 1 h
+
+build_cf:
+  stage: build
+  script:
+    # check CI_COMMIT_TAG
+    - *check_tag_format
+    # SET Version
+    - *set_version
+    # CFE to CF & DEL SSL 
+    - Remove-Item $CI_PROJECT_DIR\src\Catalogs\Пользователи -Recurse
+    - (Get-Content $CI_PROJECT_DIR\src\DefinedTypes\кфкПользователь\кфкПользователь.mdo -Encoding UTF8 -Raw).Replace('CatalogRef.Пользователи', 'UUID') | Set-Content $CI_PROJECT_DIR\src\DefinedTypes\кфкПользователь\кфкПользователь.mdo -Encoding UTF8
+    - |
+      $xml = [xml](Get-Content $CI_PROJECT_DIR\src\Configuration\Configuration.mdo -Encoding UTF8 -Raw)
+      @('xmlns:xsi', 'xmlns:mdclassExtension') | %{$xml.DocumentElement.RemoveAttribute($_)}
+      $keys = "//" + (@('objectBelonging', 'extension', 'keepMappingToExtendedConfigurationObjectsByIDs', 'namePrefix', 'configurationExtensionPurpose', 'configurationExtensionCompatibilityMode') -join '|//')
+      $xml.SelectNodes($keys) | % { $_.ParentNode.RemoveChild($_)|Out-Null}
+      $xml.SelectNodes("//catalogs") | ?{$_.InnerText -notmatch '\.кфк'} | %{$_.ParentNode.RemoveChild($_)|Out-Null} # DEL SSL OBJECTS
+      $xml.Configuration.compatibilityMode = '8.3.17'
+      $xml.Save("$CI_PROJECT_DIR\src\Configuration\Configuration.mdo")
+    - (Get-Content $CI_PROJECT_DIR\.project -Encoding UTF8 -Raw).Replace('SSL.', '').Replace('V8ExtensionNature', 'V8ConfigurationNature').Replace('base.АдаптерKafka', 'АдаптерKafka') | Set-Content $CI_PROJECT_DIR\.project -Encoding UTF8
+    - (Get-Content $CI_PROJECT_DIR\DT-INF\PROJECT.PMF -Encoding UTF8) | ?{ $_ -notmatch '^Base-Project' } | Set-Content $CI_PROJECT_DIR\DT-INF\PROJECT.PMF -Encoding UTF8
+    # MOVE PROJECT TO NEW DIR
+    - New-Item -ItemType Directory -Force -Path "project" | Out-Null
+    - Move-Item "$CI_PROJECT_DIR\.project", "$CI_PROJECT_DIR\.settings\", "$CI_PROJECT_DIR\DT-INF\", "$CI_PROJECT_DIR\src\" "project"
+    # EDT to ZIP
+    - Compress-Archive "$CI_PROJECT_DIR\project\*" edt_cf.zip -Force
+    # EDT to XML
+    - 1cedtcli -data $CI_PROJECT_DIR\tmp -vmargs -Xmx2g -command export --project $CI_PROJECT_DIR\project --configuration-files $CI_PROJECT_DIR\xml
+    # XML to CFE
+    - vrunner compile -s $CI_PROJECT_DIR\xml -o $CI_PROJECT_DIR\config.cf --ibcmd
+  rules:
+    - if: $CI_COMMIT_TAG
+  artifacts:
+    paths:
+      - edt_cf.zip
+      - config.cf
+    expire_in: 1 h
+
+build_dt:
+  stage: build
+  needs:
+    - build_cfe
+  variables:
+    PROJECTS_URL: https://$CI_SERVER_HOST/api/v4/projects # CI_API_V4_URL
+    DB_URL: $CI_PROJECT_DIR\db
+  script:
+    # check CI_COMMIT_TAG
+    - *check_tag_format
+    # DOWNLOAD KAFKA-BASE.CF
+    - |
+      $package = (Invoke-RestMethod -Method Get -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PROJECTS_URL/$KAFKA_BASE_ID/packages?package_type=generic&order_by=created_at&sort=desc&per_page=1" )[0]
+      $file = ((Invoke-RestMethod -Method Get -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PROJECTS_URL/$KAFKA_BASE_ID/packages/$($package[0].id)/package_files" ) | ?{$_.file_name -like 'kafka_base_v*.cf'})[0]
+      Invoke-RestMethod -Method Get -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PROJECTS_URL/$KAFKA_BASE_ID/packages/$($package.package_type)/$($package.name)/$($package.version)/$($file.file_name)" -OutFile $CI_PROJECT_DIR\base.cf
+    # DOWNLOAD KAFKA-ADAPTER-TESTER.CFE
+    - |
+      $package = (Invoke-RestMethod -Method Get -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PROJECTS_URL/$KAFKA_ADAPTER_TESTER_ID/packages?package_type=generic&order_by=created_at&sort=desc&per_page=1" )[0]
+      $file = ((Invoke-RestMethod -Method Get -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PROJECTS_URL/$KAFKA_ADAPTER_TESTER_ID/packages/$($package[0].id)/package_files" ) | ?{$_.file_name -like 'kafka_adapter_tester_v*.cfe'})[0]
+      Invoke-RestMethod -Method Get -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PROJECTS_URL/$KAFKA_ADAPTER_TESTER_ID/packages/$($package.package_type)/$($package.name)/$($package.version)/$($file.file_name)" -OutFile $CI_PROJECT_DIR\tester.cfe
+    # INIT NEW INFO BASE & LOAD KAFKA-BASE.CF
+    - vrunner init-dev --dt $CI_PROJECT_DIR\tools\packages\template.dt --cf $CI_PROJECT_DIR\base.cf --ibconnection /F$DB_URL --ibcmd
+    # DOWNLOAD KAFKA-ADAPTER.CFE
+    - vrunner loadext --file "$CI_PROJECT_DIR\config.cfe" --ibconnection /F$DB_URL --extension АдаптерKafka --updatedb --ibcmd
+    # DOWNLOAD KAFKA-ADAPTER-TESTER.CFE
+    - vrunner loadext --file "$CI_PROJECT_DIR\tester.cfe" --ibconnection /F$DB_URL --extension ТестированиеАдаптераKafka --updatedb --ibcmd
+    # SAVE DT
+    - vrunner dump $CI_PROJECT_DIR\demo.dt --ibconnection /F$DB_URL --ibcmd
+  rules:
+    - if: $CI_COMMIT_TAG
+  artifacts:
+    paths:
+      - demo.dt
+    expire_in: 1 h
+
+deploy:
+  stage: deploy
+  needs:
+    - build_cf
+    - build_cfe
+    - build_dt
+  variables:
+    PROJECT_URL: https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID # CI_API_V4_URL
+    RELEASE_URL: $PROJECT_URL/releases/$CI_COMMIT_TAG/assets/links
+    PACKAGE_URI: $PROJECT_URL/packages/generic/kafka-v$CI_COMMIT_TAG/$CI_COMMIT_TAG/kafka_v$CI_COMMIT_TAG
+  script:
+    # PUSH to packages
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PACKAGE_URI.dt" -Method Put -Infile $CI_PROJECT_DIR\demo.dt
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PACKAGE_URI.cf" -Method Put -Infile $CI_PROJECT_DIR\config.cf
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "$PACKAGE_URI.cfe" -Method Put -Infile $CI_PROJECT_DIR\config.cfe
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "${PACKAGE_URI}_cf.zip" -Method Put -Infile $CI_PROJECT_DIR\edt_cf.zip
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri "${PACKAGE_URI}_cfe.zip" -Method Put -Infile $CI_PROJECT_DIR\edt_cfe.zip
+    # ADD to release
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri $RELEASE_URL -Method POST -Body @{"name"="Adapter Kafka v${CI_COMMIT_TAG}.cf";"link_type"="package";"url"="${PACKAGE_URI}.cf"}
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri $RELEASE_URL -Method POST -Body @{"name"="Adapter Kafka v${CI_COMMIT_TAG}.cfe";"link_type"="package";"url"="${PACKAGE_URI}.cfe"}
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri $RELEASE_URL -Method POST -Body @{"name"="Adapter Kafka v${CI_COMMIT_TAG} (CF).zip";"link_type"="package";"url"="${PACKAGE_URI}_cf.zip"}
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri $RELEASE_URL -Method POST -Body @{"name"="Adapter Kafka v${CI_COMMIT_TAG} (CFE).zip";"link_type"="package";"url"="${PACKAGE_URI}_cfe.zip"}
+    - Invoke-WebRequest -Headers @{ 'JOB-TOKEN'=$CI_JOB_TOKEN } -Uri $RELEASE_URL -Method POST -Body @{"name"="Adapter Kafka (ДЕМО) v${CI_COMMIT_TAG}.dt";"link_type"="package";"url"="${PACKAGE_URI}.dt"}
+  rules:
+    - if: $CI_COMMIT_TAG
+  

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e79afc56-bf12-49d5-8537-7a673d0f0a55">
+  <producedTypes>
+    <selectionType typeId="782906bd-5397-4701-a9fa-272132b961f6" valueTypeId="06cbcf95-941f-4bce-a465-1860d8018e76"/>
+    <listType typeId="31a8df2f-9435-40d0-821e-c562bcb97f33" valueTypeId="c9773ca7-02d1-49e9-bc2d-64be5fb4816b"/>
+    <managerType typeId="f89b88c2-a890-4b95-9657-b72c7c7fcc70" valueTypeId="345d48b3-2b24-4e3d-93c5-fc02f089418d"/>
+    <recordSetType typeId="10d452ab-42ec-4ee1-ab5b-b62077a54366" valueTypeId="cb7e9baf-cd97-4e6f-91d7-1ab2269c2b52"/>
+    <recordKeyType typeId="a66c6782-6c04-4bf1-9d7d-10184e6cef73" valueTypeId="e2c3eb66-c610-4126-8e03-c220d63529ad"/>
+    <recordType typeId="548738e6-ceaa-43ea-a086-901b56189735" valueTypeId="14e63f07-60ce-4c32-9053-fb5b00b68905"/>
+    <recordManagerType typeId="dce8777d-1400-4890-8e2a-708bf169dc1e" valueTypeId="569939a8-0bd2-4c4c-8b9f-5ac4afea30d5"/>
+  </producedTypes>
+  <name>кфкПараметрыКонтроляИнтеграции</name>
+  <synonym>
+    <key>ru</key>
+    <value>Параметры контроля интеграции (Kafka)</value>
+  </synonym>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Параметры контроля интеграции</value>
+  </recordPresentation>
+  <resources uuid="da6d9c90-0a07-4927-9e37-d8ae2b432028">
+    <name>ВремяSLAВходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Время SLA входящих (мин.)</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="2f8b6f8c-7ba4-4c80-a144-71a64e0736bb">
+    <name>ВремяSLAИсходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Время SLA исходящих (мин.)</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="359a2264-c622-40c5-8c9e-a2657443134a">
+    <name>ИдентификаторЧатаТГ</name>
+    <synonym>
+      <key>ru</key>
+      <value>Идентификатор чата ТГ</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="dd7fc089-45da-4b51-9c19-dd8e781cd75d">
+    <name>ТокенБотаТГ</name>
+    <synonym>
+      <key>ru</key>
+      <value>Токен бота ТГ</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <passwordMode>true</passwordMode>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+</mdclass:InformationRegister>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6bfe444e-ee76-4152-9275-975ba424f65e">
+  <producedTypes>
+    <selectionType typeId="108d4793-858f-4a99-890a-e5a355c0dd02" valueTypeId="cf7e56dd-0ee4-4b8d-9a2d-8ee80abb0328"/>
+    <listType typeId="720cb71b-75c2-407d-96bf-9bb03218fb1a" valueTypeId="aaad68bc-d94a-4e1e-89ba-9df0e46439f9"/>
+    <managerType typeId="a908b6e9-9d86-4d53-9d72-e118b6535d2d" valueTypeId="f63e0536-604d-4c3a-b97b-e2e98838d9db"/>
+    <recordSetType typeId="169c6020-03a4-451e-9ebe-c8b75cbf8d35" valueTypeId="44061bc5-6fdd-4562-b299-b26605707314"/>
+    <recordKeyType typeId="30ff5532-08d9-4c3c-a9dd-ba1e65fc0de1" valueTypeId="04f666f7-8fa2-4e0a-932c-e370f73ecd2f"/>
+    <recordType typeId="058e7abd-bce2-42f5-905d-81e9ea73bac2" valueTypeId="0e126c3f-84de-4f62-91df-395585bb903c"/>
+    <recordManagerType typeId="d0375508-afeb-4c32-853b-31faedb1cb16" valueTypeId="19b788b2-4939-4141-92c0-8a820a44da85"/>
+  </producedTypes>
+  <name>кфкПараметрыОчисткиХранилища</name>
+  <synonym>
+    <key>ru</key>
+    <value>Параметры очистки хранилища (Kafka)</value>
+  </synonym>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Параметр очистки хранилища (Kafka)</value>
+  </recordPresentation>
+  <resources uuid="e4363697-284c-42fb-b426-f645597ee732">
+    <name>СрокХраненияОбработанных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения обработанных</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-2</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="e4a66fb5-78c4-4913-adfd-c4989f4caa1b">
+    <name>СрокХраненияОтмененныхВходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения отмененных входящих</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-2</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+  </resources>
+  <resources uuid="51207d61-9141-41f6-9e8f-35c83e80a3c5">
+    <name>СрокХраненияОтмененныхИсходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения отмененных исходящих</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-2</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+  </resources>
+  <resources uuid="3fc8996d-d9e0-4354-ae66-d910538122c6">
+    <name>СрокХраненияОтправленных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения отправленных</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-2</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+  </resources>
+  <resources uuid="bfcb4e0c-b347-47b8-8852-856e316b8b9e">
+    <name>СрокХраненияОшибкиОбработкиВходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения ошибки обработки входящих</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-1</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+  </resources>
+  <resources uuid="9d0352c5-0b92-4153-a61f-be4856c401b4">
+    <name>СрокХраненияОшибкиОбработкиИсходящих</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения ошибки обработки исходящих</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-1</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+  </resources>
+  <resources uuid="a95ac1ba-f04f-4466-b75e-fd77ce892558">
+    <name>СрокХраненияОшибкиОтправки</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения ошибки отправки</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-1</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+  </resources>
+  <resources uuid="74356a57-2f33-43af-9be9-cfa1a1ed7ac0">
+    <name>СрокХраненияНезавершенных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок хранения незавершенных</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:StringValue">
+      <value>-1</value>
+    </minValue>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+</mdclass:InformationRegister>

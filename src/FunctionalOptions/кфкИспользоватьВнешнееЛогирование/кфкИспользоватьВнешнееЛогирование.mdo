@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:FunctionalOption xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dfb33bb2-fc95-4217-98ef-a4958006bcfc">
+  <name>кфкИспользоватьВнешнееЛогирование</name>
+  <synonym>
+    <key>ru</key>
+    <value>Использовать внешнее логирование (Kafka)</value>
+  </synonym>
+  <location>InformationRegister.кфкПараметрыЛогирования.Resource.Использовать</location>
+  <privilegedGetMode>true</privilegedGetMode>
+</mdclass:FunctionalOption>

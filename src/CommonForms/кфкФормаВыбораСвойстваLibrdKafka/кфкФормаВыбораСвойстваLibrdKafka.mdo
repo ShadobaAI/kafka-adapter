@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonForm xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f3e5b2e3-4ca1-4ae8-9217-e1fc149ca3f4">
+  <name>кфкФормаВыбораСвойстваLibrdKafka</name>
+  <synonym>
+    <key>ru</key>
+    <value>Форма выбора свойства librdkafka</value>
+  </synonym>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usePurposes>MobileDevice</usePurposes>
+</mdclass:CommonForm>

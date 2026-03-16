@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="618a7cae-457c-45b9-a061-86ebf0dae684">
+  <name>кфкИнтеграцияСлужебныйВызовСервера</name>
+  <synonym>
+    <key>ru</key>
+    <value>Интеграция служебный вызов сервера (Kafka)</value>
+  </synonym>
+  <server>true</server>
+  <serverCall>true</serverCall>
+</mdclass:CommonModule>

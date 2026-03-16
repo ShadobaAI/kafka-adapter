@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1e6b1fd6-a673-480a-87a5-a3aab3e953e3">
+  <producedTypes>
+    <selectionType typeId="ceac261e-5cdc-429e-bbe1-d38909f3b9b8" valueTypeId="4621312d-9e1d-4478-82a1-6331285294fe"/>
+    <listType typeId="a5d694c0-26be-4bd4-bc40-587ccd09ae5a" valueTypeId="f14c9c74-cc1f-4d03-9dd8-1a39d29e5c22"/>
+    <managerType typeId="e9be1d64-68f3-472b-8477-ccae8d90b4e0" valueTypeId="6794be68-0469-42ae-833f-4aa50d86aacb"/>
+    <recordSetType typeId="dbcb8557-0e88-45cf-8440-b0ae22a42067" valueTypeId="64db4ed7-6886-4619-9298-6b930ff201d7"/>
+    <recordKeyType typeId="6ba13b91-7ff0-4bce-a46a-902a74ca393f" valueTypeId="720137fb-a317-40e4-b09d-e9b29189185d"/>
+    <recordType typeId="dfa59f32-98c9-4a05-a7f0-111ca963d879" valueTypeId="586b0b4d-85ef-4fad-bdda-704922f9c307"/>
+    <recordManagerType typeId="ea2c519d-8d9f-4c69-859a-1e995d30e2a9" valueTypeId="739dfc91-cb59-40d8-8408-4880d8542c4f"/>
+  </producedTypes>
+  <name>кфкПозицииОпераций</name>
+  <synonym>
+    <key>ru</key>
+    <value>Позиции операций (Kafka)</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <defaultRecordForm>InformationRegister.кфкПозицииОпераций.Form.ФормаЗаписи</defaultRecordForm>
+  <defaultListForm>InformationRegister.кфкПозицииОпераций.Form.ФормаСписка</defaultListForm>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Позиция операции</value>
+  </recordPresentation>
+  <resources uuid="25da2052-e7b7-45b3-b3c2-5af29fc023b7">
+    <name>ВременнаяМетка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Временная метка</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>15</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="9e581eed-c319-44ee-8608-a71b399956c1">
+    <name>Идентификатор</name>
+    <synonym>
+      <key>ru</key>
+      <value>Идентификатор</value>
+    </synonym>
+    <type>
+      <types>UUID</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="d09738b2-6161-4eb1-aafd-ce35f5b465ab">
+    <name>Раздел</name>
+    <synonym>
+      <key>ru</key>
+      <value>Раздел</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>64</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <forms uuid="ecd6dddc-3afa-4926-9f8b-1d6e744fac44">
+    <name>ФормаСписка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="d1a81210-76e7-4f5a-b96b-2479d95a7922">
+    <name>ФормаЗаписи</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма записи</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:InformationRegister>

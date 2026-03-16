@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="90c87861-83c3-4174-81dd-550f291515d7">
+  <producedTypes>
+    <refType typeId="2af9f294-41a3-443c-bcc5-8273c8f3c2b8" valueTypeId="7c96f088-2ec0-4652-8fff-b7673fb7d75c"/>
+    <listType typeId="5ba775ba-d388-47de-8aff-ce5493842081" valueTypeId="0effa175-ad2b-41d1-8004-553b033cde7c"/>
+    <managerType typeId="b54ebd84-035b-4d1b-ac0e-49950f8d690c" valueTypeId="0b6d0e74-ff14-446c-b40e-b8693398bb68"/>
+  </producedTypes>
+  <name>кфкСтатусыСообщений</name>
+  <synonym>
+    <key>ru</key>
+    <value>Статусы сообщений (Kafka)</value>
+  </synonym>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Order</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Ref</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="e87ed46a-b4fe-41ad-a05b-c7d43a993d59">
+    <name>Новое</name>
+    <synonym>
+      <key>ru</key>
+      <value>Новое</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="4aa47c21-1293-47d6-b3ab-9d29a043b1dc">
+    <name>Обработано</name>
+    <synonym>
+      <key>ru</key>
+      <value>Обработано</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="82907498-6643-4090-a81d-dd1982638a68">
+    <name>ОбработкаОтменена</name>
+    <synonym>
+      <key>ru</key>
+      <value>Обработка отменена</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="bb65cb4f-750e-4084-b787-633ed9393166">
+    <name>ОшибкаОбработки</name>
+    <synonym>
+      <key>ru</key>
+      <value>Ошибка обработки</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="31aa5e8e-008e-4e64-bdea-a9307ad0bcc1">
+    <name>Выгружено</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгружено</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="2aad9bb4-aca4-411a-8268-a2c8d7a9efe8">
+    <name>ОшибкаВыгрузки</name>
+    <synonym>
+      <key>ru</key>
+      <value>Ошибка выгрузки</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

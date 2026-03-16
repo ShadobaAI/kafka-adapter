@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a1e66248-6e5f-4afe-95d5-739d031e733c">
+  <name>кфкЗаблокироватьПотоки16</name>
+  <synonym>
+    <key>ru</key>
+    <value>Заблокировать потоки 16х16</value>
+  </synonym>
+</mdclass:CommonPicture>

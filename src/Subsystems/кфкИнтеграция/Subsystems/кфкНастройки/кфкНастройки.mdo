@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="994c62d2-3c03-4880-a885-340e222e46e5">
+  <name>кфкНастройки</name>
+  <synonym>
+    <key>ru</key>
+    <value>Настройки</value>
+  </synonym>
+  <extension xsi:type="mdclassExtension:SubsystemExtension">
+    <commandInterface>Extended</commandInterface>
+  </extension>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>Catalog.кфкБрокеры</content>
+  <content>Catalog.кфкКонсьюмеры</content>
+  <content>Catalog.кфкПродюсеры</content>
+  <parentSubsystem>Subsystem.кфкИнтеграция</parentSubsystem>
+</mdclass:Subsystem>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="468d47a0-c0ea-4799-af74-e3af35163e84">
+  <name>кфкСвойстваLibrdKafka</name>
+  <synonym>
+    <key>ru</key>
+    <value>Свойства librdkafka (Kafka)</value>
+  </synonym>
+  <comment>https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md</comment>
+</mdclass:CommonTemplate>
