@@ -29,8 +29,9 @@
   <defaultRunMode>ManagedApplication</defaultRunMode>
   <usePurposes>PersonalComputer</usePurposes>
   <scriptVariant>Russian</scriptVariant>
-  <vendor>ООО &quot;ФСК ЛАБ&quot;</vendor>
+  <vendor>github.com/ShadobaAI</vendor>
   <version>9.9.9.9</version>
+  <updateCatalogAddress>github.com/ShadobaAI/kafka-adapter</updateCatalogAddress>
   <defaultLanguage>Language.Русский</defaultLanguage>
   <logo/>
   <interfaceCompatibilityMode>TaxiEnableVersion8_2</interfaceCompatibilityMode>
