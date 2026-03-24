@@ -2,7 +2,7 @@
 
 [![OpenYellow](https://openyellow.openintegrations.dev/data/badges/1183456860.svg)](https://openyellow.org/grid?filter=top&repo=1183456860)
 ![Платформа](https://img.shields.io/badge/1С-8.3.21+-blue)
-![Лицензия](https://img.shields.io/badge/лицензия-MIT%20%2B%20Commons%20Clause-yellow)
+![Лицензия](https://img.shields.io/badge/лицензия-MPL--2.0-brightgreen)
 ![БСП](https://img.shields.io/badge/БСП-3.1.10+-blue)
 
 Подсистема интеграции 1С:Предприятие с [Apache Kafka](https://ru.wikipedia.org/wiki/Apache_Kafka) на основе внешнего компонента [Simple Kafka Connector 1C](https://github.com/NuclearAPK/Simple-Kafka_Adapter).
@@ -106,11 +106,11 @@ flowchart LR
 
 ## Лицензия
 
-Проект распространяется под лицензией **MIT + Commons Clause**.
+Проект распространяется под лицензией [Mozilla Public License 2.0 (MPL-2.0)](LICENSE).
 
-**Разрешается:** свободное использование, модификация и внедрение в собственных и коммерческих решениях.
+**Разрешается:** использование, модификация и распространение — в том числе в коммерческих проектах.
 
-**Запрещается:** продажа подсистемы или её производных в качестве самостоятельного продукта.
+**Условие:** изменения в файлах, распространяемых под MPL-2.0, должны быть открыты на тех же условиях.
 
 ## Участие в разработке
 
