@@ -1133,6 +1133,23 @@
       <common>true</common>
     </edit>
   </attributes>
+  <attributes>
+    <name>ЭтоПолноправныйПользователь</name>
+    <title>
+      <key>ru</key>
+      <value>Это полноправный пользователь</value>
+    </title>
+    <id>7</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
   <formCommands>
     <name>ПроверитьПодключение</name>
     <title>
@@ -1169,6 +1186,7 @@
         <name>БлокироватьЧтение</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1186,6 +1204,7 @@
         <name>БлокироватьПубликацию</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <commandInterface>

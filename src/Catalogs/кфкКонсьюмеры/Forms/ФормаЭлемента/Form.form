@@ -1610,6 +1610,7 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1631,6 +1632,7 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1648,6 +1650,7 @@
         <name>БлокироватьЧтение</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1665,6 +1668,7 @@
         <name>БлокироватьДесериализацию</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1682,6 +1686,7 @@
         <name>УстановитьСтандартныеПараметрыКонсьюмера</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <commandInterface>

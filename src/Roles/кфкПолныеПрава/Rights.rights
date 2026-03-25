@@ -250,6 +250,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Subsystem.кфкИнтеграция.Subsystem.кфкНастройки</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.кфкИсходящиеСообщения</name>
 		<right>
 			<name>Read</name>
@@ -384,6 +391,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Subsystem.кфкИнтеграция.Subsystem.кфкОчередьСообщений</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.кфкИспользоватьИнтеграцию</name>
 		<right>
 			<name>Read</name>
@@ -399,6 +413,13 @@
 		</right>
 		<right>
 			<name>Edit</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>CommonForm.кфкФормаВыбораСвойстваLibrdKafka</name>
+		<right>
+			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>

@@ -1588,6 +1588,7 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1609,6 +1610,7 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1626,6 +1628,7 @@
         <name>БлокироватьРегистрацию</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1643,6 +1646,7 @@
         <name>БлокироватьСериализацию</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1660,6 +1664,7 @@
         <name>БлокироватьПубликацию</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1677,6 +1682,7 @@
         <name>УстановитьСтандартныеПараметрыПродюсера</name>
       </handler>
     </action>
+    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <commandInterface>

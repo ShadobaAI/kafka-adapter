@@ -108,6 +108,20 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.кфкИнтеграция.Attribute.Продюсер</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.кфкИнтеграция.Attribute.Консьюмер</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.кфкПараметрыОчисткиХранилища</name>
 		<right>
 			<name>Read</name>
@@ -192,6 +206,13 @@
 		</right>
 		<right>
 			<name>ViewDataHistory</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Subsystem.кфкИнтеграция.Subsystem.кфкНастройки</name>
+		<right>
+			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -314,11 +335,25 @@
 		</right>
 	</object>
 	<object>
+		<name>Subsystem.кфкИнтеграция.Subsystem.кфкОчередьСообщений</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.кфкИспользоватьИнтеграцию</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
 		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>CommonForm.кфкФормаВыбораСвойстваLibrdKafka</name>
 		<right>
 			<name>View</name>
 			<value>true</value>

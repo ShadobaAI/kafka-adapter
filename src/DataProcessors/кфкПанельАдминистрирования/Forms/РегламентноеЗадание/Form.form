@@ -237,7 +237,7 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormGroup">
-    <name>ГруппаРегламентноеЗадание</name>
+    <name>ГруппаПанельРегламентноеЗадание</name>
     <id>31</id>
     <items xsi:type="form:FormGroup">
       <name>КомандыРегламентноеЗадание</name>
@@ -836,7 +836,7 @@
       <common>true</common>
     </userVisible>
     <extendedTooltip>
-      <name>ГруппаРегламентноеЗаданиеРасширеннаяПодсказка</name>
+      <name>ГруппаПанельРегламентноеЗаданиеРасширеннаяПодсказка</name>
       <id>32</id>
       <type>Label</type>
       <autoMaxWidth>true</autoMaxWidth>
