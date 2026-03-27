@@ -271,6 +271,25 @@
     <dataHistory>Use</dataHistory>
     <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
+  <attributes uuid="5ce30598-30ab-4cb8-8e33-07a80a4c3ca5">
+    <name>КоличествоОбработок</name>
+    <synonym>
+      <key>ru</key>
+      <value>Количество обработок</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
   <attributes uuid="d7d9478d-81b5-41b6-aef7-75804ffeda2f">
     <name>МеткаИзмененияМС</name>
     <synonym>

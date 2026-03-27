@@ -549,6 +549,86 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>КоличествоОбработок</name>
+      <id>135</id>
+      <title>
+        <key>ru</key>
+        <value>Кол-во обработок</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.КоличествоОбработок</segments>
+      </dataPath>
+      <extendedTooltip>
+        <name>КоличествоОбработокРасширеннаяПодсказка</name>
+        <id>137</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>КоличествоОбработокКонтекстноеМеню</name>
+        <id>136</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>EnterOnInput</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
+      <name>КоличествоВыгрузок</name>
+      <id>138</id>
+      <title>
+        <key>ru</key>
+        <value>Кол-во выгрузок</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.КоличествоВыгрузок</segments>
+      </dataPath>
+      <extendedTooltip>
+        <name>КоличествоВыгрузокРасширеннаяПодсказка</name>
+        <id>140</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>КоличествоВыгрузокКонтекстноеМеню</name>
+        <id>139</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>EnterOnInput</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>МеткаИзмененияМС</name>
       <id>51</id>
       <visible>true</visible>
@@ -1553,6 +1633,8 @@
 	ИсходящиеСообщения.ДлОбработкиМС КАК ДлОбработкиМС,
 	ИсходящиеСообщения.ДатаВыгрузки КАК ДатаВыгрузки,
 	ИсходящиеСообщения.ТекстЖурнала КАК ТекстЖурнала,
+	ИсходящиеСообщения.КоличествоОбработок КАК КоличествоОбработок,
+	ИсходящиеСообщения.КоличествоВыгрузок КАК КоличествоВыгрузок,
 	ИсходящиеСообщения.МеткаИзмененияМС КАК МеткаИзмененияМС
 ИЗ
 	РегистрСведений.кфкИсходящиеСообщения КАК ИсходящиеСообщения</queryText>
@@ -1623,8 +1705,28 @@
         <field>ТипИсходныхДанных</field>
       </fields>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>РучнаяРегистрация</dataPath>
-        <field>РучнаяРегистрация</field>
+        <dataPath>КоличествоОбработок</dataPath>
+        <field>КоличествоОбработок</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КоличествоВыгрузок</dataPath>
+        <field>КоличествоВыгрузок</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>СобытиеРегистрации</dataPath>
+        <field>СобытиеРегистрации</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>ИсходныеДанные</dataPath>
+        <field>ИсходныеДанные</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>Заголовки</dataPath>
+        <field>Заголовки</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>ТелоСообщения</dataPath>
+        <field>ТелоСообщения</field>
       </fields>
     </extInfo>
   </attributes>

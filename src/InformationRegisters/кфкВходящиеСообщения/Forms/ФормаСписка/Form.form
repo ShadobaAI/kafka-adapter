@@ -487,6 +487,46 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>КоличествоОбработок</name>
+      <id>178</id>
+      <title>
+        <key>ru</key>
+        <value>Кол-во обработок</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.КоличествоОбработок</segments>
+      </dataPath>
+      <extendedTooltip>
+        <name>КоличествоОбработокРасширеннаяПодсказка</name>
+        <id>180</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>КоличествоОбработокКонтекстноеМеню</name>
+        <id>179</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>EnterOnInput</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>МеткаИзмененияМС</name>
       <id>68</id>
       <visible>true</visible>
@@ -1490,6 +1530,7 @@
 	кфкВходящиеСообщения.ДатаОбработки КАК ДатаОбработки,
 	кфкВходящиеСообщения.ДлОбработкиМС КАК ДлОбработкиМС,
 	кфкВходящиеСообщения.ТекстЖурнала КАК ТекстЖурнала,
+	кфкВходящиеСообщения.КоличествоОбработок КАК КоличествоОбработок,
 	кфкВходящиеСообщения.МеткаИзмененияМС КАК МеткаИзмененияМС
 ИЗ
 	РегистрСведений.кфкВходящиеСообщения КАК кфкВходящиеСообщения</queryText>
@@ -1554,6 +1595,10 @@
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
         <dataPath>МеткаИзмененияМС</dataPath>
         <field>МеткаИзмененияМС</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КоличествоОбработок</dataPath>
+        <field>КоличествоОбработок</field>
       </fields>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
         <dataPath>Заголовки</dataPath>
