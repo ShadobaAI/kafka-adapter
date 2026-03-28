@@ -631,6 +631,10 @@
     <items xsi:type="form:FormField">
       <name>МеткаИзменения</name>
       <id>141</id>
+      <title>
+        <key>ru</key>
+        <value>Метка изменения</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
