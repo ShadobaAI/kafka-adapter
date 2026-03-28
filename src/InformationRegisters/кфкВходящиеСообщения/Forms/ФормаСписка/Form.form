@@ -527,6 +527,42 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>МеткаИзменения</name>
+      <id>181</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.МеткаИзменения</segments>
+      </dataPath>
+      <extendedTooltip>
+        <name>МеткаИзмененияРасширеннаяПодсказка</name>
+        <id>183</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>МеткаИзмененияКонтекстноеМеню</name>
+        <id>182</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>EnterOnInput</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>МеткаИзмененияМС</name>
       <id>68</id>
       <visible>true</visible>
@@ -1608,6 +1644,22 @@
         <dataPath>ТелоСообщения</dataPath>
         <field>ТелоСообщения</field>
       </fields>
+      <calculatedFields>
+        <dataPath>МеткаИзменения</dataPath>
+        <expression>ВЫБОР КОГДА МеткаИзмененияМС > 0 ТОГДА ДобавитьКДате(ДАТАВРЕМЯ(1, 1, 1), &quot;СЕКУНДА&quot;,  МеткаИзмененияМС / 1000 + СмещениеСтандартногоВремени(ЧасовойПоясСеанса())) ИНАЧЕ ДАТАВРЕМЯ(1, 1, 1) КОНЕЦ</expression>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Метка изменения</value>
+            </content>
+          </localValue>
+        </title>
+        <valueType>
+          <types>Date</types>
+          <dateQualifiers/>
+        </valueType>
+      </calculatedFields>
     </extInfo>
   </attributes>
   <attributes>
