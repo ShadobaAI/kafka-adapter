@@ -210,6 +210,10 @@
       <dataPath xsi:type="form:DataPath">
         <segments>Объект.Брокер</segments>
       </dataPath>
+      <handlers>
+        <event>OnChange</event>
+        <name>БрокерПриИзменении</name>
+      </handlers>
       <extendedTooltip>
         <name>БрокерРасширеннаяПодсказка</name>
         <id>95</id>
@@ -443,9 +447,14 @@
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
           <extInfo xsi:type="form:InputFieldExtInfo">
+            <handlers>
+              <event>AutoComplete</event>
+              <name>ОбъектыМетаданныхИмяТопикаАвтоПодбор</name>
+            </handlers>
             <maxWidth>15</maxWidth>
             <autoMaxHeight>true</autoMaxHeight>
             <wrap>true</wrap>
+            <dropListButton>true</dropListButton>
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
@@ -596,10 +605,14 @@
               <headerHorizontalAlign>Left</headerHorizontalAlign>
               <showInFooter>true</showInFooter>
               <extInfo xsi:type="form:InputFieldExtInfo">
+                <handlers>
+                  <event>AutoComplete</event>
+                  <name>ОбъектыМетаданныхФорматСериализацииАвтоПодбор</name>
+                </handlers>
                 <maxWidth>20</maxWidth>
                 <autoMaxHeight>true</autoMaxHeight>
                 <wrap>true</wrap>
-                <listChoiceMode>true</listChoiceMode>
+                <dropListButton>true</dropListButton>
                 <autoMarkIncomplete>true</autoMarkIncomplete>
                 <chooseType>true</chooseType>
                 <typeDomainEnabled>true</typeDomainEnabled>
@@ -646,10 +659,14 @@
               <headerHorizontalAlign>Left</headerHorizontalAlign>
               <showInFooter>true</showInFooter>
               <extInfo xsi:type="form:InputFieldExtInfo">
+                <handlers>
+                  <event>AutoComplete</event>
+                  <name>ОбъектыМетаданныхИмяМодуляСериализацииАвтоПодбор</name>
+                </handlers>
                 <maxWidth>20</maxWidth>
                 <autoMaxHeight>true</autoMaxHeight>
                 <wrap>true</wrap>
-                <listChoiceMode>true</listChoiceMode>
+                <dropListButton>true</dropListButton>
                 <autoMarkIncomplete>true</autoMarkIncomplete>
                 <chooseType>true</chooseType>
                 <typeDomainEnabled>true</typeDomainEnabled>
@@ -692,6 +709,10 @@
               <headerHorizontalAlign>Left</headerHorizontalAlign>
               <showInFooter>true</showInFooter>
               <extInfo xsi:type="form:InputFieldExtInfo">
+                <handlers>
+                  <event>AutoComplete</event>
+                  <name>ОбъектыМетаданныхИмяПОДСериализацииАвтоПодбор</name>
+                </handlers>
                 <maxWidth>20</maxWidth>
                 <autoMaxHeight>true</autoMaxHeight>
                 <wrap>true</wrap>
@@ -1588,7 +1609,6 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
-    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
@@ -1610,7 +1630,6 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
-    <modifiesStoredData>true</modifiesStoredData>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <formCommands>
