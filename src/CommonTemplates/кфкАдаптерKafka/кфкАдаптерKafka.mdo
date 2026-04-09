@@ -5,6 +5,6 @@
     <key>ru</key>
     <value>Адаптер Kafka</value>
   </synonym>
-  <comment>https://github.com/NuclearAPK/Simple-Kafka_Adapter/releases/tag/v1.8.1</comment>
+  <comment>https://github.com/NuclearAPK/Simple-Kafka_Adapter/releases/tag/v1.8.5</comment>
   <templateType>BinaryData</templateType>
 </mdclass:CommonTemplate>
