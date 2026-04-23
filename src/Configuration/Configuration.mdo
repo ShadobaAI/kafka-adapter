@@ -68,6 +68,7 @@
   <commonModules>CommonModule.кфкОбщегоНазначенияСлужебный</commonModules>
   <commonModules>CommonModule.кфкФоновыеОперацииСлужебный</commonModules>
   <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияНабораПриЗаписи</eventSubscriptions>
+  <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияНабораРасчетаПриЗаписи</eventSubscriptions>
   <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияПередУдалением</eventSubscriptions>
   <eventSubscriptions>EventSubscription.кфкЗарегистрироватьИзмененияПриЗаписи</eventSubscriptions>
   <scheduledJobs>ScheduledJob.кфкЗапускИнтеграции</scheduledJobs>

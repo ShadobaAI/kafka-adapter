@@ -22,18 +22,22 @@
       <id>3</id>
       <title>
         <key>ru</key>
-        <value>&lt;fontsize 8>&lt;color #006400>Экспортируемая серверная функция, формирующая тело сообщения для отправки в Kafka.&lt;/>&lt;/>
+<value>&lt;fontsize 8>&lt;color #006400>Экспортируемая серверная функция, формирующая тело сообщения для отправки в Kafka.&lt;/>&lt;/>
 
 &lt;fontsize 8>&lt;color #006400> !!! ВНИМАНИЕ !!!&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400> Если при регистрации регистра набор записей пуст, то:&lt;/>&lt;/>
-&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* флаг ЭтоУдаление будет установлен в значение ДА;&lt;/>&lt;/>
-&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* параметр Объект будет содержать значения полей, указанных в отборе.&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* флаг ЭтоУдаление будет установлен в значение ДА;&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* параметр Объект будет содержать значения полей, указанных в отборе.&lt;/>&lt;/>
 
 &lt;fontsize 8>&lt;color #006400>Параметры:&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;b>&lt;color #006400>Объект&lt;/>&lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400> - СправочникОбъект, ДокументОбъект - Объект ссылочного типа. Передаётся, если регистрация по записи объекта или объект был передан в кфкИнтеграция.ПоместитьВОчередьИсходящих.&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>- ЛюбаяСсылка - Ссылка на объект, переданная в кфкИнтеграция.ПоместитьВОчередьИсходящих&lt;/>&lt;/>
-&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>- Структура - запись регистра сведений, где ключи соответствуют полям регистра, включая 'ДополнительныеСвойства' набора записей.&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>- Структура, Соответствие Из Произвольный - произвольное сообщение.&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>- Структура - запись регистра сведений, где ключи соответствуют полям регистра, включая 'ДополнительныеСвойства' набора записей.&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>- Структура - строка табличной части, где ключи соответствуют колонкам табличной части.&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>- Структура - описание движений регистра:&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* Регистратор - ДокументСсылка - Регистратор движений;&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* ДополнительныеСвойства - Структура - Дополнительные свойства набора записей регистра.&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;b>&lt;color #006400>Свойства&lt;/>&lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400> - Структура - Дополнительные свойства сообщения:&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* Продюсер - СправочникСсылка.кфкПродюсеры - Продюсер сообщения;&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* ТипОбъект - Строка - Тип объекта, к которому относится сообщение;&lt;/>&lt;/>
@@ -49,7 +53,7 @@
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;b>&lt;color #006400>Отказ&lt;/>&lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400> - Булево - Признак отмены формирования и отправки сообщения.&lt;/>&lt;/>
 
 &lt;fontsize 8>&lt;color #006400>Возвращаемое значение:&lt;/>&lt;/>
-&lt;fontsize 8>&lt;color #006400>  Неопределено, Структура - Описание сообщения, кфкИнтеграция.ПараметрыСообщения():&lt;/>&lt;/>
+&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>Неопределено, Структура - Описание сообщения, кфкИнтеграция.ПараметрыСообщения():&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* &lt;/>&lt;/>&lt;fontsize 8>&lt;b>&lt;color #006400>&lt;u>Данные&lt;/>&lt;/>&lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400> - Строка, ДвоичныеДанные, Структура - Тело сообщения&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* &lt;/>&lt;/>&lt;fontsize 8>&lt;b>&lt;color #006400>&lt;u>Ключ&lt;/>&lt;/>&lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400> - Строка - Уникальный идентификатор сообщения&lt;/>&lt;/>
 &lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>  &lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400>* &lt;/>&lt;/>&lt;fontsize 8>&lt;b>&lt;color #006400>&lt;u>Заголовки&lt;/>&lt;/>&lt;/>&lt;/>&lt;fontsize 8>&lt;color #006400> - Соответствие Из Строка - Заголовки сообщения&lt;/>&lt;/></value>

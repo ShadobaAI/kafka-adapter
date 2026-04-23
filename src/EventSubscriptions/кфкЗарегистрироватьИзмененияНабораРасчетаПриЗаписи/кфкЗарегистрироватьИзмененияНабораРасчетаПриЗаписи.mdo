@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:EventSubscription xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bf9b63e9-7e0b-4a8f-96cd-fd62a1179608">
+  <name>кфкЗарегистрироватьИзмененияНабораРасчетаПриЗаписи</name>
+  <synonym>
+    <key>ru</key>
+    <value>Зарегистрировать изменения набора расчета при записи (Kafka)</value>
+  </synonym>
+  <source>
+    <types>CalculationRegisterRecordSet</types>
+  </source>
+  <event>BeforeWrite</event>
+  <handler>CommonModule.кфкОбработкаСобытийСлужебный.ЗарегистрироватьИзмененияНабораРасчетаПриЗаписиПередЗаписью</handler>
+</mdclass:EventSubscription>
