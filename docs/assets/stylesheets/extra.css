@@ -1,0 +1,136 @@
+:root {
+  --md-primary-fg-color:        #3f51b5;
+  --md-primary-fg-color--light: #757de8;
+  --md-primary-fg-color--dark:  #002984;
+}
+
+/* -------------------------------------------------------------------- */
+/* Mermaid — крупные, читаемые, скроллируемые диаграммы                 */
+/* -------------------------------------------------------------------- */
+.md-typeset .mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.5em 0;
+  overflow-x: auto;
+  padding: 1em;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  cursor: zoom-in;
+  transition: box-shadow 0.2s;
+}
+
+.md-typeset .mermaid:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.md-typeset .mermaid svg {
+  max-width: none !important;
+  height: auto !important;
+  min-width: 600px;
+}
+
+/* Полноэкранный режим диаграммы */
+.md-typeset .mermaid.mermaid-zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: var(--md-default-bg-color);
+  margin: 0;
+  padding: 2rem;
+  cursor: zoom-out;
+  overflow: auto;
+}
+
+.md-typeset .mermaid.mermaid-zoomed svg {
+  min-width: auto;
+  max-width: 100% !important;
+  max-height: 95vh !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* -------------------------------------------------------------------- */
+/* Скриншоты                                                            */
+/* -------------------------------------------------------------------- */
+.md-typeset img {
+  border-radius: 0.2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  cursor: zoom-in;
+}
+
+.md-typeset figure {
+  margin: 1.5em auto;
+  text-align: center;
+}
+
+.md-typeset figcaption {
+  font-size: 0.85em;
+  color: var(--md-default-fg-color--light);
+  margin-top: 0.5em;
+}
+
+/* -------------------------------------------------------------------- */
+/* Таблицы                                                              */
+/* -------------------------------------------------------------------- */
+.md-typeset table:not([class]) {
+  font-size: 0.78rem;
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+}
+
+/* -------------------------------------------------------------------- */
+/* Admonitions (вкл. свёрнутые)                                         */
+/* -------------------------------------------------------------------- */
+.md-typeset details {
+  font-size: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.md-typeset details > summary {
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------- */
+/* Карточки на главной странице                                         */
+/* -------------------------------------------------------------------- */
+.grid.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1em 0;
+}
+
+.grid.cards > * {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  padding: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.grid.cards > *:hover {
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.grid.cards > * > :first-child {
+  margin-top: 0;
+}
+
+.grid.cards > * > :last-child {
+  margin-bottom: 0;
+}
+
+/* -------------------------------------------------------------------- */
+/* Tabs — более заметное активное состояние                             */
+/* -------------------------------------------------------------------- */
+.md-tabs__link--active {
+  font-weight: 700;
+}

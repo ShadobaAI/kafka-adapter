@@ -1,12 +1,16 @@
-site_name: 1С. Адаптер Kafka
+site_name: '1С: Адаптер Kafka'
+site_description: Встраиваемая подсистема 1С:Предприятие для интеграции с Apache Kafka
 site_url: https://shadobaai.github.io/kafka-adapter/
 repo_url: https://github.com/ShadobaAI/kafka-adapter
 repo_name: ShadobaAI/kafka-adapter
 docs_dir: docs
+edit_uri: edit/main/docs/
 
 theme:
   name: material
   language: ru
+  logo: assets/images/logo.svg
+  favicon: assets/images/logo.svg
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -24,24 +28,63 @@ theme:
         name: Светлая тема
   features:
     - navigation.instant
+    - navigation.instant.progress
     - navigation.tracking
-    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.indexes
+    - navigation.prune
     - navigation.top
+    - navigation.footer
     - toc.follow
     - search.highlight
     - search.suggest
+    - search.share
     - content.code.copy
     - content.code.annotate
     - content.tabs.link
+    - content.tooltips
+    - content.action.edit
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+extra_javascript:
+  - assets/javascripts/mermaid-config.js
 
 plugins:
   - search:
       lang: ru
+      separator: '[\s\-\.\_]+'
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: fade
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      auto_caption: false
+      caption_position: bottom
 
 markdown_extensions:
   - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
   - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      permalink_title: Постоянная ссылка
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
   - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
@@ -50,20 +93,91 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
-  - tables
-  - toc:
-      permalink: true
-  - attr_list
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ShadobaAI/kafka-adapter
+      name: GitHub
+  generator: false
 
 nav:
   - Главная: index.md
-  - Начало работы:
-    - Архитектура: architecture.md
-    - Установка и подключение: setup.md
-    - Настройка подсистемы: configuration.md
-  - Разработка:
-    - Руководство пользователя: usage.md
-    - Примеры: examples.md
-    - Руководство разработчика: development.md
-  - Эксплуатация: operations.md
+  - Обзор:
+    - overview/index.md
+    - О проекте: overview/about.md
+    - Архитектура: overview/architecture.md
+    - Потоки данных: overview/data-flow.md
+    - Принципы и ограничения: overview/principles.md
+  - Пользователю:
+    - user/index.md
+    - Установка и подключение:
+      - user/installation/index.md
+      - Требования: user/installation/requirements.md
+      - Как расширение конфигурации: user/installation/extension.md
+      - В основную конфигурацию: user/installation/main-config.md
+      - Настройка в EDT: user/installation/edt-setup.md
+    - Настройка подсистемы:
+      - user/configuration/index.md
+      - Брокеры: user/configuration/brokers.md
+      - Продюсеры: user/configuration/producers.md
+      - Консьюмеры: user/configuration/consumers.md
+      - Фоновые и регламентные задания: user/configuration/jobs.md
+      - Алерты и контроль: user/configuration/alerts.md
+      - Логирование: user/configuration/logging.md
+    - Разработка с адаптером:
+      - user/development/index.md
+      - Программный API: user/development/api.md
+      - Обработчик продюсера: user/development/producer-handler.md
+      - Обработчик консьюмера: user/development/consumer-handler.md
+      - Прямой API: user/development/direct-api.md
+      - Конвертация данных 3.1: user/development/conversion-data.md
+    - Примеры:
+      - user/examples/index.md
+      - Исходящие — справочник: user/examples/outgoing-catalog.md
+      - Исходящие — документ с табчастью: user/examples/outgoing-document.md
+      - Исходящие — независимый регистр: user/examples/outgoing-register.md
+      - Исходящие — регистр по регистратору: user/examples/outgoing-recorder.md
+      - Подавление регистрации: user/examples/suppress.md
+      - Входящие — upsert справочника: user/examples/incoming-catalog.md
+      - Входящие — регистр сведений: user/examples/incoming-register.md
+      - Входящие — отмена обработки: user/examples/incoming-cancel.md
+      - Принудительная регистрация: user/examples/force-registration.md
+      - Произвольные события: user/examples/custom-events.md
+      - Защищённое подключение: user/examples/secure-connection.md
+      - Прямой API: user/examples/direct-api.md
+    - Эксплуатация:
+      - user/operations/index.md
+      - Мониторинг очередей: user/operations/monitoring.md
+      - Статусы сообщений: user/operations/statuses.md
+      - Диагностика: user/operations/diagnostics.md
+      - Типовые проблемы: user/operations/troubleshooting.md
+  - Разработка проекта:
+    - project/index.md
+    - Окружение: project/environment.md
+    - Репозитории: project/repositories.md
+    - Форматы поставки: project/delivery-formats.md
+    - Архитектура модулей: project/modules.md
+    - Объекты метаданных: project/metadata.md
+    - Управляющие константы: project/constants.md
+    - Расширение адаптера: project/extending.md
+    - Генерация XSD из AsyncAPI: project/xsd-generation.md
   - Глоссарий: glossary.md

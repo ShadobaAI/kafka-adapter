@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="1С: Адаптер Kafka">
+  <title>1С: Адаптер Kafka</title>
+  <rect width="64" height="64" rx="14" fill="#3f51b5"/>
+  <g fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 18 14 L 18 50"/>
+    <path d="M 18 32 L 40 14"/>
+    <path d="M 18 32 L 40 50"/>
+  </g>
+  <g fill="#ffc107">
+    <circle cx="50" cy="20" r="3.5"/>
+    <circle cx="50" cy="32" r="3.5"/>
+    <circle cx="50" cy="44" r="3.5"/>
+  </g>
+</svg>
