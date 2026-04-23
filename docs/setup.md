@@ -89,4 +89,4 @@
 
 ---
 
-**Документация:** [README](../README.md) · [Архитектура](architecture.md) · [Установка и подключение](setup.md) · [Настройка подсистемы](configuration.md) · [Руководство пользователя](usage.md) · [Эксплуатация](operations.md) · [Руководство разработчика](development.md) · [Глоссарий](glossary.md)
+**Документация:** [Главная](index.md) · [Архитектура](architecture.md) · [Установка и подключение](setup.md) · [Настройка подсистемы](configuration.md) · [Руководство пользователя](usage.md) · [Примеры](examples.md) · [Эксплуатация](operations.md) · [Руководство разработчика](development.md) · [Глоссарий](glossary.md)

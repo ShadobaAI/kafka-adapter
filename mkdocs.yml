@@ -1,0 +1,68 @@
+site_name: 1С: Адаптер Kafka
+site_url: https://shadobaai.github.io/kafka-adapter/
+repo_url: https://github.com/ShadobaAI/kafka-adapter
+repo_name: ShadobaAI/kafka-adapter
+docs_dir: docs
+
+theme:
+  name: material
+  language: ru
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Тёмная тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Светлая тема
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+plugins:
+  - search:
+      lang: ru
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+  - attr_list
+
+nav:
+  - Главная: index.md
+  - Начало работы:
+    - Архитектура: architecture.md
+    - Установка и подключение: setup.md
+    - Настройка подсистемы: configuration.md
+  - Разработка:
+    - Руководство пользователя: usage.md
+    - Примеры: examples.md
+    - Руководство разработчика: development.md
+  - Эксплуатация: operations.md
+  - Глоссарий: glossary.md
