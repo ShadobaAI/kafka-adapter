@@ -68,6 +68,7 @@
   <content>CommonModule.кфкОбменДаннымиXDTOСервер</content>
   <content>CommonModule.кфкИнтеграцияКлиент</content>
   <content>CommonModule.кфкИнтеграцияСлужебныйВызовСервера</content>
+  <content>EventSubscription.кфкЗарегистрироватьИзмененияНабораРасчетаПриЗаписи</content>
   <subsystems>кфкНастройки</subsystems>
   <subsystems>кфкОчередьСообщений</subsystems>
 </mdclass:Subsystem>
