@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ef0ecdd3-0fe1-486c-ae59-39444984a7f4">
+  <name>кфкСериализацияПриостановлена</name>
+  <synonym>
+    <key>ru</key>
+    <value>Сериализация приостановлена</value>
+  </synonym>
+</mdclass:CommonPicture>

@@ -1449,7 +1449,7 @@
       <common>true</common>
     </use>
     <picture xsi:type="core:PictureRef">
-      <picture>CommonPicture.кфкРазблокироватьПотоки16х16</picture>
+      <picture>CommonPicture.кфкРазблокироватьПотоки16</picture>
     </picture>
     <action xsi:type="form:FormCommandHandlerContainer">
       <handler>

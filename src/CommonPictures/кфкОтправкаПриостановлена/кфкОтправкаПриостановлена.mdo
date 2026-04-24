@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ef426733-706a-4574-ae95-c821e523f603">
+  <name>кфкОтправкаПриостановлена</name>
+  <synonym>
+    <key>ru</key>
+    <value>Отправка приостановлена</value>
+  </synonym>
+</mdclass:CommonPicture>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="19f7d3be-eebd-4452-b537-44ffb874e1a4">
+  <name>кфкРегистрацияПриостановлена</name>
+  <synonym>
+    <key>ru</key>
+    <value>Регистрация приостановлена</value>
+  </synonym>
+</mdclass:CommonPicture>

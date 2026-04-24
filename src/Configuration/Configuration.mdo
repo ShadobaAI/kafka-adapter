@@ -45,13 +45,18 @@
     <languageCode>ru</languageCode>
   </languages>
   <subsystems>Subsystem.кфкИнтеграция</subsystems>
+  <commonPictures>CommonPicture.кфкДесериализацияПриостановлена</commonPictures>
   <commonPictures>CommonPicture.кфкЗаблокироватьПотоки16</commonPictures>
   <commonPictures>CommonPicture.кфкЗапуск16</commonPictures>
+  <commonPictures>CommonPicture.кфкОтправкаПриостановлена</commonPictures>
   <commonPictures>CommonPicture.кфкПауза16</commonPictures>
   <commonPictures>CommonPicture.кфкПотоковыйРежим16</commonPictures>
-  <commonPictures>CommonPicture.кфкРазблокироватьПотоки16х16</commonPictures>
+  <commonPictures>CommonPicture.кфкРазблокироватьПотоки16</commonPictures>
   <commonPictures>CommonPicture.кфкРазделИнтеграция16</commonPictures>
+  <commonPictures>CommonPicture.кфкРегистрацияПриостановлена</commonPictures>
   <commonPictures>CommonPicture.кфкРегламентноеЗадание16</commonPictures>
+  <commonPictures>CommonPicture.кфкСериализацияПриостановлена</commonPictures>
+  <commonPictures>CommonPicture.кфкЧтениеПриостановлено</commonPictures>
   <roles>Role.кфкБазовыеПрава</roles>
   <roles>Role.кфкПолныеПрава</roles>
   <commonTemplates>CommonTemplate.кфкАдаптерKafka</commonTemplates>

@@ -39,7 +39,7 @@
   <content>CommonPicture.кфкПотоковыйРежим16</content>
   <content>CommonPicture.кфкРегламентноеЗадание16</content>
   <content>CommonPicture.кфкЗаблокироватьПотоки16</content>
-  <content>CommonPicture.кфкРазблокироватьПотоки16х16</content>
+  <content>CommonPicture.кфкРазблокироватьПотоки16</content>
   <content>Constant.кфкКаталогЛогированияКомпоненты</content>
   <content>Constant.кфкФорматИмениФайловЛогированияКомпоненты</content>
   <content>InformationRegister.кфкПараметрыОчисткиХранилища</content>
@@ -69,6 +69,11 @@
   <content>CommonModule.кфкИнтеграцияКлиент</content>
   <content>CommonModule.кфкИнтеграцияСлужебныйВызовСервера</content>
   <content>EventSubscription.кфкЗарегистрироватьИзмененияНабораРасчетаПриЗаписи</content>
+  <content>CommonPicture.кфкЧтениеПриостановлено</content>
+  <content>CommonPicture.кфкОтправкаПриостановлена</content>
+  <content>CommonPicture.кфкДесериализацияПриостановлена</content>
+  <content>CommonPicture.кфкРегистрацияПриостановлена</content>
+  <content>CommonPicture.кфкСериализацияПриостановлена</content>
   <subsystems>кфкНастройки</subsystems>
   <subsystems>кфкОчередьСообщений</subsystems>
 </mdclass:Subsystem>
