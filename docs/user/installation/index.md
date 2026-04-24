@@ -22,7 +22,7 @@
 
     Для глубоко кастомизированных решений, где адаптер — неотъемлемая часть.
 
--   :material-application-cog:{ .lg } **[Настройка в EDT](edt-setup.md)**
+-   :material-application-cog:{ .lg } **[Адаптация подсистемы](adaptation.md)**
 
     ---
 

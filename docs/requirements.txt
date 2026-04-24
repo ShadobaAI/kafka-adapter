@@ -1,0 +1,7 @@
+mkdocs-material
+mkdocs-glightbox
+mkdocs-awesome-pages-plugin
+mkdocs-section-index
+mkdocs-git-revision-date-localized-plugin
+mkdocs-redirects
+mkdocs-minify-plugin

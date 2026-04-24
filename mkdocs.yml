@@ -5,6 +5,7 @@ repo_url: https://github.com/ShadobaAI/kafka-adapter
 repo_name: ShadobaAI/kafka-adapter
 docs_dir: docs
 edit_uri: edit/main/docs/
+strict: true
 
 theme:
   name: material
@@ -59,6 +60,8 @@ plugins:
   - search:
       lang: ru
       separator: '[\s\-\.\_]+'
+  - awesome-pages
+  - section-index
   - glightbox:
       touchNavigation: true
       loop: false
@@ -70,6 +73,20 @@ plugins:
       draggable: true
       auto_caption: false
       caption_position: bottom
+  - git-revision-date-localized:
+      locale: ru
+      type: date
+      enable_creation_date: false
+      fallback_to_build_date: true
+  - redirects:
+      redirect_maps:
+        'user/installation/edt-setup.md': 'user/installation/adaptation.md'
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
 
 markdown_extensions:
   - admonition
@@ -108,6 +125,9 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.tilde
   - pymdownx.smartsymbols
+  - pymdownx.saneheaders
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -134,7 +154,7 @@ nav:
       - Требования: user/installation/requirements.md
       - Как расширение конфигурации: user/installation/extension.md
       - В основную конфигурацию: user/installation/main-config.md
-      - Настройка в EDT: user/installation/edt-setup.md
+      - Адаптация подсистемы: user/installation/adaptation.md
     - Настройка подсистемы:
       - user/configuration/index.md
       - Брокеры: user/configuration/brokers.md
@@ -154,6 +174,7 @@ nav:
       - user/examples/index.md
       - Исходящие — справочник: user/examples/outgoing-catalog.md
       - Исходящие — документ с табчастью: user/examples/outgoing-document.md
+      - Исходящие — строки отдельными сообщениями: user/examples/outgoing-split-rows.md
       - Исходящие — независимый регистр: user/examples/outgoing-register.md
       - Исходящие — регистр по регистратору: user/examples/outgoing-recorder.md
       - Подавление регистрации: user/examples/suppress.md
@@ -170,6 +191,7 @@ nav:
       - Статусы сообщений: user/operations/statuses.md
       - Диагностика: user/operations/diagnostics.md
       - Типовые проблемы: user/operations/troubleshooting.md
+      - Производительность: user/operations/performance.md
   - Разработка проекта:
     - project/index.md
     - Окружение: project/environment.md
