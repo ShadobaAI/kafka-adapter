@@ -7,9 +7,9 @@ hide:
 # 1С: Адаптер Kafka
 
 [![OpenYellow](https://openyellow.openintegrations.dev/data/badges/1183456860.svg)](https://openyellow.org/grid?filter=top&repo=1183456860)
-![Платформа](https://img.shields.io/badge/%D0%9F%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0-8.3.21+-blue)
-![Лицензия](https://img.shields.io/badge/%D0%9B%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F-MPL--2.0-brightgreen)
-![БСП](https://img.shields.io/badge/%D0%91%D0%A1%D0%9F-3.1.10+-blue)
+![Платформа](https://badgen.net/badge/Платформа/8.3.21+/blue)
+![Лицензия](https://badgen.net/badge/Лицензия/MPL-2.0/green)
+![БСП](https://badgen.net/badge/БСП/3.1.10+/blue)
 
 **Встраиваемая подсистема для организации двустороннего событийного обмена сообщениями между 1С:Предприятие и [Apache Kafka](https://ru.wikipedia.org/wiki/Apache_Kafka).** Построена на базе внешнего компонента [Simple Kafka Connector 1C](https://github.com/NuclearAPK/Simple-Kafka_Adapter).
 
