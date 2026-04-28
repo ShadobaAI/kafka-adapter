@@ -8,6 +8,6 @@
   <source>
     <types>CalculationRegisterRecordSet</types>
   </source>
-  <event>BeforeWrite</event>
+  <event>OnWrite</event>
   <handler>CommonModule.кфкОбработкаСобытийСлужебный.ЗарегистрироватьИзмененияНабораРасчетаПриЗаписиПередЗаписью</handler>
 </mdclass:EventSubscription>

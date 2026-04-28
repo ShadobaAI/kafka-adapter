@@ -10,6 +10,6 @@
     <types>AccountingRegisterRecordSet</types>
     <types>AccumulationRegisterRecordSet</types>
   </source>
-  <event>BeforeWrite</event>
+  <event>OnWrite</event>
   <handler>CommonModule.кфкОбработкаСобытийСлужебный.ЗарегистрироватьИзмененияНабораПриЗаписи</handler>
 </mdclass:EventSubscription>
