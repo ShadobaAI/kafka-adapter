@@ -7,6 +7,7 @@
 | [**Адаптер Kafka**](https://github.com/ShadobaAI/kafka-adapter) | Исходный код подсистемы (этот репозиторий) |
 | [**Базовый проект**](https://github.com/ShadobaAI/kafka-adapter-base) | Конфигурация базы данных — базовая конфигурация для разработки |
 | [**Тестер**](https://github.com/ShadobaAI/kafka-adapter-tester) | Тестовое расширение: примеры использования API и отладка интеграции |
+| [**YAxUnit-тесты**](https://github.com/ShadobaAI/kafka-adapter-yaxunit) | Unit-тесты адаптера на базе YAxUnit |
 | [**Набор скриптов**](https://github.com/ShadobaAI/kafka-tools) | Скрипты для развёртывания среды разработки |
 | [**Расширение КД**](https://github.com/ShadobaAI/kafka-adapter-conv) | Расширение для КД 3.1.6+, адаптирующее типовую конвертацию данных под произвольный XDTO |
 
@@ -17,11 +18,13 @@ flowchart LR
     ADAPTER["Адаптер Kafka<br/>(подсистема)"]
     BASE["Базовый проект<br/>(инфобаза для разработки)"]
     TESTER["Тестер<br/>(расширение с примерами)"]
+    YAXUNIT["YAxUnit-тесты<br/>(unit-тесты адаптера)"]
     TOOLS["Набор скриптов<br/>(dev-окружение)"]
     CONV["Расширение КД<br/>(КД 3.1 + XDTO)"]
 
     BASE -.подключает.-> ADAPTER
     TESTER -.расширяет.-> BASE
+    YAXUNIT -.тестирует.-> ADAPTER
     TOOLS -.поднимает.-> ADAPTER
     CONV -.дополняет.-> ADAPTER
 ```
