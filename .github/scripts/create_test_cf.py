@@ -20,7 +20,7 @@ USER_DEFINED_TYPE_VALUE = "CatalogRef.Пользователи"
 # Update module and procedure names.
 UPDATE_DB_MODULE_NAME = "ОбновлениеИнформационнойБазыKafka"
 UPDATE_HANDLERS_PROCEDURE = "ПриДобавленииОбработчиковОбновления"
-TESTER_UPDATE_HANDLERS_PROCEDURE = f"кфк_т_{UPDATE_HANDLERS_PROCEDURE}"
+EXAMPLES_UPDATE_HANDLERS_PROCEDURE = f"кфк_т_{UPDATE_HANDLERS_PROCEDURE}"
 UPDATE_DB_MODULE_PATH = Path("CommonModules") / UPDATE_DB_MODULE_NAME / "Ext" / "Module.bsl"
 UPDATE_DB_MODULE_ARCHIVE_ENTRY = f"CommonModules/{UPDATE_DB_MODULE_NAME}/Ext/Module.bsl"
 APPLICATION_MODULE_ARCHIVE_ENTRIES = (
@@ -69,7 +69,7 @@ class ArchiveExclusions:
 class BuildOptions:
     base_archive: Path
     adapter_archive: Path
-    tester_archive: Path
+    examples_archive: Path
     yaxunit_archive: Path | None
     output_dir: Path
 
@@ -86,8 +86,8 @@ class BuildStats:
     base_files: int
     adapter_files: int
     adapter_child_objects: int
-    tester_files: int
-    tester_child_objects: int
+    examples_files: int
+    examples_child_objects: int
     yaxunit_files: int
     yaxunit_child_objects: int
     yaxunit_application_modules: ApplicationModuleMergeStats
@@ -110,7 +110,7 @@ CONFIGURATION_EXCLUSIONS = ArchiveExclusions(
     ),
 )
 
-TESTER_EXCLUSIONS = ArchiveExclusions(
+EXAMPLES_EXCLUSIONS = ArchiveExclusions(
     roots=CONFIGURATION_EXCLUSIONS.roots
     | frozenset(
         {
@@ -130,7 +130,7 @@ TESTER_EXCLUSIONS = ArchiveExclusions(
     ),
 )
 
-TESTER_EXCLUDED_CHILD_OBJECTS: frozenset[ChildObjectKey] = frozenset(
+EXAMPLES_EXCLUDED_CHILD_OBJECTS: frozenset[ChildObjectKey] = frozenset(
     {
         ("CommonModule", UPDATE_DB_MODULE_NAME),
     }
@@ -154,7 +154,7 @@ def validate_options(args: argparse.Namespace) -> BuildOptions:
     for argument_name, description in (
         ("base_archive", "Архив XML базы"),
         ("adapter_archive", "Архив XML адаптера"),
-        ("tester_archive", "Архив XML тестера"),
+        ("examples_archive", "Архив XML примеров"),
         ("output_dir", "Каталог выгрузки XML"),
     ):
         if getattr(args, argument_name) is None:
@@ -167,7 +167,7 @@ def validate_options(args: argparse.Namespace) -> BuildOptions:
     return BuildOptions(
         base_archive=validate_file(args.base_archive, "База"),
         adapter_archive=validate_file(args.adapter_archive, "Адаптер"),
-        tester_archive=validate_file(args.tester_archive, "Тестер"),
+        examples_archive=validate_file(args.examples_archive, "Примеры"),
         yaxunit_archive=yaxunit_archive,
         output_dir=args.output_dir,
     )
@@ -253,8 +253,8 @@ def merge_adapter_archive(archive_path: Path, output_dir: Path) -> int:
     return extract_zip(archive_path, output_dir, CONFIGURATION_EXCLUSIONS)
 
 
-def merge_tester_archive(archive_path: Path, output_dir: Path) -> int:
-    return extract_zip(archive_path, output_dir, TESTER_EXCLUSIONS)
+def merge_examples_archive(archive_path: Path, output_dir: Path) -> int:
+    return extract_zip(archive_path, output_dir, EXAMPLES_EXCLUSIONS)
 
 
 def merge_yaxunit_archive(archive_path: Path, output_dir: Path) -> int:
@@ -756,28 +756,28 @@ def insert_before_procedure_end(
     lines[end_index:end_index] = ["", *inserted_lines, ""]
 
 
-def merge_update_handlers_procedure(tester_archive: Path, output_dir: Path) -> int:
+def merge_update_handlers_procedure(examples_archive: Path, output_dir: Path) -> int:
     module_path = output_dir.resolve() / UPDATE_DB_MODULE_PATH
     if not module_path.is_file():
         raise FileNotFoundError(f"Update module file not found: {module_path}")
 
-    tester_module_text = decode_text(read_zip_entry(tester_archive, UPDATE_DB_MODULE_ARCHIVE_ENTRY))
-    tester_body = procedure_body(
-        tester_module_text.splitlines(),
-        TESTER_UPDATE_HANDLERS_PROCEDURE,
+    examples_module_text = decode_text(read_zip_entry(examples_archive, UPDATE_DB_MODULE_ARCHIVE_ENTRY))
+    examples_body = procedure_body(
+        examples_module_text.splitlines(),
+        examples_UPDATE_HANDLERS_PROCEDURE,
     )
 
-    if not tester_body:
+    if not examples_body:
         return 0
 
     module_text = module_path.read_text(encoding="utf-8-sig")
     module_lines = module_text.splitlines()
-    insert_before_procedure_end(module_lines, UPDATE_HANDLERS_PROCEDURE, tester_body)
+    insert_before_procedure_end(module_lines, UPDATE_HANDLERS_PROCEDURE, examples_body)
 
     newline = detect_newline(module_text)
     module_path.write_text(newline.join(module_lines) + newline, encoding="utf-8")
 
-    return len(tester_body)
+    return len(examples_body)
 
 
 def build_test_database(options: BuildOptions) -> BuildStats:
@@ -787,11 +787,11 @@ def build_test_database(options: BuildOptions) -> BuildStats:
         options.adapter_archive,
         options.output_dir,
     )
-    tester_files = merge_tester_archive(options.tester_archive, options.output_dir)
-    tester_child_objects = merge_configuration_child_objects(
-        options.tester_archive,
+    examples_files = merge_examples_archive(options.examples_archive, options.output_dir)
+    examples_child_objects = merge_configuration_child_objects(
+        options.examples_archive,
         options.output_dir,
-        excluded_child_objects=TESTER_EXCLUDED_CHILD_OBJECTS,
+        excluded_child_objects=examples_EXCLUDED_CHILD_OBJECTS,
     )
     yaxunit_files = 0
     yaxunit_child_objects = 0
@@ -813,7 +813,7 @@ def build_test_database(options: BuildOptions) -> BuildStats:
         )
 
     update_handler_lines = merge_update_handlers_procedure(
-        options.tester_archive,
+        options.examples_archive,
         options.output_dir,
     )
     user_type_nodes = update_user_defined_type(options.output_dir)
@@ -822,8 +822,8 @@ def build_test_database(options: BuildOptions) -> BuildStats:
         base_files=base_files,
         adapter_files=adapter_files,
         adapter_child_objects=adapter_child_objects,
-        tester_files=tester_files,
-        tester_child_objects=tester_child_objects,
+        examples_files=examples_files,
+        examples_child_objects=examples_child_objects,
         yaxunit_files=yaxunit_files,
         yaxunit_child_objects=yaxunit_child_objects,
         yaxunit_application_modules=yaxunit_application_modules,
@@ -857,11 +857,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "-t",
-        "--tester",
-        dest="tester_archive",
+        "--examples",
+        dest="examples_archive",
         type=Path,
         metavar="PATH",
-        help="архив XML-выгрузки конфигурации тестера.",
+        help="архив XML-выгрузки конфигурации примеров.",
     )
     parser.add_argument(
         "-y",
@@ -886,8 +886,8 @@ def print_summary(options: BuildOptions, stats: BuildStats) -> None:
     print(f"Base XML unpacked from {options.base_archive} to {options.output_dir}: {stats.base_files} files")
     print(f"Adapter XML merged from {options.adapter_archive}: {stats.adapter_files} files")
     print(f"Adapter Configuration/ChildObjects merged: {stats.adapter_child_objects} items")
-    print(f"Tester XML merged from {options.tester_archive}: {stats.tester_files} files")
-    print(f"Tester Configuration/ChildObjects merged: {stats.tester_child_objects} items")
+    print(f"examples XML merged from {options.examples_archive}: {stats.examples_files} files")
+    print(f"examples Configuration/ChildObjects merged: {stats.examples_child_objects} items")
     if options.yaxunit_archive is None:
         print("YAxUnit XML merge skipped: no archive provided")
     else:

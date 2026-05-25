@@ -46,7 +46,7 @@ class Options:
     ib_path: Path
     base_archive: Path
     adapter_archive: Path
-    tester_archive: Path
+    examples_archive: Path
     yaxunit: Path | None
     va_extension: Path
     template_dt: Path
@@ -98,12 +98,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="архив XML-выгрузки конфигурации адаптера.",
     )
     parser.add_argument(
-        "--tester",
-        dest="tester_archive",
+        "--examples",
+        dest="examples_archive",
         type=Path,
         required=True,
         metavar="PATH",
-        help="архив XML-выгрузки конфигурации тестера.",
+        help="архив XML-выгрузки конфигурации примеров.",
     )
     parser.add_argument(
         "--yaxunit",
@@ -138,7 +138,7 @@ def parse_options(argv: list[str] | None) -> Options:
         ib_path=absolute(args.ib_path, workdir),
         base_archive=absolute(args.base_archive, workdir),
         adapter_archive=absolute(args.adapter_archive, workdir),
-        tester_archive=absolute(args.tester_archive, workdir),
+        examples_archive=absolute(args.examples_archive, workdir),
         yaxunit=absolute(args.yaxunit, workdir) if args.yaxunit else None,
         va_extension=absolute(args.va_extension, workdir),
         template_dt=absolute(args.template_dt, workdir),
@@ -176,7 +176,7 @@ def validate_options(options: Options) -> None:
     require_dir(options.workdir, "Текущий каталог")
     require_file(options.base_archive, "Архив XML базы")
     require_file(options.adapter_archive, "Архив XML адаптера")
-    require_file(options.tester_archive, "Архив XML тестера")
+    require_file(options.examples_archive, "Архив XML примеров")
     require_file(options.template_dt, "Шаблон DT")
     require_file(options.va_extension, "Расширение Vanessa Automation")
     require_file(builder_script(options), "Скрипт сборки XML")
@@ -242,8 +242,8 @@ def build_config_xml(options: Options) -> None:
         options.base_archive,
         "--adapter",
         options.adapter_archive,
-        "--tester",
-        options.tester_archive,
+        "--examples",
+        options.examples_archive,
         "--output",
         config_xml_dir(options),
     ]

@@ -52,8 +52,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Загрузка kafka-adapter-tester.cfe
-        run: gh release download --repo ShadobaAI/kafka-adapter-tester --pattern "kafka-adapter-tester.cfe" --output tester.cfe
+      - name: Загрузка kafka-adapter-examples.cfe
+        run: gh release download --repo ShadobaAI/kafka-adapter-examples --pattern "kafka-adapter-examples.cfe" --output examples.cfe
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -66,7 +66,7 @@ jobs:
             ghcr.io/shadobaai/${{ vars.DOCKERHUB_IMAGE }}:latest bash -c "
             vrunner init-dev --dt template.dt --cf base.cf --ibconnection /F/work/db --ibcmd &&
             vrunner loadext --file ${{ github.event.repository.name }}.cfe --ibconnection /F/work/db --extension АдаптерKafka --updatedb --ibcmd &&
-            vrunner loadext --file tester.cfe --ibconnection /F/work/db --extension ТестированиеАдаптераKafka --updatedb --ibcmd &&
+            vrunner loadext --file examples.cfe --ibconnection /F/work/db --extension ТестированиеАдаптераKafka --updatedb --ibcmd &&
             vrunner dump /work/${{ github.event.repository.name }}-demo.dt --ibconnection /F/work/db --ibcmd
           "
           sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
