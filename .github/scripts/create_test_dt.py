@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+"""Создание тестовой файловой ИБ из DT-шаблона и общей XML-конфигурации.
+
+Общий XML собирается соседним create_test_cf.py. Затем vrunner init-dev
+загружает DT-шаблон и XML в чистую файловую базу, а расширения грузятся
+отдельными вызовами vrunner loadext.
+"""
 from __future__ import annotations
 
 import argparse
@@ -48,7 +54,7 @@ class Options:
     adapter_archive: Path
     examples_archive: Path
     yaxunit: Path | None
-    va_extension: Path
+    va_extension: Path | None
     template_dt: Path
 
 
@@ -61,8 +67,9 @@ def configure_stdio() -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = RussianArgumentParser(
         description=(
-            "Создает тестовую файловую ИБ из XML-выгрузок конфигураций "
-            "и загружает расширения VAExtension/YAXUNIT."
+            "Создает тестовую файловую ИБ: собирает общий XML через create_test_cf.py, "
+            "загружает шаблон DT и XML через vrunner init-dev, "
+            "опционально загружает расширения YAXUNIT/VAExtension через vrunner loadext."
         )
     )
     parser.add_argument(
@@ -82,6 +89,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="шаблон информационной базы.",
     )
     parser.add_argument(
+        "-b",
         "--base",
         dest="base_archive",
         type=Path,
@@ -90,6 +98,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="архив XML-выгрузки базовой конфигурации.",
     )
     parser.add_argument(
+        "-a",
         "--adapter",
         dest="adapter_archive",
         type=Path,
@@ -98,6 +107,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="архив XML-выгрузки конфигурации адаптера.",
     )
     parser.add_argument(
+        "-e",
         "--examples",
         dest="examples_archive",
         type=Path,
@@ -106,18 +116,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="архив XML-выгрузки конфигурации примеров.",
     )
     parser.add_argument(
+        "-y",
         "--yaxunit",
         type=Path,
         metavar="PATH",
-        help="опционально: YAXUNIT.cfe или архив XML-выгрузки YAXUNIT.zip.",
+        help="опционально: файл YAXUNIT.cfe.",
     )
     parser.add_argument(
         "--va",
         dest="va_extension",
         type=Path,
-        required=True,
         metavar="PATH",
-        help="файл VAExtension.cfe.",
+        help="опционально: файл VAExtension.cfe.",
     )
     return parser
 
@@ -140,20 +150,20 @@ def parse_options(argv: list[str] | None) -> Options:
         adapter_archive=absolute(args.adapter_archive, workdir),
         examples_archive=absolute(args.examples_archive, workdir),
         yaxunit=absolute(args.yaxunit, workdir) if args.yaxunit else None,
-        va_extension=absolute(args.va_extension, workdir),
+        va_extension=absolute(args.va_extension, workdir) if args.va_extension else None,
         template_dt=absolute(args.template_dt, workdir),
     )
 
 
-def builder_script(options: Options) -> Path:
-    sibling = SCRIPT_DIR / "create_test_cf.py"
-    if sibling.is_file():
-        return sibling
-
-    return options.workdir / "adapter" / "adapter" / ".github" / "scripts" / "create_test_cf.py"
+def builder_script() -> Path:
+    # create_test_cf.py должен поставляться рядом с этим скриптом.
+    # Зависимости от локальной структуры workspace здесь быть не должно.
+    return SCRIPT_DIR / "create_test_cf.py"
 
 
 def config_xml_dir(options: Options) -> Path:
+    # Временный каталог создается в текущем рабочем каталоге запуска.
+    # Он удаляется после init-dev независимо от результата загрузки XML.
     return options.workdir / CONFIG_XML_DIR_NAME
 
 
@@ -178,14 +188,19 @@ def validate_options(options: Options) -> None:
     require_file(options.adapter_archive, "Архив XML адаптера")
     require_file(options.examples_archive, "Архив XML примеров")
     require_file(options.template_dt, "Шаблон DT")
-    require_file(options.va_extension, "Расширение Vanessa Automation")
-    require_file(builder_script(options), "Скрипт сборки XML")
+    if options.va_extension is not None:
+        require_file(options.va_extension, "Расширение Vanessa Automation")
+        if options.va_extension.name.lower() != "vaextension.cfe":
+            raise ScriptError(
+                f"Расширение Vanessa Automation должно называться VAExtension.cfe: {options.va_extension}"
+            )
+    require_file(builder_script(), "Скрипт сборки XML")
     require_command("vrunner")
 
     if options.yaxunit is not None:
-        require_file(options.yaxunit, "Артефакт YAxUnit")
-        if yaxunit_kind(options.yaxunit) is None:
-            raise ScriptError(f"Артефакт YAxUnit должен называться YAXUNIT.cfe или YAXUNIT.zip: {options.yaxunit}")
+        require_file(options.yaxunit, "Расширение YAxUnit")
+        if options.yaxunit.name.lower() != "yaxunit.cfe":
+            raise ScriptError(f"Расширение YAxUnit должно называться YAXUNIT.cfe: {options.yaxunit}")
 
 
 def quote_command(args: Sequence[str | Path]) -> str:
@@ -193,6 +208,7 @@ def quote_command(args: Sequence[str | Path]) -> str:
 
 
 def ensure_safe_remove_path(path: Path) -> Path:
+    # Защита от случайного удаления корня диска или некорректно вычисленного пути.
     resolved = path.resolve()
     if resolved == Path(resolved.anchor) or resolved.parent == resolved:
         raise ScriptError(f"Небезопасный путь для удаления: {resolved}")
@@ -225,19 +241,12 @@ def ib_connection(options: Options) -> str:
     return f"/F{options.ib_path}"
 
 
-def yaxunit_kind(path: Path) -> str | None:
-    name = path.name.lower()
-    if name == "yaxunit.cfe":
-        return "cfe"
-    if name == "yaxunit.zip":
-        return "zip"
-    return None
-
-
 def build_config_xml(options: Options) -> None:
+    # Сборка общего XML делегируется create_test_cf.py, чтобы правила merge
+    # были едиными для отдельной сборки XML и для сборки DT.
     command: list[str | Path] = [
         sys.executable,
-        builder_script(options),
+        builder_script(),
         "--base",
         options.base_archive,
         "--adapter",
@@ -247,13 +256,12 @@ def build_config_xml(options: Options) -> None:
         "--output",
         config_xml_dir(options),
     ]
-    if options.yaxunit is not None and yaxunit_kind(options.yaxunit) == "zip":
-        command.extend(["--yaxunit", options.yaxunit])
 
     run_command(command, options)
 
 
 def init_infobase(options: Options) -> None:
+    # init-dev создает чистую файловую ИБ из DT-шаблона и собранного XML.
     run_command(
         [
             "vrunner",
@@ -271,6 +279,7 @@ def init_infobase(options: Options) -> None:
 
 
 def load_extension(options: Options, extension_file: Path, extension_name: str) -> None:
+    # CFE не попадают в общий XML: каждое расширение загружается поверх ИБ.
     run_command(
         [
             "vrunner",
@@ -291,6 +300,8 @@ def load_extension(options: Options, extension_file: Path, extension_name: str) 
 def run(options: Options) -> None:
     validate_options(options)
 
+    # Итоговая ИБ пересоздается полностью, поэтому путь --ib должен указывать
+    # только на рабочий каталог тестовой базы.
     remove_tree(options.ib_path)
     build_config_xml(options)
     try:
@@ -298,8 +309,9 @@ def run(options: Options) -> None:
     finally:
         remove_tree(config_xml_dir(options))
 
-    load_extension(options, options.va_extension, VA_EXTENSION_NAME)
-    if options.yaxunit is not None and yaxunit_kind(options.yaxunit) == "cfe":
+    if options.va_extension is not None:
+        load_extension(options, options.va_extension, VA_EXTENSION_NAME)
+    if options.yaxunit is not None:
         load_extension(options, options.yaxunit, YAXUNIT_EXTENSION_NAME)
 
 
