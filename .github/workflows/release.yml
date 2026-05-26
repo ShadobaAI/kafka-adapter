@@ -42,10 +42,10 @@ jobs:
           curl -sL "https://github.com/oras-project/oras/releases/download/v1.2.2/oras_1.2.2_linux_amd64.tar.gz" \
             | tar -xz -C /usr/local/bin oras
 
-      - name: Загрузка template.dt из GHCR
+      - name: Загрузка kfk-tmpl-demo.dt из GHCR
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io --username ${{ github.actor }} --password-stdin
-          oras pull ghcr.io/shadobaai/kfk-tmpl-dt:latest
+          oras pull ghcr.io/shadobaai/kfk-tmpl-demo:latest
 
       - name: Загрузка kafka-base.cf
         run: gh release download --repo ShadobaAI/kafka-adapter-base --pattern "kafka-adapter-base.cf" --output base.cf
@@ -64,7 +64,7 @@ jobs:
         run: |
           docker run --rm -v "${{ github.workspace }}:/work" -w /work \
             ghcr.io/shadobaai/${{ vars.DOCKERHUB_IMAGE }}:latest bash -c "
-            vrunner init-dev --dt template.dt --cf base.cf --ibconnection /F/work/db --ibcmd &&
+            vrunner init-dev --dt kfk-tmpl-demo.dt --cf base.cf --ibconnection /F/work/db --ibcmd &&
             vrunner loadext --file ${{ github.event.repository.name }}.cfe --ibconnection /F/work/db --extension АдаптерKafka --updatedb --ibcmd &&
             vrunner loadext --file examples.cfe --ibconnection /F/work/db --extension ТестированиеАдаптераKafka --updatedb --ibcmd &&
             vrunner dump /work/${{ github.event.repository.name }}-demo.dt --ibconnection /F/work/db --ibcmd
