@@ -10,75 +10,217 @@ permissions:
 
 jobs:
   build_cfe:
-    name: Сборка CFE
-    uses: ShadobaAI/kafka-tools/.github/workflows/build.yml@main
+    name: Build CFE
+    uses: ShadobaAI/kafka-tools/.github/workflows/release-1c-artifacts.yml@main
+    secrets: inherit
     with:
       name_suffix: cfe
       version_files: src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
-      dockerhub_image: ${{ vars.DOCKERHUB_IMAGE }}
+
+  build_cf_xml:
+    name: Build CF-XML
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout CI scripts
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/kafka-tools
+          path: .ci
+
+      - name: Lowercase owner
+        id: owner
+        run: echo "value=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Set version in sources
+        id: meta
+        run: |
+          python3 .ci/.github/scripts/set_version.py \
+            "${{ github.ref_name }}" \
+            src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
+
+      - name: Remove SSL objects
+        run: python3 .github/scripts/remove_ssl_objects.py
+
+      - name: Convert CFE sources to CF
+        run: python3 .github/scripts/cfe2cf.py
+
+      - name: Package EDT
+        uses: ./.ci/.github/actions/package-zip
+        with:
+          source-dir: .
+          output-file: output/${{ github.event.repository.name }}-cf-edt.zip
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
+                      /usr/share/swift
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ steps.owner.outputs.value }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Convert EDT to XML
+        uses: ./.ci/.github/actions/edt2xml
+        with:
+          source-dir: .
+          xml-dir: ${{ runner.temp }}/cf-xml
+
+      - name: Package XML
+        uses: ./.ci/.github/actions/package-zip
+        with:
+          source-dir: ${{ runner.temp }}/cf-xml
+          output-file: output/${{ github.event.repository.name }}-cf-xml.zip
+
+      - name: Save CF-XML artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cf-xml-artifacts
+          path: output/*
+          retention-days: 1
+
+  tests:
+    name: Tests
+    needs: [build_cf_xml]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download CF-XML artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cf-xml-artifacts
+          path: output
+
+      - name: Run tests
+        run: echo "Run tests for ${{ github.event.repository.name }}-cf-xml.zip"
 
   build_cf:
-    name: Сборка CF
-    uses: ShadobaAI/kafka-tools/.github/workflows/build.yml@main
-    with:
-      build_type: cf
-      name_suffix: cf
-      version_files: src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
-      dockerhub_image: ${{ vars.DOCKERHUB_IMAGE }}
-      pre_script: .github/scripts/remove_ssl_objects.py
+    name: Build CF
+    needs: [tests]
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout CI scripts
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/kafka-tools
+          path: .ci
+
+      - name: Lowercase owner
+        id: owner
+        run: echo "value=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
+                      /usr/share/swift
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ steps.owner.outputs.value }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download CF-XML artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cf-xml-artifacts
+          path: output
+
+      - name: Unpack CF-XML
+        run: |
+          mkdir -p "${{ runner.temp }}/cf-xml"
+          unzip -q "output/${{ github.event.repository.name }}-cf-xml.zip" -d "${{ runner.temp }}/cf-xml"
+
+      - name: Build CF
+        uses: ./.ci/.github/actions/xml2cf
+        with:
+          xml-dir: ${{ runner.temp }}/cf-xml
+          output-file: output/${{ github.event.repository.name }}.cf
+
+      - name: Upload CF artifacts to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: output/*
 
   build_dt:
-    name: Сборка DT
+    name: Build demo DT
     needs: [build_cfe]
     runs-on: ubuntu-latest
     steps:
-      - name: Загрузка kafka-adapter.cfe
-        run: gh release download ${{ github.event.release.tag_name }} --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}.cfe"
+      - name: Download kafka-adapter CFE XML
+        run: gh release download ${{ github.event.release.tag_name }} --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}-cfe-xml.zip"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Установка oras
-        run: |
-          curl -sL "https://github.com/oras-project/oras/releases/download/v1.2.2/oras_1.2.2_linux_amd64.tar.gz" \
-            | tar -xz -C /usr/local/bin oras
+      - name: Unpack kafka-adapter CFE XML
+        run: unzip -q "${{ github.event.repository.name }}-cfe-xml.zip" -d cfe-xml
 
-      - name: Загрузка kfk-tmpl-demo.dt из GHCR
+      - name: Install oras
+        run: |
+          ORAS_TAG="$(python3 - <<'PY'
+          import json
+          import urllib.request
+
+          with urllib.request.urlopen("https://api.github.com/repos/oras-project/oras/releases/latest") as response:
+              print(json.load(response)["tag_name"])
+          PY
+          )"
+          ORAS_VERSION="${ORAS_TAG#v}"
+          curl -sL "https://github.com/oras-project/oras/releases/download/${ORAS_TAG}/oras_${ORAS_VERSION}_linux_amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin oras
+
+      - name: Download kfk-tmpl-demo.dt from GHCR
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io --username ${{ github.actor }} --password-stdin
           oras pull ghcr.io/shadobaai/kfk-tmpl-demo:latest
 
-      - name: Загрузка kafka-base.cf
+      - name: Download kafka-base.cf
         run: gh release download --repo ShadobaAI/kafka-adapter-base --pattern "kafka-adapter-base.cf" --output base.cf
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Загрузка kafka-adapter-examples.cfe
+      - name: Download kafka-adapter-examples.cfe
         run: gh release download --repo ShadobaAI/kafka-adapter-examples --pattern "kafka-adapter-examples.cfe" --output examples.cfe
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Логин в GHCR
+      - name: Log in to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u shadobaai --password-stdin
 
-      - name: Сборка DT
+      - name: Build demo DT from CFE XML
         run: |
           docker run --rm -v "${{ github.workspace }}:/work" -w /work \
-            ghcr.io/shadobaai/${{ vars.DOCKERHUB_IMAGE }}:latest bash -c "
+            ghcr.io/shadobaai/ibcmd:latest bash -c "
             vrunner init-dev --dt kfk-tmpl-demo.dt --cf base.cf --ibconnection /F/work/db --ibcmd &&
-            vrunner loadext --file ${{ github.event.repository.name }}.cfe --ibconnection /F/work/db --extension АдаптерKafka --updatedb --ibcmd &&
+            vrunner compileext /work/cfe-xml АдаптерKafka --ibconnection /F/work/db --updatedb --ibcmd &&
             vrunner loadext --file examples.cfe --ibconnection /F/work/db --extension ТестированиеАдаптераKafka --updatedb --ibcmd &&
             vrunner dump /work/${{ github.event.repository.name }}-demo.dt --ibconnection /F/work/db --ibcmd
           "
           sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
 
-      - name: Публикация ${{ github.event.repository.name }}-demo.dt в релиз
+      - name: Upload ${{ github.event.repository.name }}-demo.dt to release
         run: gh release upload ${{ github.event.release.tag_name }} ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Сохранение ${{ github.event.repository.name }}-demo.dt
-        uses: actions/upload-artifact@v4
-        with:
-          name: demo-dt
-          path: ${{ github.event.repository.name }}-demo.dt
-          retention-days: 1
+  publish_release:
+    name: Publish release
+    if: false
+    needs: [build_cf, build_dt]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish release
+        run: gh release edit ${{ github.event.release.tag_name }} --repo ${{ github.repository }} --draft=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
