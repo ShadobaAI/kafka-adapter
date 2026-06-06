@@ -9,15 +9,6 @@ permissions:
   packages: read
 
 jobs:
-  build_cfe:
-    name: Build CFE
-    needs: [tests]
-    uses: ShadobaAI/kafka-tools/.github/workflows/release-1c-artifacts.yml@main
-    secrets: inherit
-    with:
-      name_suffix: cfe
-      version_files: src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
-
   build_cf_xml:
     name: Build CF-XML
     runs-on: ubuntu-latest
@@ -153,6 +144,15 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: output/*
+
+  build_cfe:
+    name: Build CFE
+    needs: [tests]
+    uses: ShadobaAI/kafka-tools/.github/workflows/release-1c-artifacts.yml@main
+    secrets: inherit
+    with:
+      name_suffix: cfe
+      version_files: src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
 
   build_dt:
     name: Build demo DT
