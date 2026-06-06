@@ -169,54 +169,11 @@ jobs:
 
       - name: Install oras
         run: |
-          python3 - <<'PY'
-          import json
-          import platform
-          import shutil
-          import tarfile
-          import urllib.request
-          import zipfile
-          from pathlib import Path
-
-          system_map = {
-              "Linux": ("linux", ".tar.gz"),
-              "Darwin": ("darwin", ".tar.gz"),
-              "Windows": ("windows", ".zip"),
-          }
-          os_name, extension = system_map[platform.system()]
-          machine = platform.machine().lower()
-          arch = "amd64" if machine in {"amd64", "x86_64"} else "arm64"
-          marker = f"_{os_name}_{arch}"
-
-          request = urllib.request.Request(
-              "https://api.github.com/repos/oras-project/oras/releases/latest",
-              headers={"User-Agent": "github-actions"},
-          )
-          with urllib.request.urlopen(request, timeout=60) as response:
-              release = json.loads(response.read().decode("utf-8"))
-
-          asset = next(
-              item for item in release["assets"]
-              if marker in item["name"] and item["name"].endswith(extension)
-          )
-          archive_path = Path(asset["name"])
-          with urllib.request.urlopen(asset["browser_download_url"], timeout=300) as response:
-              archive_path.write_bytes(response.read())
-
-          target = Path("/usr/local/bin/oras")
-          if archive_path.name.endswith(".tar.gz"):
-              with tarfile.open(archive_path, "r:gz") as archive:
-                  member = next(item for item in archive.getmembers() if Path(item.name).name == "oras")
-                  source = archive.extractfile(member)
-                  with source, target.open("wb") as output:
-                      shutil.copyfileobj(source, output)
-          else:
-              with zipfile.ZipFile(archive_path) as archive:
-                  member = next(item for item in archive.infolist() if Path(item.filename).name == "oras")
-                  with archive.open(member) as source, target.open("wb") as output:
-                      shutil.copyfileobj(source, output)
-          target.chmod(0o755)
-          PY
+          ORAS_TAG="$(curl -fsSL https://api.github.com/repos/oras-project/oras/releases/latest \
+            | jq -r .tag_name)"
+          ORAS_VERSION="${ORAS_TAG#v}"
+          curl -fsSL "https://github.com/oras-project/oras/releases/download/${ORAS_TAG}/oras_${ORAS_VERSION}_linux_amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin oras
 
       - name: Download kfk-tmpl-demo.dt from GHCR
         run: |
