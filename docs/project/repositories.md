@@ -7,7 +7,8 @@
 | [**Адаптер Kafka**](https://github.com/ShadobaAI/kafka-adapter) | Исходный код подсистемы (этот репозиторий) |
 | [**Базовый проект**](https://github.com/ShadobaAI/kafka-adapter-base) | Конфигурация базы данных — базовая конфигурация для разработки |
 | [**Примеры**](https://github.com/ShadobaAI/kafka-adapter-examples) | Тестовое расширение: примеры использования API и отладка интеграции |
-| [**Автотесты**](https://github.com/ShadobaAI/kafka-adapter-tests) | Автотесты адаптера Kafka: YAxUnit, Vanessa Automation |
+| [**Юнит-тесты**](https://github.com/ShadobaAI/kafka-adapter-tests-unit) | Юнит-тесты адаптера Kafka: YAxUnit (`tests\unit`) |
+| [**UI-тесты**](https://github.com/ShadobaAI/kafka-adapter-tests-ui) | UI-тесты адаптера Kafka: Vanessa Automation (`tests\ui`) |
 | [**Набор скриптов**](https://github.com/ShadobaAI/kafka-tools) | Скрипты для развёртывания среды разработки |
 | [**Расширение КД**](https://github.com/ShadobaAI/kafka-adapter-conv) | Расширение для КД 3.1.6+, адаптирующее типовую конвертацию данных под произвольный XDTO |
 
@@ -18,13 +19,15 @@ flowchart LR
     ADAPTER["Адаптер Kafka<br/>(подсистема)"]
     BASE["Базовый проект<br/>(инфобаза для разработки)"]
     examples["Примеры<br/>(расширение с примерами)"]
-    TESTS["Автотесты<br/>(YAxUnit + Vanessa Automation)"]
+    TESTS_UNIT["Юнит-тесты<br/>(YAxUnit)"]
+    TESTS_UI["UI-тесты<br/>(Vanessa Automation)"]
     TOOLS["Набор скриптов<br/>(dev-окружение)"]
     CONV["Расширение КД<br/>(КД 3.1 + XDTO)"]
 
     BASE -.подключает.-> ADAPTER
     examples -.расширяет.-> BASE
-    TESTS -.тестирует.-> ADAPTER
+    TESTS_UNIT -.тестирует.-> ADAPTER
+    TESTS_UI -.тестирует.-> ADAPTER
     TOOLS -.поднимает.-> ADAPTER
     CONV -.дополняет.-> ADAPTER
 ```
@@ -37,3 +40,4 @@ flowchart LR
 - **[RDT1C](https://github.com/tormozit/RDT1C)** — инструменты разработчика 1С.
 - **[tools_ui_1c](https://github.com/cpr1c/tools_ui_1c)** — универсальные инструменты для управляемых форм.
 - **[YAxUnit](https://github.com/bia-technologies/yaxunit)** — фреймворк для юнит-тестирования.
+- **[onec-docker](https://github.com/firstBitMarksistskaya/onec-docker)** — репозиторий, использованный при создании CI.
