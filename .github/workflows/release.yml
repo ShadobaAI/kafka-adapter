@@ -210,8 +210,111 @@ jobs:
         run: |
           test -f "${ASSETS_DIR}/1Cv8.1CD"
 
-      - name: Run tests
-        run: echo "Test inputs are prepared for ${{ github.event.repository.name }}-cf-xml.zip"
+      - name: Run unit tests
+        id: unit_tests
+        continue-on-error: true
+        run: |
+          rm -rf "${ASSETS_DIR}/unit/base-unit"
+          mkdir -p "${ASSETS_DIR}/unit/base-unit"
+          cp "${ASSETS_DIR}/1Cv8.1CD" "${ASSETS_DIR}/unit/base-unit/1Cv8.1CD"
+
+          set +e
+          docker run --rm --init \
+            -e ASSETS_DIR="${ASSETS_DIR}" \
+            -v "${{ github.workspace }}:/work" \
+            -w /work \
+            ghcr.io/shadobaai/client:latest \
+            bash /work/.github/scripts/run-unit-docker.sh
+          rc=$?
+          set -e
+
+          sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/unit"
+          exit "$rc"
+
+      - name: Publish unit test summary
+        if: always()
+        run: python3 .github/scripts/summarize_test_reports.py --unit-junit "${ASSETS_DIR}/unit/junit.xml"
+
+      - name: Upload unit test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: |
+            ${{ env.ASSETS_DIR }}/unit/junit.xml
+            ${{ env.ASSETS_DIR }}/unit/unit.log
+            ${{ env.ASSETS_DIR }}/unit/exit-code.txt
+          if-no-files-found: warn
+
+      - name: Run UI tests
+        id: ui_tests
+        if: steps.unit_tests.outcome == 'success'
+        continue-on-error: true
+        run: |
+          rm -rf "${ASSETS_DIR}/ui/base-ui"
+          mkdir -p "${ASSETS_DIR}/ui/base-ui"
+          cp "${ASSETS_DIR}/1Cv8.1CD" "${ASSETS_DIR}/ui/base-ui/1Cv8.1CD"
+
+          set +e
+          docker run --rm --init \
+            -e ASSETS_DIR="${ASSETS_DIR}" \
+            -v "${{ github.workspace }}:/work" \
+            -w /work \
+            ghcr.io/shadobaai/client:latest \
+            bash /work/.github/scripts/run-ui-docker.sh
+          rc=$?
+          set -e
+
+          sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/ui"
+          exit "$rc"
+
+      - name: Generate Allure report
+        if: always() && steps.unit_tests.outcome == 'success'
+        run: |
+          if [ -d "${ASSETS_DIR}/ui/allure" ]; then
+            npx --yes allure-commandline generate "${ASSETS_DIR}/ui/allure" --clean -o "${ASSETS_DIR}/ui/allure-report"
+          fi
+
+      - name: Publish UI test summary
+        if: always() && steps.unit_tests.outcome == 'success'
+        run: python3 .github/scripts/summarize_test_reports.py --ui-allure "${ASSETS_DIR}/ui/allure"
+
+      - name: Upload UI test reports
+        if: always() && steps.unit_tests.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-reports
+          path: |
+            ${{ env.ASSETS_DIR }}/ui/allure
+            ${{ env.ASSETS_DIR }}/ui/allure-report
+            ${{ env.ASSETS_DIR }}/ui/1cv8c.log
+            ${{ env.ASSETS_DIR }}/ui/exit-code.txt
+          if-no-files-found: warn
+
+      - name: Fail on test errors
+        if: always()
+        run: |
+          if [ "${{ steps.unit_tests.outcome }}" != "success" ]; then
+            echo "Unit tests failed"
+            exit 1
+          fi
+          if [ ! -f "${ASSETS_DIR}/unit/junit.xml" ]; then
+            echo "Unit JUnit report not found: ${ASSETS_DIR}/unit/junit.xml"
+            exit 1
+          fi
+
+          if [ "${{ steps.ui_tests.outcome }}" != "success" ]; then
+            echo "UI tests failed"
+            exit 1
+          fi
+          if [ ! -d "${ASSETS_DIR}/ui/allure" ]; then
+            echo "UI Allure results not found: ${ASSETS_DIR}/ui/allure"
+            exit 1
+          fi
+          if [ ! -d "${ASSETS_DIR}/ui/allure-report" ]; then
+            echo "Generated UI Allure report not found: ${ASSETS_DIR}/ui/allure-report"
+            exit 1
+          fi
 
   build_cf:
     name: Build CF
