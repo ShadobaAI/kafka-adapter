@@ -222,10 +222,12 @@ jobs:
 
       - name: Fill test infobase
         run: |
-          docker run --rm --init -v "${{ github.workspace }}/${ASSETS_DIR}:/work" -w /work \
-            ghcr.io/shadobaai/client:latest bash -c "
-            vrunner run --ibsrv --ibconnection /F/work/base-db --command 'ЗавершитьРаботуСистемы'
-          "
+          docker run --rm --init \
+            -v "${{ github.workspace }}/${ASSETS_DIR}:/work" \
+            -v "${{ github.workspace }}/.github/scripts/fill-test-infobase-docker.sh:/fill-test-infobase-docker.sh:ro" \
+            -w /work \
+            ghcr.io/shadobaai/client:latest \
+            bash /fill-test-infobase-docker.sh
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/base-db"
 
       - name: Backup test infobase
