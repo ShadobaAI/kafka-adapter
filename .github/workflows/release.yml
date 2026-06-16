@@ -87,6 +87,9 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       ASSETS_DIR: assets
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download CF-XML artifacts
         uses: actions/download-artifact@v4
         with:
@@ -103,6 +106,13 @@ jobs:
 
       - name: Log in to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io --username ${{ github.actor }} --password-stdin
+
+      - name: Log in to GHCR for Docker
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download base and examples release assets
         run: |
@@ -164,6 +174,41 @@ jobs:
           test -d "${ASSETS_DIR}/ui/features"
           test -f "${ASSETS_DIR}/ui/VAExtension.cfe"
           test -f "${ASSETS_DIR}/ui/vanessa-automation-single.epf"
+
+      - name: Build base XML for tests
+        run: |
+          python3 .github/scripts/create_test_cf.py \
+            --base "${ASSETS_DIR}/kafka-adapter-base-xml.zip" \
+            --adapter "${ASSETS_DIR}/kafka-adapter-cf-xml.zip" \
+            --output "${ASSETS_DIR}/base"
+
+      - name: Create test infobase
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/work" -w /work \
+            ghcr.io/shadobaai/ibcmd:latest bash -c "
+            vrunner init-dev --src /work/${ASSETS_DIR}/base --dt /work/${ASSETS_DIR}/kfk-tmpl-test.dt --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
+            vrunner loadext -f /work/${ASSETS_DIR}/kafka-adapter-examples.cfe --extension 'ТестированиеАдаптераKafka' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
+            vrunner loadext -f /work/${ASSETS_DIR}/unit/YAXUNIT.cfe --extension 'YAXUNIT' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
+            vrunner loadext -f /work/${ASSETS_DIR}/unit/unit.cfe --extension 'МодульныеТесты' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
+            vrunner loadext -f /work/${ASSETS_DIR}/ui/VAExtension.cfe --extension 'VAExtension' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db
+          "
+          sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/base-db"
+
+      - name: Fill test infobase
+        run: |
+          docker run --rm --init -v "${{ github.workspace }}:/work" -w /work \
+            ghcr.io/shadobaai/client:latest bash -c "
+            vrunner run --ibsrv --ibconnection /F/work/${ASSETS_DIR}/base-db --command 'ЗавершитьРаботуСистемы'
+          "
+          sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/base-db"
+
+      - name: Backup test infobase
+        run: |
+          cp "${ASSETS_DIR}/base-db/1Cv8.1CD" "${ASSETS_DIR}/1Cv8.1CD"
+
+      - name: Check test infobase
+        run: |
+          test -f "${ASSETS_DIR}/1Cv8.1CD"
 
       - name: Run tests
         run: echo "Test inputs are prepared for ${{ github.event.repository.name }}-cf-xml.zip"

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Сборка общей XML-конфигурации для тестовой базы из XML-выгрузок 1С.
+"""Сборка базовой XML-конфигурации для тестовой базы из XML-выгрузок 1С.
 
 Скрипт работает с XML формата Конфигуратора 1С, не с EDT-проектами.
-Base берется как основа, adapter и examples накладываются поверх нее.
+Base берется как основа, adapter накладывается поверх нее.
 """
 from __future__ import annotations
 
@@ -16,18 +16,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from xml.etree import ElementTree
 
-
-# 1C XML metadata names.
-V8_NAMESPACE = "http://v8.1c.ru/8.1/data/core"
-USER_DEFINED_TYPE_PATH = Path("DefinedTypes") / "кфкПользователь.xml"
-USER_DEFINED_TYPE_VALUE = "CatalogRef.Пользователи"
-
-# Update module and procedure names.
-UPDATE_DB_MODULE_NAME = "ОбновлениеИнформационнойБазыKafka"
-UPDATE_HANDLERS_PROCEDURE = "ПриДобавленииОбработчиковОбновления"
-EXAMPLES_UPDATE_HANDLERS_PROCEDURE = f"кфк_т_{UPDATE_HANDLERS_PROCEDURE}"
-UPDATE_DB_MODULE_PATH = Path("CommonModules") / UPDATE_DB_MODULE_NAME / "Ext" / "Module.bsl"
-UPDATE_DB_MODULE_ARCHIVE_ENTRY = f"CommonModules/{UPDATE_DB_MODULE_NAME}/Ext/Module.bsl"
 
 ChildObjectKey = tuple[str, str]
 
@@ -71,7 +59,6 @@ class ArchiveExclusions:
 class BuildOptions:
     base_archive: Path
     adapter_archive: Path
-    examples_archive: Path
     output_dir: Path
 
 
@@ -80,10 +67,6 @@ class BuildStats:
     base_files: int
     adapter_files: int
     adapter_child_objects: int
-    examples_files: int
-    examples_child_objects: int
-    update_handler_lines: int
-    user_type_nodes: int
 
 
 BASE_EXCLUSIONS = ArchiveExclusions(
@@ -103,33 +86,6 @@ CONFIGURATION_EXCLUSIONS = ArchiveExclusions(
     ),
 )
 
-EXAMPLES_EXCLUSIONS = ArchiveExclusions(
-    roots=CONFIGURATION_EXCLUSIONS.roots
-    | frozenset(
-        {
-            UPDATE_DB_MODULE_NAME,
-            f"{UPDATE_DB_MODULE_NAME}.xml",
-        }
-    ),
-    paths=frozenset(
-        {
-            f"CommonModules/{UPDATE_DB_MODULE_NAME}.xml",
-        }
-    ),
-    prefixes=frozenset(
-        {
-            f"CommonModules/{UPDATE_DB_MODULE_NAME}/",
-        }
-    ),
-)
-
-EXAMPLES_EXCLUDED_CHILD_OBJECTS: frozenset[ChildObjectKey] = frozenset(
-    {
-        ("CommonModule", UPDATE_DB_MODULE_NAME),
-    }
-)
-
-
 def configure_stdio() -> None:
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -147,7 +103,6 @@ def validate_options(args: argparse.Namespace) -> BuildOptions:
     return BuildOptions(
         base_archive=validate_file(args.base_archive, "База"),
         adapter_archive=validate_file(args.adapter_archive, "Адаптер"),
-        examples_archive=validate_file(args.examples_archive, "Примеры"),
         output_dir=args.output_dir,
     )
 
@@ -232,10 +187,6 @@ def merge_adapter_archive(archive_path: Path, output_dir: Path) -> int:
     return extract_zip(archive_path, output_dir, CONFIGURATION_EXCLUSIONS)
 
 
-def merge_examples_archive(archive_path: Path, output_dir: Path) -> int:
-    return extract_zip(archive_path, output_dir, EXAMPLES_EXCLUSIONS)
-
-
 def read_zip_entry(archive_path: Path, entry_name: str) -> bytes:
     with zipfile.ZipFile(archive_path) as archive:
         try:
@@ -243,14 +194,6 @@ def read_zip_entry(archive_path: Path, entry_name: str) -> bytes:
                 return entry.read()
         except KeyError as error:
             raise FileNotFoundError(f"Archive {archive_path} does not contain {entry_name}") from error
-
-
-def decode_text(data: bytes) -> str:
-    return data.decode("utf-8-sig")
-
-
-def detect_newline(text: str) -> str:
-    return "\r\n" if "\r\n" in text else "\n"
 
 
 def collect_namespaces(xml_source: Path | bytes) -> list[tuple[str, str]]:
@@ -357,148 +300,27 @@ def merge_configuration_child_objects(
     return added_count
 
 
-def update_user_defined_type(output_dir: Path) -> int:
-    # В base определяемый тип пользователя пустой/абстрактный для адаптации.
-    # Для тестовой базы фиксируем его на стандартный справочник Пользователи.
-    defined_type_path = output_dir.resolve() / USER_DEFINED_TYPE_PATH
-    if not defined_type_path.is_file():
-        raise FileNotFoundError(f"Defined type file not found: {defined_type_path}")
-
-    register_namespaces(defined_type_path)
-    tree = ElementTree.parse(defined_type_path)
-
-    updated_count = 0
-    for element in tree.getroot().iter():
-        if element_namespace_uri(element) == V8_NAMESPACE and element_local_name(element) == "Type":
-            element.text = USER_DEFINED_TYPE_VALUE
-            updated_count += 1
-
-    if updated_count == 0:
-        raise ValueError(f"v8:Type node not found in {defined_type_path}")
-
-    ElementTree.indent(tree, space="\t")
-    tree.write(defined_type_path, encoding="UTF-8", xml_declaration=True)
-
-    return updated_count
-
-
-def is_procedure_start(line: str, procedure_name: str) -> bool:
-    stripped = line.lstrip()
-    return stripped.startswith("Процедура ") and f" {procedure_name}(" in f" {stripped}"
-
-
-def procedure_bounds(lines: list[str], procedure_name: str) -> tuple[int, int]:
-    start_index = None
-
-    for index, line in enumerate(lines):
-        if is_procedure_start(line, procedure_name):
-            start_index = index
-            break
-
-    if start_index is None:
-        raise ValueError(f"Procedure not found: {procedure_name}")
-
-    for index in range(start_index + 1, len(lines)):
-        if lines[index].strip().lower() == "конецпроцедуры":
-            return start_index, index
-
-    raise ValueError(f"Procedure end not found: {procedure_name}")
-
-
-def trimmed_body(lines: list[str]) -> list[str]:
-    start = 0
-    end = len(lines)
-
-    while start < end and lines[start].strip() == "":
-        start += 1
-    while end > start and lines[end - 1].strip() == "":
-        end -= 1
-
-    return lines[start:end]
-
-
-def procedure_body(lines: list[str], procedure_name: str) -> list[str]:
-    start_index, end_index = procedure_bounds(lines, procedure_name)
-    return trimmed_body(lines[start_index + 1 : end_index])
-
-
-def insert_before_procedure_end(
-    lines: list[str],
-    procedure_name: str,
-    inserted_lines: list[str],
-) -> None:
-    start_index, end_index = procedure_bounds(lines, procedure_name)
-
-    while end_index > start_index + 1 and lines[end_index - 1].strip() == "":
-        del lines[end_index - 1]
-        end_index -= 1
-
-    lines[end_index:end_index] = ["", *inserted_lines, ""]
-
-
-def merge_update_handlers_procedure(examples_archive: Path, output_dir: Path) -> int:
-    # В examples есть свой обработчик обновления с тестовыми данными.
-    # Сам модуль examples не переносим, а тело процедуры добавляем в модуль adapter.
-    module_path = output_dir.resolve() / UPDATE_DB_MODULE_PATH
-    if not module_path.is_file():
-        raise FileNotFoundError(f"Update module file not found: {module_path}")
-
-    examples_module_text = decode_text(read_zip_entry(examples_archive, UPDATE_DB_MODULE_ARCHIVE_ENTRY))
-    examples_body = procedure_body(
-        examples_module_text.splitlines(),
-        examples_UPDATE_HANDLERS_PROCEDURE,
-    )
-
-    if not examples_body:
-        return 0
-
-    module_text = module_path.read_text(encoding="utf-8-sig")
-    module_lines = module_text.splitlines()
-    insert_before_procedure_end(module_lines, UPDATE_HANDLERS_PROCEDURE, examples_body)
-
-    newline = detect_newline(module_text)
-    module_path.write_text(newline.join(module_lines) + newline, encoding="utf-8")
-
-    return len(examples_body)
-
-
 def build_test_database(options: BuildOptions) -> BuildStats:
     # Порядок важен: base создает каталог результата, adapter добавляет
-    # подсистему Kafka, examples добавляет тестовые объекты и обработчики.
+    # подсистему Kafka.
     base_files = unpack_base_archive(options.base_archive, options.output_dir)
     adapter_files = merge_adapter_archive(options.adapter_archive, options.output_dir)
     adapter_child_objects = merge_configuration_child_objects(
         options.adapter_archive,
         options.output_dir,
     )
-    examples_files = merge_examples_archive(options.examples_archive, options.output_dir)
-    examples_child_objects = merge_configuration_child_objects(
-        options.examples_archive,
-        options.output_dir,
-        excluded_child_objects=EXAMPLES_EXCLUDED_CHILD_OBJECTS,
-    )
-
-    update_handler_lines = merge_update_handlers_procedure(
-        options.examples_archive,
-        options.output_dir,
-    )
-    user_type_nodes = update_user_defined_type(options.output_dir)
 
     return BuildStats(
         base_files=base_files,
         adapter_files=adapter_files,
         adapter_child_objects=adapter_child_objects,
-        examples_files=examples_files,
-        examples_child_objects=examples_child_objects,
-        update_handler_lines=update_handler_lines,
-        user_type_nodes=user_type_nodes,
     )
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = RussianArgumentParser(
         description=(
-            "Собирает общий XML из архивов XML-выгрузок base, adapter и examples. "
+            "Собирает базовый XML из архивов XML-выгрузок base и adapter. "
             "Файлы расширений .cfe сюда не передаются."
         )
     )
@@ -521,15 +343,6 @@ def build_parser() -> argparse.ArgumentParser:
         help="архив XML-выгрузки конфигурации адаптера.",
     )
     parser.add_argument(
-        "-e",
-        "--examples",
-        dest="examples_archive",
-        type=Path,
-        required=True,
-        metavar="PATH",
-        help="архив XML-выгрузки конфигурации примеров.",
-    )
-    parser.add_argument(
         "-o",
         "--output",
         dest="output_dir",
@@ -545,10 +358,6 @@ def print_summary(options: BuildOptions, stats: BuildStats) -> None:
     print(f"Base XML unpacked from {options.base_archive} to {options.output_dir}: {stats.base_files} files")
     print(f"Adapter XML merged from {options.adapter_archive}: {stats.adapter_files} files")
     print(f"Adapter Configuration/ChildObjects merged: {stats.adapter_child_objects} items")
-    print(f"examples XML merged from {options.examples_archive}: {stats.examples_files} files")
-    print(f"examples Configuration/ChildObjects merged: {stats.examples_child_objects} items")
-    print(f"Update handlers procedure body merged: {stats.update_handler_lines} lines")
-    print(f"Updated user defined type: {stats.user_type_nodes} v8:Type nodes")
 
 
 def main(argv: list[str] | None = None) -> int:
