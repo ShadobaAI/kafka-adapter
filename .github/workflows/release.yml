@@ -238,14 +238,6 @@ jobs:
         run: |
           test -f "${ASSETS_DIR}/1Cv8.1CD"
 
-      - name: Upload test infobase (TODO)
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-infobase
-          path: ${{ env.ASSETS_DIR }}/1Cv8.1CD
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Run unit tests
         id: unit_tests
         continue-on-error: true
