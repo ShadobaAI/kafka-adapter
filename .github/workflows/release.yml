@@ -1,8 +1,11 @@
 name: Build & Release
 
 on:
+  # GitHub Actions не запускает release.created для draft-релизов.
   release:
-    types: [created]
+    types: [published]
+  create:
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,6 +14,7 @@ permissions:
 jobs:
   build_cf_xml:
     name: Build CF-XML
+    if: github.event_name != 'create' || github.event.ref_type == 'tag'
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -86,6 +90,7 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       ASSETS_DIR: assets
+      ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -163,23 +168,43 @@ jobs:
 
       - name: Check test inputs
         run: |
-          test -f "${ASSETS_DIR}/kafka-adapter-cf-xml.zip"
-          test -f "${ASSETS_DIR}/kafka-adapter-base-xml.zip"
-          test -f "${ASSETS_DIR}/kafka-adapter-examples.cfe"
-          test -f "${ASSETS_DIR}/kfk-tmpl-test.dt"
-          test -f "${ASSETS_DIR}/unit/unit.cfe"
-          test -f "${ASSETS_DIR}/unit/YaxParams.json"
-          test -f "${ASSETS_DIR}/unit/YAXUNIT.cfe"
-          test -f "${ASSETS_DIR}/ui/VAParams.json"
-          test -d "${ASSETS_DIR}/ui/features"
-          test -f "${ASSETS_DIR}/ui/VAExtension.cfe"
-          test -f "${ASSETS_DIR}/ui/vanessa-automation-single.epf"
+          missing=0
+          check_file() {
+            if [ ! -f "$1" ]; then
+              echo "::error::File not found: $1"
+              missing=1
+            fi
+          }
+          check_dir() {
+            if [ ! -d "$1" ]; then
+              echo "::error::Directory not found: $1"
+              missing=1
+            fi
+          }
+
+          check_file "${ASSETS_DIR}/${ADAPTER_CF_XML}"
+          check_file "${ASSETS_DIR}/kafka-adapter-base-xml.zip"
+          check_file "${ASSETS_DIR}/kafka-adapter-examples.cfe"
+          check_file "${ASSETS_DIR}/kfk-tmpl-test.dt"
+          check_file "${ASSETS_DIR}/unit/unit.cfe"
+          check_file "${ASSETS_DIR}/unit/YaxParams.json"
+          check_file "${ASSETS_DIR}/unit/YAXUNIT.cfe"
+          check_file "${ASSETS_DIR}/ui/VAParams.json"
+          check_dir "${ASSETS_DIR}/ui/features"
+          check_file "${ASSETS_DIR}/ui/VAExtension.cfe"
+          check_file "${ASSETS_DIR}/ui/vanessa-automation-single.epf"
+
+          if [ "$missing" -ne 0 ]; then
+            echo "Downloaded assets:"
+            find "${ASSETS_DIR}" -maxdepth 3 -mindepth 1 -print | sort
+            exit 1
+          fi
 
       - name: Build base XML for tests
         run: |
           python3 .github/scripts/create_test_cf.py \
             --base "${ASSETS_DIR}/kafka-adapter-base-xml.zip" \
-            --adapter "${ASSETS_DIR}/kafka-adapter-cf-xml.zip" \
+            --adapter "${ASSETS_DIR}/${ADAPTER_CF_XML}" \
             --output "${ASSETS_DIR}/base"
 
       - name: Create test infobase
@@ -364,9 +389,9 @@ jobs:
           output-file: output/${{ github.event.repository.name }}.cf
 
       - name: Upload CF artifacts to release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: output/*
+        run: gh release upload ${{ github.event.release.tag_name || github.ref_name }} output/* --repo ${{ github.repository }} --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_cfe:
     name: Build CFE
@@ -383,7 +408,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download kafka-adapter CFE XML
-        run: gh release download ${{ github.event.release.tag_name }} --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}-cfe-xml.zip"
+        run: gh release download ${{ github.event.release.tag_name || github.ref_name }} --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}-cfe-xml.zip"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -425,7 +450,7 @@ jobs:
           sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
 
       - name: Upload ${{ github.event.repository.name }}-demo.dt to release
-        run: gh release upload ${{ github.event.release.tag_name }} ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
+        run: gh release upload ${{ github.event.release.tag_name || github.ref_name }} ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -436,6 +461,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Publish release
-        run: gh release edit ${{ github.event.release.tag_name }} --repo ${{ github.repository }} --draft=false
+        run: gh release edit ${{ github.event.release.tag_name || github.ref_name }} --repo ${{ github.repository }} --draft=false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
