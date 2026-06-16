@@ -134,6 +134,9 @@ jobs:
         run: |
           mkdir -p "${ASSETS_DIR}/unit"
           oras pull ghcr.io/shadobaai/unit:latest -o "${ASSETS_DIR}/unit"
+          if [ ! -f "${ASSETS_DIR}/unit/unit.cfe" ] && [ -f "${ASSETS_DIR}/unit/output/unit.cfe" ]; then
+            cp "${ASSETS_DIR}/unit/output/unit.cfe" "${ASSETS_DIR}/unit/unit.cfe"
+          fi
           curl -fsSL \
             https://raw.githubusercontent.com/ShadobaAI/kafka-adapter-tests-unit/main/YaxParams.json \
             -o "${ASSETS_DIR}/unit/YaxParams.json"
