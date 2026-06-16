@@ -83,15 +83,90 @@ jobs:
     name: Tests
     needs: [build_cf_xml]
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      ASSETS_DIR: assets
     steps:
       - name: Download CF-XML artifacts
         uses: actions/download-artifact@v4
         with:
           name: cf-xml-artifacts
-          path: output
+          path: ${{ env.ASSETS_DIR }}
+
+      - name: Install oras
+        run: |
+          ORAS_TAG="$(curl -fsSL https://api.github.com/repos/oras-project/oras/releases/latest \
+            | jq -r .tag_name)"
+          ORAS_VERSION="${ORAS_TAG#v}"
+          curl -fsSL "https://github.com/oras-project/oras/releases/download/${ORAS_TAG}/oras_${ORAS_VERSION}_linux_amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin oras
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io --username ${{ github.actor }} --password-stdin
+
+      - name: Download base and examples release assets
+        run: |
+          mkdir -p "${ASSETS_DIR}"
+          gh release download --repo ShadobaAI/kafka-adapter-base --pattern "kafka-adapter-base-xml.zip" --output "${ASSETS_DIR}/kafka-adapter-base-xml.zip"
+          gh release download --repo ShadobaAI/kafka-adapter-examples --pattern "kafka-adapter-examples.cfe" --output "${ASSETS_DIR}/kafka-adapter-examples.cfe"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download test DT template
+        run: |
+          mkdir -p "${ASSETS_DIR}"
+          oras pull ghcr.io/shadobaai/kfk-tmpl-test:latest -o "${ASSETS_DIR}"
+
+      - name: Download unit test assets
+        run: |
+          mkdir -p "${ASSETS_DIR}/unit"
+          oras pull ghcr.io/shadobaai/unit:latest -o "${ASSETS_DIR}/unit"
+          curl -fsSL \
+            https://raw.githubusercontent.com/ShadobaAI/kafka-adapter-tests-unit/main/YaxParams.json \
+            -o "${ASSETS_DIR}/unit/YaxParams.json"
+
+      - name: Download UI test assets
+        uses: actions/checkout@v4
+        with:
+          repository: ShadobaAI/kafka-adapter-tests-ui
+          path: ${{ env.ASSETS_DIR }}/ui
+          sparse-checkout: |
+            /features/**
+            /VAParams.json
+          sparse-checkout-cone-mode: false
+
+      - name: Download Vanessa Automation
+        run: |
+          mkdir -p "${ASSETS_DIR}/ui"
+          gh release download --repo Pr-Mex/vanessa-automation --pattern "VAExtension*.cfe" --output "${ASSETS_DIR}/ui/VAExtension.cfe"
+          gh release download --repo Pr-Mex/vanessa-automation --pattern "vanessa-automation-single.*.zip" --output "${RUNNER_TEMP}/vanessa-automation-single.zip"
+          unzip -j "${RUNNER_TEMP}/vanessa-automation-single.zip" "vanessa-automation-single.epf" -d "${ASSETS_DIR}/ui"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download YAxUnit
+        run: |
+          mkdir -p "${ASSETS_DIR}/unit"
+          gh release download --repo bia-technologies/yaxunit --pattern "YAxUnit-*.cfe" --output "${ASSETS_DIR}/unit/YAXUNIT.cfe"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check test inputs
+        run: |
+          test -f "${ASSETS_DIR}/kafka-adapter-cf-xml.zip"
+          test -f "${ASSETS_DIR}/kafka-adapter-base-xml.zip"
+          test -f "${ASSETS_DIR}/kafka-adapter-examples.cfe"
+          test -f "${ASSETS_DIR}/kfk-tmpl-test.dt"
+          test -f "${ASSETS_DIR}/unit/unit.cfe"
+          test -f "${ASSETS_DIR}/unit/YaxParams.json"
+          test -f "${ASSETS_DIR}/unit/YAXUNIT.cfe"
+          test -f "${ASSETS_DIR}/ui/VAParams.json"
+          test -d "${ASSETS_DIR}/ui/features"
+          test -f "${ASSETS_DIR}/ui/VAExtension.cfe"
+          test -f "${ASSETS_DIR}/ui/vanessa-automation-single.epf"
 
       - name: Run tests
-        run: echo "Run tests for ${{ github.event.repository.name }}-cf-xml.zip"
+        run: echo "Test inputs are prepared for ${{ github.event.repository.name }}-cf-xml.zip"
 
   build_cf:
     name: Build CF
