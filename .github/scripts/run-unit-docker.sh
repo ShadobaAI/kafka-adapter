@@ -88,7 +88,7 @@ set +e
         --exitCodePath "$exit_code_path" \
         --ibsrv --ibconnection "/F${base_dir}" \
         --db-user "Администратор"
-}
+}>/dev/null 2>&1
 test_rc=$?
 set -e
 
