@@ -4,8 +4,6 @@ on:
   # GitHub Actions не запускает release.created для draft-релизов.
   release:
     types: [published]
-  create:
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -14,10 +12,10 @@ permissions:
 jobs:
   build_cf_xml:
     name: Build CF-XML
-    if: github.event_name != 'create' || github.event.ref_type == 'tag'
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +34,7 @@ jobs:
         id: meta
         run: |
           python3 .ci/.github/scripts/set_version.py \
-            "${{ github.ref_name }}" \
+            "${RELEASE_TAG}" \
             src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
 
       - name: Remove SSL objects
@@ -347,6 +345,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
     steps:
       - name: Checkout CI scripts
         uses: actions/checkout@v4
@@ -389,7 +388,7 @@ jobs:
           output-file: output/${{ github.event.repository.name }}.cf
 
       - name: Upload CF artifacts to release
-        run: gh release upload ${{ github.event.release.tag_name || github.ref_name }} output/* --repo ${{ github.repository }} --clobber
+        run: gh release upload "${RELEASE_TAG}" output/* --repo ${{ github.repository }} --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -406,9 +405,11 @@ jobs:
     name: Build demo DT
     needs: [build_cfe]
     runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
     steps:
       - name: Download kafka-adapter CFE XML
-        run: gh release download ${{ github.event.release.tag_name || github.ref_name }} --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}-cfe-xml.zip"
+        run: gh release download "${RELEASE_TAG}" --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}-cfe-xml.zip"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -450,17 +451,6 @@ jobs:
           sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
 
       - name: Upload ${{ github.event.repository.name }}-demo.dt to release
-        run: gh release upload ${{ github.event.release.tag_name || github.ref_name }} ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish_release:
-    name: Publish release
-    if: false
-    needs: [build_cf, build_dt]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Publish release
-        run: gh release edit ${{ github.event.release.tag_name || github.ref_name }} --repo ${{ github.repository }} --draft=false
+        run: gh release upload "${RELEASE_TAG}" ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
