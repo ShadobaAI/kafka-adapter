@@ -5,11 +5,9 @@ status() {
     echo "$*"
 }
 
-assets_dir="${ASSETS_DIR:-assets}"
-ui_dir="/work/${assets_dir}/ui"
-base_dir="${ui_dir}/base-ui"
-exit_code_path="${ui_dir}/exit-code.txt"
-client_log_path="${ui_dir}/1cv8c.log"
+base_dir="/work/base-ui"
+exit_code_path="/work/exit-code.txt"
+client_log_path="/work/1cv8c.log"
 onecv8_root="$(find /opt/1cv8/x86_64 -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort -V | tail -n 1 || true)"
 
 if [ -z "$onecv8_root" ] || [ ! -x "$onecv8_root/ibsrv" ] || [ ! -x "$onecv8_root/1cv8c" ]; then
@@ -17,7 +15,7 @@ if [ -z "$onecv8_root" ] || [ ! -x "$onecv8_root/ibsrv" ] || [ ! -x "$onecv8_roo
     exit 1
 fi
 
-mkdir -p "$ui_dir"
+mkdir -p /work
 
 status "Запуск ibsrv для ${base_dir}"
 "$onecv8_root/ibsrv" \
@@ -103,8 +101,8 @@ DISPLAY="$xvfb_display" \
     "$onecv8_root/1cv8c" ENTERPRISE \
         /WS http://localhost:8314/ /N"Администратор" \
         /DisableStartupMessages /DisableStartupDialogs /UseHwLicenses- /TESTMANAGER \
-        /Execute"${ui_dir}/vanessa-automation-single.epf" \
-        /C"WorkspaceRoot=${ui_dir};VAParams=${ui_dir}/VAParams.json;StartFeaturePlayer;QuietInstallVanessaExt;exitCodePath=${exit_code_path}" \
+        /Execute"/work/vanessa-automation-single.epf" \
+        /C"WorkspaceRoot=/work;VAParams=/work/VAParams.json;StartFeaturePlayer;QuietInstallVanessaExt;exitCodePath=${exit_code_path}" \
         /out"$client_log_path" \
         >/dev/null 2>&1
 set -e

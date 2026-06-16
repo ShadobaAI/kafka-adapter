@@ -5,11 +5,9 @@ status() {
     echo "$*"
 }
 
-assets_dir="${ASSETS_DIR:-assets}"
-unit_dir="/work/${assets_dir}/unit"
-base_dir="${unit_dir}/base-unit"
-unit_log_path="${unit_dir}/unit.log"
-exit_code_path="${unit_dir}/exit-code.txt"
+base_dir="/work/base-unit"
+unit_log_path="/work/unit.log"
+exit_code_path="/work/exit-code.txt"
 
 xvfb_display_number="${XVFB_DISPLAY_NUMBER:-99}"
 xvfb_display=":${xvfb_display_number}"
@@ -76,7 +74,7 @@ openbox_pid=$!
 ) &
 xdotool_pid=$!
 
-mkdir -p "$unit_dir"
+mkdir -p /work
 status "Вывод лога unit-тестов: ${unit_log_path}"
 : > "$unit_log_path"
 tail -n +1 -f "$unit_log_path" &
@@ -86,7 +84,7 @@ status "Запуск unit-тестов"
 set +e
 {
     /opt/oscript/bin/vrunner run \
-        --command "RunUnitTests=${unit_dir}/YaxParams.json;workspacePath=${unit_dir}" \
+        --command "RunUnitTests=/work/YaxParams.json;workspacePath=/work" \
         --exitCodePath "$exit_code_path" \
         --ibsrv --ibconnection "/F${base_dir}" \
         --db-user "Администратор"
@@ -104,6 +102,7 @@ if [ -f "$exit_code_path" ]; then
     cat "$exit_code_path"
 else
     echo "Файл кода завершения unit-тестов не был создан: ${exit_code_path}" >&2
+    exit 2
 fi
 
 exit "$test_rc"

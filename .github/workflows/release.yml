@@ -210,21 +210,21 @@ jobs:
 
       - name: Create test infobase
         run: |
-          docker run --rm -v "${{ github.workspace }}:/work" -w /work \
+          docker run --rm -v "${{ github.workspace }}/${ASSETS_DIR}:/work" -w /work \
             ghcr.io/shadobaai/ibcmd:latest bash -c "
-            vrunner init-dev --src /work/${ASSETS_DIR}/base --dt /work/${ASSETS_DIR}/kfk-tmpl-test.dt --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
-            vrunner loadext -f /work/${ASSETS_DIR}/kafka-adapter-examples.cfe --extension 'ТестированиеАдаптераKafka' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
-            vrunner loadext -f /work/${ASSETS_DIR}/unit/YAXUNIT.cfe --extension 'YAXUNIT' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
-            vrunner loadext -f /work/${ASSETS_DIR}/unit/unit.cfe --extension 'МодульныеТесты' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db &&
-            vrunner loadext -f /work/${ASSETS_DIR}/ui/VAExtension.cfe --extension 'VAExtension' --updatedb --ibcmd --ibconnection /F/work/${ASSETS_DIR}/base-db
+            vrunner init-dev --src /work/base --dt /work/kfk-tmpl-test.dt --ibcmd --ibconnection /F/work/base-db &&
+            vrunner loadext -f /work/kafka-adapter-examples.cfe --extension 'ТестированиеАдаптераKafka' --updatedb --ibcmd --ibconnection /F/work/base-db &&
+            vrunner loadext -f /work/unit/YAXUNIT.cfe --extension 'YAXUNIT' --updatedb --ibcmd --ibconnection /F/work/base-db &&
+            vrunner loadext -f /work/unit/unit.cfe --extension 'МодульныеТесты' --updatedb --ibcmd --ibconnection /F/work/base-db &&
+            vrunner loadext -f /work/ui/VAExtension.cfe --extension 'VAExtension' --updatedb --ibcmd --ibconnection /F/work/base-db
           "
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/base-db"
 
       - name: Fill test infobase
         run: |
-          docker run --rm --init -v "${{ github.workspace }}:/work" -w /work \
+          docker run --rm --init -v "${{ github.workspace }}/${ASSETS_DIR}:/work" -w /work \
             ghcr.io/shadobaai/client:latest bash -c "
-            vrunner run --ibsrv --ibconnection /F/work/${ASSETS_DIR}/base-db --command 'ЗавершитьРаботуСистемы'
+            vrunner run --ibsrv --ibconnection /F/work/base-db --command 'ЗавершитьРаботуСистемы'
           "
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/base-db"
 
@@ -246,11 +246,11 @@ jobs:
 
           set +e
           docker run --rm --init \
-            -e ASSETS_DIR="${ASSETS_DIR}" \
-            -v "${{ github.workspace }}:/work" \
+            -v "${{ github.workspace }}/${ASSETS_DIR}/unit:/work" \
+            -v "${{ github.workspace }}/.github/scripts/run-unit-docker.sh:/run-unit-docker.sh:ro" \
             -w /work \
             ghcr.io/shadobaai/client:latest \
-            bash /work/.github/scripts/run-unit-docker.sh
+            bash /run-unit-docker.sh
           rc=$?
           set -e
 
@@ -283,11 +283,11 @@ jobs:
 
           set +e
           docker run --rm --init \
-            -e ASSETS_DIR="${ASSETS_DIR}" \
-            -v "${{ github.workspace }}:/work" \
+            -v "${{ github.workspace }}/${ASSETS_DIR}/ui:/work" \
+            -v "${{ github.workspace }}/.github/scripts/run-ui-docker.sh:/run-ui-docker.sh:ro" \
             -w /work \
             ghcr.io/shadobaai/client:latest \
-            bash /work/.github/scripts/run-ui-docker.sh
+            bash /run-ui-docker.sh
           rc=$?
           set -e
 
