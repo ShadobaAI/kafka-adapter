@@ -2,6 +2,9 @@ name: Release / Tests
 
 on:
   workflow_call:
+    secrets:
+      UI_REPORTS_TOKEN:
+        required: true
 
 jobs:
   tests:
@@ -12,10 +15,16 @@ jobs:
       actions: read
       checks: write
       packages: read
+      pull-requests: write
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       ASSETS_DIR: assets
       ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
+      UI_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-ui-reports
+      UI_REPORTS_BRANCH: main
+      UI_REPORTS_DIR: ui-reports
+      UI_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-ui-reports
+      UI_REPORTS_KEEP_RUNS: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -231,15 +240,81 @@ jobs:
           exit "$rc"
 
       - name: Generate Allure report
+        id: allure_report
         if: always() && steps.unit_tests.outcome == 'success'
         run: |
           if [ -d "${ASSETS_DIR}/ui/allure" ]; then
-            npx --yes allure-commandline generate "${ASSETS_DIR}/ui/allure" --clean -o "${ASSETS_DIR}/ui/allure-report"
+            rm -rf "${ASSETS_DIR}/ui/allure-report"
+            npx --yes allure generate "${ASSETS_DIR}/ui/allure" -o "${ASSETS_DIR}/ui/allure-report"
+            test -f "${ASSETS_DIR}/ui/allure-report/summary.json"
+            echo "generated=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "generated=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publish UI test summary
-        if: always() && steps.unit_tests.outcome == 'success'
-        run: python3 .github/scripts/summarize_test_reports.py --ui-allure "${ASSETS_DIR}/ui/allure"
+      - name: Prepare UI report publishing
+        id: ui_report_publish
+        if: always() && steps.allure_report.outputs.generated == 'true'
+        run: |
+          report_path="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "path=${report_path}" >> "$GITHUB_OUTPUT"
+          echo "remote_href=${UI_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout UI report storage
+        if: always() && steps.allure_report.outputs.generated == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.UI_REPORTS_REPOSITORY }}
+          ref: ${{ env.UI_REPORTS_BRANCH }}
+          path: ${{ env.UI_REPORTS_DIR }}
+          token: ${{ secrets.UI_REPORTS_TOKEN }}
+
+      - name: Publish UI Allure report
+        if: always() && steps.allure_report.outputs.generated == 'true'
+        run: |
+          report_path="${{ steps.ui_report_publish.outputs.path }}"
+          report_target="${UI_REPORTS_DIR}/${report_path}"
+          latest_target="${UI_REPORTS_DIR}/latest"
+
+          rm -rf "${report_target}" "${latest_target}"
+          mkdir -p "${report_target}" "${latest_target}"
+          cp -a "${ASSETS_DIR}/ui/allure-report/." "${report_target}/"
+          cp -a "${ASSETS_DIR}/ui/allure-report/." "${latest_target}/"
+          touch "${UI_REPORTS_DIR}/.nojekyll"
+
+          find "${UI_REPORTS_DIR}" -mindepth 1 -maxdepth 1 -type d \
+            -regextype posix-extended -regex ".*/[0-9]+-[0-9]+" -printf "%f\n" \
+            | sort -t '-' -k1,1nr -k2,2nr \
+            | tail -n +"$((UI_REPORTS_KEEP_RUNS + 1))" \
+            | while IFS= read -r old_report; do
+                rm -rf "${UI_REPORTS_DIR}/${old_report}"
+              done
+
+          git -C "${UI_REPORTS_DIR}" config user.name "github-actions[bot]"
+          git -C "${UI_REPORTS_DIR}" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "${UI_REPORTS_DIR}" add .
+
+          if git -C "${UI_REPORTS_DIR}" diff --cached --quiet; then
+            echo "No UI Allure report changes to publish."
+          else
+            git -C "${UI_REPORTS_DIR}" commit -m "Publish UI Allure report ${report_path}"
+            git -C "${UI_REPORTS_DIR}" push origin "HEAD:${UI_REPORTS_BRANCH}"
+          fi
+
+          {
+            echo "### UI Allure report"
+            echo ""
+            echo "- [Current run](${{ steps.ui_report_publish.outputs.remote_href }})"
+            echo "- [Latest](${UI_REPORTS_BASE_URL}/latest/)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish UI Allure summary
+        if: always() && steps.allure_report.outputs.generated == 'true'
+        uses: allure-framework/allure-action@v0
+        with:
+          report-directory: ${{ env.ASSETS_DIR }}/ui/allure-report
+          remote-href: ${{ steps.ui_report_publish.outputs.remote_href }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload UI test reports
         if: always() && steps.unit_tests.outcome == 'success'
