@@ -260,6 +260,16 @@ jobs:
           echo "path=${report_path}" >> "$GITHUB_OUTPUT"
           echo "remote_href=${UI_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
 
+      - name: Publish UI report links
+        if: always() && steps.allure_report.outputs.generated == 'true'
+        run: |
+          {
+            echo "### UI Allure report"
+            echo ""
+            echo "- [Current run](${{ steps.ui_report_publish.outputs.remote_href }})"
+            echo "- [Latest](${UI_REPORTS_BASE_URL}/latest/)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Checkout UI report storage
         if: always() && steps.allure_report.outputs.generated == 'true'
         uses: actions/checkout@v4
@@ -300,13 +310,6 @@ jobs:
             git -C "${UI_REPORTS_DIR}" commit -m "Publish UI Allure report ${report_path}"
             git -C "${UI_REPORTS_DIR}" push origin "HEAD:${UI_REPORTS_BRANCH}"
           fi
-
-          {
-            echo "### UI Allure report"
-            echo ""
-            echo "- [Current run](${{ steps.ui_report_publish.outputs.remote_href }})"
-            echo "- [Latest](${UI_REPORTS_BASE_URL}/latest/)"
-          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish UI Allure summary
         if: always() && steps.allure_report.outputs.generated == 'true'
