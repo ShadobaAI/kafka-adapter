@@ -7,6 +7,11 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      checks: write
+      packages: read
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       ASSETS_DIR: assets
@@ -181,9 +186,16 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/unit"
           exit "$rc"
 
-      - name: Publish unit test summary
+      - name: Publish unit test report
         if: always()
-        run: python3 .github/scripts/summarize_test_reports.py --unit-junit "${ASSETS_DIR}/unit/junit.xml"
+        uses: dorny/test-reporter@v3
+        with:
+          name: Unit Tests
+          path: ${{ env.ASSETS_DIR }}/unit/junit.xml
+          reporter: java-junit
+          report-title: Unit Tests
+          fail-on-error: 'false'
+          fail-on-empty: 'false'
 
       - name: Upload unit test reports
         if: always()
