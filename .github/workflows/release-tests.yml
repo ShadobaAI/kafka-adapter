@@ -190,9 +190,9 @@ jobs:
 
           set +e
           docker run --rm --init \
-            -e COVERAGE_SOURCE_DIR=/coverage-source \
+            -e COVERAGE_PROJECT_DIR=/coverage-project \
             -v "${{ github.workspace }}/${ASSETS_DIR}/unit:/work" \
-            -v "${{ github.workspace }}/${ASSETS_DIR}/base:/coverage-source:ro" \
+            -v "${{ github.workspace }}:/coverage-project:ro" \
             -v "${{ github.workspace }}/.github/scripts/run-unit-docker.sh:/run-unit-docker.sh:ro" \
             -w /work \
             ghcr.io/shadobaai/client:latest \
@@ -214,9 +214,9 @@ jobs:
 
           set +e
           docker run --rm --init \
-            -e COVERAGE_SOURCE_DIR=/coverage-source \
+            -e COVERAGE_PROJECT_DIR=/coverage-project \
             -v "${{ github.workspace }}/${ASSETS_DIR}/ui:/work" \
-            -v "${{ github.workspace }}/${ASSETS_DIR}/base:/coverage-source:ro" \
+            -v "${{ github.workspace }}:/coverage-project:ro" \
             -v "${{ github.workspace }}/.github/scripts/run-ui-docker.sh:/run-ui-docker.sh:ro" \
             -w /work \
             ghcr.io/shadobaai/client:latest \
