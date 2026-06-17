@@ -9,6 +9,10 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
+REPORT_CONFIGURATION_NAME = "Адаптер Kafka"
+REPORT_TEST_ENGINE = "YAXUNIT + Vanessa Automation"
+
+
 def coverage_summary(paths):
     if isinstance(paths, Path):
         paths = [paths]
@@ -217,11 +221,15 @@ def normalize_result_groups(results_dir, configuration_version):
             set_label(labels, "ВерсияКонфигурации", configuration_version)
             changed = True
 
+        set_label(labels, "Конфигурация", REPORT_CONFIGURATION_NAME)
+        set_label(labels, "ТестовыйДвижок", REPORT_TEST_ENGINE)
+        changed = True
+
         if changed:
             path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def add_coverage_report(results_dir, title, test_engine, configuration_version, source_dir):
+def add_coverage_report(results_dir, title, configuration_version, source_dir):
     coverage_path = source_dir / "genericCoverage.xml"
     summary = coverage_summary(coverage_path)
 
@@ -261,7 +269,10 @@ def add_coverage_report(results_dir, title, test_engine, configuration_version, 
     ):
         attachments.append(copy_attachment(results_dir, source_dir / file_name, file_name, "text/plain"))
 
-    diagnostic_labels = [{"name": "ТестовыйДвижок", "value": test_engine}]
+    diagnostic_labels = [
+        {"name": "Конфигурация", "value": REPORT_CONFIGURATION_NAME},
+        {"name": "ТестовыйДвижок", "value": REPORT_TEST_ENGINE},
+    ]
     if configuration_version:
         diagnostic_labels.append({"name": "ВерсияКонфигурации", "value": configuration_version})
 
@@ -296,7 +307,7 @@ def add_coverage_report(results_dir, title, test_engine, configuration_version, 
 
         add_result(
             results_dir,
-            module["tree_name"],
+            f"{module['tree_name']} ({module['percent']:.2f}%, {module['covered']}/{module['total']})",
             module["tree_suite"],
             "passed",
             module_message,
@@ -317,8 +328,8 @@ def main():
     configuration_version = os.environ.get("RELEASE_TAG", "").strip()
 
     normalize_result_groups(results_dir, configuration_version)
-    add_coverage_report(results_dir, "Покрытие unit-тестами", "YAXUNIT", configuration_version, Path(args.unit_dir))
-    add_coverage_report(results_dir, "Покрытие UI-тестами", "Vanessa Automation", configuration_version, Path(args.ui_dir))
+    add_coverage_report(results_dir, "Покрытие unit-тестами", configuration_version, Path(args.unit_dir))
+    add_coverage_report(results_dir, "Покрытие UI-тестами", configuration_version, Path(args.ui_dir))
 
 
 if __name__ == "__main__":
