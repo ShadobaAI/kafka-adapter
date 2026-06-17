@@ -3,7 +3,7 @@ name: Release / Tests
 on:
   workflow_call:
     secrets:
-      UI_REPORTS_TOKEN:
+      REPORTS_TOKEN:
         required: true
 
 jobs:
@@ -20,10 +20,10 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       ASSETS_DIR: assets
       ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
-      UI_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-ui-reports
+      UI_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
       UI_REPORTS_BRANCH: main
       UI_REPORTS_DIR: ui-reports
-      UI_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-ui-reports
+      UI_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-reports
       UI_REPORTS_KEEP_RUNS: 30
     steps:
       - name: Checkout
@@ -277,7 +277,7 @@ jobs:
           repository: ${{ env.UI_REPORTS_REPOSITORY }}
           ref: ${{ env.UI_REPORTS_BRANCH }}
           path: ${{ env.UI_REPORTS_DIR }}
-          token: ${{ secrets.UI_REPORTS_TOKEN }}
+          token: ${{ secrets.REPORTS_TOKEN }}
 
       - name: Publish UI Allure report
         if: always() && steps.allure_report.outputs.generated == 'true'
