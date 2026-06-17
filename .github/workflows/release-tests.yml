@@ -257,6 +257,8 @@ jobs:
         if: always() && steps.allure_results.outputs.available == 'true'
         run: |
           npx --yes allure generate "${ASSETS_DIR}/allure" -o "${ASSETS_DIR}/allure-report"
+          python3 .github/scripts/patch_allure_report.py \
+            --report-dir "${ASSETS_DIR}/allure-report"
           test -f "${ASSETS_DIR}/allure-report/summary.json"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 

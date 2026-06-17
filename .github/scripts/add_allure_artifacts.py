@@ -73,6 +73,46 @@ def add_result(results_dir, name, suite, status, message, attachments):
     )
 
 
+def get_label(labels, name):
+    for label in labels:
+        if label.get("name") == name:
+            return label.get("value")
+    return None
+
+
+def set_label(labels, name, value):
+    for label in labels:
+        if label.get("name") == name:
+            label["value"] = value
+            return
+    labels.append({"name": name, "value": value})
+
+
+def normalize_result_groups(results_dir):
+    for path in results_dir.glob("*-result.json"):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        labels = data.setdefault("labels", [])
+        changed = False
+
+        if get_label(labels, "parentSuite") == "Unit tests":
+            set_label(labels, "parentSuite", "Модульные тесты")
+            changed = True
+        elif get_label(labels, "framework") == "YAxUnit" and not get_label(labels, "parentSuite"):
+            set_label(labels, "parentSuite", "Модульные тесты")
+            changed = True
+
+        if not get_label(labels, "parentSuite") and (
+            get_label(labels, "package") == "features" or get_label(labels, "host")
+        ):
+            set_label(labels, "parentSuite", "UI-тесты")
+            if not get_label(labels, "suite"):
+                set_label(labels, "suite", "Сценарии")
+            changed = True
+
+        if changed:
+            path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def add_diagnostics(results_dir, title, source_dir):
     coverage_path = source_dir / "genericCoverage.xml"
     summary = coverage_summary(coverage_path)
@@ -111,7 +151,7 @@ def add_diagnostics(results_dir, title, source_dir):
     ):
         attachments.append(copy_attachment(results_dir, source_dir / file_name, file_name, "text/plain"))
 
-    add_result(results_dir, f"{title} coverage", "Coverage", status, message, attachments)
+    add_result(results_dir, f"Покрытие {title}", "Покрытие", status, message, attachments)
 
 
 def main():
@@ -124,8 +164,9 @@ def main():
     results_dir = Path(args.results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    add_diagnostics(results_dir, "Unit", Path(args.unit_dir))
-    add_diagnostics(results_dir, "UI", Path(args.ui_dir))
+    normalize_result_groups(results_dir)
+    add_diagnostics(results_dir, "unit-тестов", Path(args.unit_dir))
+    add_diagnostics(results_dir, "UI-тестов", Path(args.ui_dir))
 
 
 if __name__ == "__main__":
