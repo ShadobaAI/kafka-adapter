@@ -1,0 +1,58 @@
+name: Release / Build demo DT
+
+on:
+  workflow_call:
+
+jobs:
+  build_dt:
+    name: Build demo DT
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Download kafka-adapter CFE XML
+        run: gh release download "${RELEASE_TAG}" --repo ${{ github.repository }} --pattern "${{ github.event.repository.name }}-cfe-xml.zip"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Unpack kafka-adapter CFE XML
+        run: unzip -q "${{ github.event.repository.name }}-cfe-xml.zip" -d cfe-xml
+
+      - name: Install oras
+        run: |
+          ORAS_TAG="$(curl -fsSL https://api.github.com/repos/oras-project/oras/releases/latest \
+            | jq -r .tag_name)"
+          ORAS_VERSION="${ORAS_TAG#v}"
+          curl -fsSL "https://github.com/oras-project/oras/releases/download/${ORAS_TAG}/oras_${ORAS_VERSION}_linux_amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin oras
+
+      - name: Download kfk-tmpl-demo.dt from GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io --username ${{ github.actor }} --password-stdin
+          oras pull ghcr.io/shadobaai/kfk-tmpl-demo:latest
+
+      - name: Download kafka-base.cf
+        run: gh release download --repo ShadobaAI/kafka-adapter-base --pattern "kafka-adapter-base.cf" --output base.cf
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download kafka-adapter-examples.cfe
+        run: gh release download --repo ShadobaAI/kafka-adapter-examples --pattern "kafka-adapter-examples.cfe" --output examples.cfe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build demo DT from CFE XML
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/work" -w /work \
+            ghcr.io/shadobaai/ibcmd:latest bash -c "
+            vrunner init-dev --dt kfk-tmpl-demo.dt --cf base.cf --ibconnection /F/work/db --ibcmd &&
+            vrunner compileext /work/cfe-xml АдаптерKafka --ibconnection /F/work/db --updatedb --ibcmd &&
+            vrunner loadext --file examples.cfe --ibconnection /F/work/db --extension ТестированиеАдаптераKafka --updatedb --ibcmd &&
+            vrunner dump /work/${{ github.event.repository.name }}-demo.dt --ibconnection /F/work/db --ibcmd
+          "
+          sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
+
+      - name: Upload ${{ github.event.repository.name }}-demo.dt to release
+        run: gh release upload "${RELEASE_TAG}" ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

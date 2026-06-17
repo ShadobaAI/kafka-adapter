@@ -1,0 +1,13 @@
+name: Release / Build CFE
+
+on:
+  workflow_call:
+
+jobs:
+  build_cfe:
+    name: Build CFE
+    uses: ShadobaAI/kafka-tools/.github/workflows/release-1c-artifacts.yml@main
+    secrets: inherit
+    with:
+      name_suffix: cfe
+      version_files: src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl

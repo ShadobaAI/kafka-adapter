@@ -1,0 +1,76 @@
+name: Release / Build CF-XML
+
+on:
+  workflow_call:
+
+jobs:
+  build_cf_xml:
+    name: Build CF-XML
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout CI scripts
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/kafka-tools
+          path: .ci
+
+      - name: Lowercase owner
+        id: owner
+        run: echo "value=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Set version in sources
+        id: meta
+        run: |
+          python3 .ci/.github/scripts/set_version.py \
+            "${RELEASE_TAG}" \
+            src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
+
+      - name: Remove SSL objects
+        run: python3 .github/scripts/remove_ssl_objects.py
+
+      - name: Convert CFE sources to CF
+        run: python3 .github/scripts/cfe2cf.py
+
+      - name: Package EDT
+        uses: ./.ci/.github/actions/package-zip
+        with:
+          source-dir: .
+          output-file: output/${{ github.event.repository.name }}-cf-edt.zip
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
+                      /usr/share/swift
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ steps.owner.outputs.value }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Convert EDT to XML
+        uses: ./.ci/.github/actions/edt2xml
+        with:
+          source-dir: .
+          xml-dir: ${{ runner.temp }}/cf-xml
+
+      - name: Package XML
+        uses: ./.ci/.github/actions/package-zip
+        with:
+          source-dir: ${{ runner.temp }}/cf-xml
+          output-file: output/${{ github.event.repository.name }}-cf-xml.zip
+
+      - name: Save CF-XML artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cf-xml-artifacts
+          path: output/*
+          retention-days: 1
