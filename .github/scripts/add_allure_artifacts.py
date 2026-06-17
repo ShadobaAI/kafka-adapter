@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import os
 import shutil
 import time
 import uuid
@@ -8,39 +9,43 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
-def coverage_summary(path):
-    if not path.is_file():
+def coverage_summary(paths):
+    if isinstance(paths, Path):
+        paths = [paths]
+
+    existing_paths = [path for path in paths if path.is_file()]
+    if not existing_paths:
         return None
 
-    total = 0
-    covered = 0
     modules = {}
-    current_file_path = None
 
-    for event, elem in ET.iterparse(path, events=("start", "end")):
-        tag = elem.tag.rsplit("}", maxsplit=1)[-1]
+    for path in existing_paths:
+        current_file_path = None
 
-        if event == "start" and tag == "file":
-            file_path = elem.attrib.get("path")
-            current_file_path = file_path
-            if current_file_path:
-                modules.setdefault(current_file_path, {"covered": 0, "total": 0})
-        elif event == "start" and tag == "lineToCover":
-            total += 1
-            if current_file_path:
-                modules.setdefault(current_file_path, {"covered": 0, "total": 0})
-                modules[current_file_path]["total"] += 1
-            if elem.attrib.get("covered") == "true":
-                covered += 1
+        for event, elem in ET.iterparse(path, events=("start", "end")):
+            tag = elem.tag.rsplit("}", maxsplit=1)[-1]
+
+            if event == "start" and tag == "file":
+                file_path = elem.attrib.get("path")
+                current_file_path = file_path
                 if current_file_path:
-                    modules[current_file_path]["covered"] += 1
-        elif event == "end" and tag == "file":
-            current_file_path = None
-            elem.clear()
+                    modules.setdefault(current_file_path, {"covered_lines": set(), "total_lines": set()})
+            elif event == "start" and tag == "lineToCover" and current_file_path:
+                line_number = elem.attrib.get("lineNumber")
+                if line_number:
+                    module = modules.setdefault(current_file_path, {"covered_lines": set(), "total_lines": set()})
+                    module["total_lines"].add(line_number)
+                    if elem.attrib.get("covered") == "true":
+                        module["covered_lines"].add(line_number)
+            elif event == "end" and tag == "file":
+                current_file_path = None
+                elem.clear()
 
     module_summaries = []
     for module_path, module in sorted(modules.items()):
         module_info = coverage_module_info(module_path)
+        module_total = len(module["total_lines"])
+        module_covered = len(module["covered_lines"])
         module_summaries.append(
             {
                 "path": module_path,
@@ -48,12 +53,14 @@ def coverage_summary(path):
                 "tree_name": module_info["tree_name"],
                 "tree_suite": module_info["tree_suite"],
                 "tree_sub_suite": module_info["tree_sub_suite"],
-                "covered": module["covered"],
-                "total": module["total"],
-                "percent": (module["covered"] / module["total"] * 100) if module["total"] else 0,
+                "covered": module_covered,
+                "total": module_total,
+                "percent": (module_covered / module_total * 100) if module_total else 0,
             }
         )
 
+    total = sum(module["total"] for module in module_summaries)
+    covered = sum(module["covered"] for module in module_summaries)
     percent = (covered / total * 100) if total else 0
     return {
         "files": len(modules),
@@ -185,17 +192,17 @@ def set_label(labels, name, value):
     labels.append({"name": name, "value": value})
 
 
-def normalize_result_groups(results_dir):
+def normalize_result_groups(results_dir, configuration_version):
     for path in results_dir.glob("*-result.json"):
         data = json.loads(path.read_text(encoding="utf-8"))
         labels = data.setdefault("labels", [])
         changed = False
 
         if get_label(labels, "parentSuite") == "Unit tests":
-            set_label(labels, "parentSuite", "unit-тесты")
+            set_label(labels, "parentSuite", "Unit-тесты")
             changed = True
         elif get_label(labels, "framework") == "YAxUnit" and not get_label(labels, "parentSuite"):
-            set_label(labels, "parentSuite", "unit-тесты")
+            set_label(labels, "parentSuite", "Unit-тесты")
             changed = True
 
         if not get_label(labels, "parentSuite") and (
@@ -206,11 +213,15 @@ def normalize_result_groups(results_dir):
                 set_label(labels, "suite", "Сценарии")
             changed = True
 
+        if configuration_version:
+            set_label(labels, "ВерсияКонфигурации", configuration_version)
+            changed = True
+
         if changed:
             path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def add_diagnostics(results_dir, title, source_dir):
+def add_coverage_report(results_dir, title, test_engine, configuration_version, source_dir):
     coverage_path = source_dir / "genericCoverage.xml"
     summary = coverage_summary(coverage_path)
 
@@ -250,7 +261,22 @@ def add_diagnostics(results_dir, title, source_dir):
     ):
         attachments.append(copy_attachment(results_dir, source_dir / file_name, file_name, "text/plain"))
 
-    add_result(results_dir, f"Покрытие {title}", "Покрытие тестами", status, message, attachments)
+    diagnostic_labels = [{"name": "ТестовыйДвижок", "value": test_engine}]
+    if configuration_version:
+        diagnostic_labels.append({"name": "ВерсияКонфигурации", "value": configuration_version})
+
+    add_result(
+        results_dir,
+        f"Итого {summary['percent']:.2f}%" if summary else "Итого",
+        title,
+        status,
+        message,
+        attachments,
+        extra_labels=[
+            {"name": "parentSuite", "value": title},
+            *diagnostic_labels,
+        ],
+    )
 
     if not summary:
         return
@@ -261,8 +287,9 @@ def add_diagnostics(results_dir, title, source_dir):
             f"({module['percent']:.2f}%). {title}: {module['display_path']}"
         )
         module_labels = [
-            {"name": "parentSuite", "value": "Покрытие тестами"},
+            {"name": "parentSuite", "value": title},
             {"name": "testType", "value": title},
+            *diagnostic_labels,
         ]
         if module["tree_sub_suite"]:
             module_labels.append({"name": "subSuite", "value": module["tree_sub_suite"]})
@@ -287,10 +314,11 @@ def main():
 
     results_dir = Path(args.results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
+    configuration_version = os.environ.get("RELEASE_TAG", "").strip()
 
-    normalize_result_groups(results_dir)
-    add_diagnostics(results_dir, "unit-тестов", Path(args.unit_dir))
-    add_diagnostics(results_dir, "UI-тестов", Path(args.ui_dir))
+    normalize_result_groups(results_dir, configuration_version)
+    add_coverage_report(results_dir, "Покрытие unit-тестами", "YAXUNIT", configuration_version, Path(args.unit_dir))
+    add_coverage_report(results_dir, "Покрытие UI-тестами", "Vanessa Automation", configuration_version, Path(args.ui_dir))
 
 
 if __name__ == "__main__":

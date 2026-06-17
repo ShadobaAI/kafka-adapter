@@ -24,6 +24,7 @@ jobs:
       pull-requests: write
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
       ASSETS_DIR: assets
       ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
       TEST_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
