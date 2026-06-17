@@ -6,6 +6,8 @@ on:
     types: [published]
 
 permissions:
+  actions: read
+  checks: write
   contents: write
   packages: read
 
