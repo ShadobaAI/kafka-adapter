@@ -29,6 +29,50 @@ jobs:
     uses: ./.github/workflows/release-tests.yml
     secrets: inherit
 
+  update_release_notes:
+    name: Add test report link to release
+    needs: [tests]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      TEST_REPORT_URL: ${{ needs.tests.outputs.test_report_url }}
+    steps:
+      - name: Add test report link
+        run: |
+          if [ -z "${TEST_REPORT_URL}" ]; then
+            echo "Test report URL is empty"
+            exit 1
+          fi
+
+          body_file="$(mktemp)"
+          gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --json body --jq .body > "$body_file"
+
+          python3 - "$body_file" "$TEST_REPORT_URL" <<'PY'
+          import pathlib
+          import re
+          import sys
+
+          body_path = pathlib.Path(sys.argv[1])
+          report_url = sys.argv[2]
+          marker = "## Test report"
+          block = f"{marker}\n\n- [Allure test report]({report_url})\n"
+
+          body = body_path.read_text(encoding="utf-8")
+          pattern = rf"(?ms)^{re.escape(marker)}\n.*?(?=^## |\Z)"
+          if re.search(pattern, body):
+              body = re.sub(pattern, block + "\n", body).rstrip() + "\n"
+          else:
+              body = f"{body.rstrip()}\n\n{block}" if body.strip() else block
+
+          body_path.write_text(body, encoding="utf-8")
+          PY
+
+          gh release edit "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --notes-file "$body_file"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build_cf:
     name: Build CF
     needs: [tests]

@@ -2,6 +2,10 @@ name: Release / Tests
 
 on:
   workflow_call:
+    outputs:
+      test_report_url:
+        description: Published Allure test report URL
+        value: ${{ jobs.tests.outputs.test_report_url }}
     secrets:
       REPORTS_TOKEN:
         required: true
@@ -10,6 +14,8 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
+    outputs:
+      test_report_url: ${{ steps.test_report_publish.outputs.remote_href }}
     permissions:
       contents: read
       actions: read
@@ -20,11 +26,11 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       ASSETS_DIR: assets
       ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
-      UI_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
-      UI_REPORTS_BRANCH: main
-      UI_REPORTS_DIR: ui-reports
-      UI_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-reports
-      UI_REPORTS_KEEP_RUNS: 30
+      TEST_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
+      TEST_REPORTS_BRANCH: main
+      TEST_REPORTS_DIR: test-reports
+      TEST_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-reports
+      TEST_REPORTS_KEEP_RUNS: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -184,7 +190,9 @@ jobs:
 
           set +e
           docker run --rm --init \
+            -e COVERAGE_SOURCE_DIR=/coverage-source \
             -v "${{ github.workspace }}/${ASSETS_DIR}/unit:/work" \
+            -v "${{ github.workspace }}/${ASSETS_DIR}/base:/coverage-source:ro" \
             -v "${{ github.workspace }}/.github/scripts/run-unit-docker.sh:/run-unit-docker.sh:ro" \
             -w /work \
             ghcr.io/shadobaai/client:latest \
@@ -194,28 +202,6 @@ jobs:
 
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/unit"
           exit "$rc"
-
-      - name: Publish unit test report
-        if: always()
-        uses: dorny/test-reporter@v3
-        with:
-          name: Unit Tests
-          path: ${{ env.ASSETS_DIR }}/unit/junit.xml
-          reporter: java-junit
-          report-title: Unit Tests
-          fail-on-error: 'false'
-          fail-on-empty: 'false'
-
-      - name: Upload unit test reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-reports
-          path: |
-            ${{ env.ASSETS_DIR }}/unit/junit.xml
-            ${{ env.ASSETS_DIR }}/unit/unit.log
-            ${{ env.ASSETS_DIR }}/unit/exit-code.txt
-          if-no-files-found: warn
 
       - name: Run UI tests
         id: ui_tests
@@ -228,7 +214,9 @@ jobs:
 
           set +e
           docker run --rm --init \
+            -e COVERAGE_SOURCE_DIR=/coverage-source \
             -v "${{ github.workspace }}/${ASSETS_DIR}/ui:/work" \
+            -v "${{ github.workspace }}/${ASSETS_DIR}/base:/coverage-source:ro" \
             -v "${{ github.workspace }}/.github/scripts/run-ui-docker.sh:/run-ui-docker.sh:ro" \
             -w /work \
             ghcr.io/shadobaai/client:latest \
@@ -239,96 +227,112 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/ui"
           exit "$rc"
 
-      - name: Generate Allure report
-        id: allure_report
-        if: always() && steps.unit_tests.outcome == 'success'
+      - name: Prepare Allure results
+        id: allure_results
+        if: always()
         run: |
+          rm -rf "${ASSETS_DIR}/allure" "${ASSETS_DIR}/allure-report"
+          mkdir -p "${ASSETS_DIR}/allure"
+
+          if [ -d "${ASSETS_DIR}/unit/allure" ]; then
+            cp -a "${ASSETS_DIR}/unit/allure/." "${ASSETS_DIR}/allure/"
+          fi
           if [ -d "${ASSETS_DIR}/ui/allure" ]; then
-            rm -rf "${ASSETS_DIR}/ui/allure-report"
-            npx --yes allure generate "${ASSETS_DIR}/ui/allure" -o "${ASSETS_DIR}/ui/allure-report"
-            test -f "${ASSETS_DIR}/ui/allure-report/summary.json"
-            echo "generated=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "generated=false" >> "$GITHUB_OUTPUT"
+            cp -a "${ASSETS_DIR}/ui/allure/." "${ASSETS_DIR}/allure/"
           fi
 
-      - name: Prepare UI report publishing
-        id: ui_report_publish
+          python3 .github/scripts/add_allure_artifacts.py \
+            --results-dir "${ASSETS_DIR}/allure" \
+            --unit-dir "${ASSETS_DIR}/unit" \
+            --ui-dir "${ASSETS_DIR}/ui"
+
+          if find "${ASSETS_DIR}/allure" -name '*-result.json' -print -quit | grep -q .; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate Allure report
+        id: allure_report
+        if: always() && steps.allure_results.outputs.available == 'true'
+        run: |
+          npx --yes allure generate "${ASSETS_DIR}/allure" -o "${ASSETS_DIR}/allure-report"
+          test -f "${ASSETS_DIR}/allure-report/summary.json"
+          echo "generated=true" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare test report publishing
+        id: test_report_publish
         if: always() && steps.allure_report.outputs.generated == 'true'
         run: |
           report_path="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           echo "path=${report_path}" >> "$GITHUB_OUTPUT"
-          echo "remote_href=${UI_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
+          echo "remote_href=${TEST_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
 
-      - name: Publish UI report links
+      - name: Publish test report links
         if: always() && steps.allure_report.outputs.generated == 'true'
         run: |
           {
-            echo "### UI Allure report"
+            echo "### Allure test report"
             echo ""
-            echo "- [Current run](${{ steps.ui_report_publish.outputs.remote_href }})"
-            echo "- [Latest](${UI_REPORTS_BASE_URL}/latest/)"
+            echo "- [Current run](${{ steps.test_report_publish.outputs.remote_href }})"
+            echo "- [Latest](${TEST_REPORTS_BASE_URL}/latest/)"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Checkout UI report storage
+      - name: Checkout test report storage
         if: always() && steps.allure_report.outputs.generated == 'true'
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.UI_REPORTS_REPOSITORY }}
-          ref: ${{ env.UI_REPORTS_BRANCH }}
-          path: ${{ env.UI_REPORTS_DIR }}
+          repository: ${{ env.TEST_REPORTS_REPOSITORY }}
+          ref: ${{ env.TEST_REPORTS_BRANCH }}
+          path: ${{ env.TEST_REPORTS_DIR }}
           token: ${{ secrets.REPORTS_TOKEN }}
 
-      - name: Publish UI Allure report
+      - name: Publish Allure test report
         if: always() && steps.allure_report.outputs.generated == 'true'
         run: |
-          report_path="${{ steps.ui_report_publish.outputs.path }}"
-          report_target="${UI_REPORTS_DIR}/${report_path}"
-          latest_target="${UI_REPORTS_DIR}/latest"
+          report_path="${{ steps.test_report_publish.outputs.path }}"
+          report_target="${TEST_REPORTS_DIR}/${report_path}"
+          latest_target="${TEST_REPORTS_DIR}/latest"
 
           rm -rf "${report_target}" "${latest_target}"
           mkdir -p "${report_target}" "${latest_target}"
-          cp -a "${ASSETS_DIR}/ui/allure-report/." "${report_target}/"
-          cp -a "${ASSETS_DIR}/ui/allure-report/." "${latest_target}/"
-          touch "${UI_REPORTS_DIR}/.nojekyll"
+          cp -a "${ASSETS_DIR}/allure-report/." "${report_target}/"
+          cp -a "${ASSETS_DIR}/allure-report/." "${latest_target}/"
+          touch "${TEST_REPORTS_DIR}/.nojekyll"
 
-          find "${UI_REPORTS_DIR}" -mindepth 1 -maxdepth 1 -type d \
+          find "${TEST_REPORTS_DIR}" -mindepth 1 -maxdepth 1 -type d \
             -regextype posix-extended -regex ".*/[0-9]+-[0-9]+" -printf "%f\n" \
             | sort -t '-' -k1,1nr -k2,2nr \
-            | tail -n +"$((UI_REPORTS_KEEP_RUNS + 1))" \
+            | tail -n +"$((TEST_REPORTS_KEEP_RUNS + 1))" \
             | while IFS= read -r old_report; do
-                rm -rf "${UI_REPORTS_DIR}/${old_report}"
+                rm -rf "${TEST_REPORTS_DIR}/${old_report}"
               done
 
-          git -C "${UI_REPORTS_DIR}" config user.name "github-actions[bot]"
-          git -C "${UI_REPORTS_DIR}" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C "${UI_REPORTS_DIR}" add .
+          git -C "${TEST_REPORTS_DIR}" config user.name "github-actions[bot]"
+          git -C "${TEST_REPORTS_DIR}" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "${TEST_REPORTS_DIR}" add .
 
-          if git -C "${UI_REPORTS_DIR}" diff --cached --quiet; then
-            echo "No UI Allure report changes to publish."
+          if git -C "${TEST_REPORTS_DIR}" diff --cached --quiet; then
+            echo "No Allure test report changes to publish."
           else
-            git -C "${UI_REPORTS_DIR}" commit -m "Publish UI Allure report ${report_path}"
-            git -C "${UI_REPORTS_DIR}" push origin "HEAD:${UI_REPORTS_BRANCH}"
+            git -C "${TEST_REPORTS_DIR}" commit -m "Publish Allure test report ${report_path}"
+            git -C "${TEST_REPORTS_DIR}" push origin "HEAD:${TEST_REPORTS_BRANCH}"
           fi
 
-      - name: Publish UI Allure summary
+      - name: Publish Allure test summary
         if: always() && steps.allure_report.outputs.generated == 'true'
         uses: allure-framework/allure-action@v0
         with:
-          report-directory: ${{ env.ASSETS_DIR }}/ui/allure-report
-          remote-href: ${{ steps.ui_report_publish.outputs.remote_href }}
+          report-directory: ${{ env.ASSETS_DIR }}/allure-report
+          remote-href: ${{ steps.test_report_publish.outputs.remote_href }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload UI test reports
-        if: always() && steps.unit_tests.outcome == 'success'
+      - name: Upload Allure test report
+        if: always() && steps.allure_report.outputs.generated == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: ui-test-reports
-          path: |
-            ${{ env.ASSETS_DIR }}/ui/allure
-            ${{ env.ASSETS_DIR }}/ui/allure-report
-            ${{ env.ASSETS_DIR }}/ui/1cv8c.log
-            ${{ env.ASSETS_DIR }}/ui/exit-code.txt
+          name: test-report
+          path: ${{ env.ASSETS_DIR }}/allure-report
           if-no-files-found: warn
 
       - name: Fail on test errors
@@ -338,8 +342,12 @@ jobs:
             echo "Unit tests failed"
             exit 1
           fi
-          if [ ! -f "${ASSETS_DIR}/unit/junit.xml" ]; then
-            echo "Unit JUnit report not found: ${ASSETS_DIR}/unit/junit.xml"
+          if [ ! -d "${ASSETS_DIR}/unit/allure" ]; then
+            echo "Unit Allure results not found: ${ASSETS_DIR}/unit/allure"
+            exit 1
+          fi
+          if [ ! -f "${ASSETS_DIR}/unit/genericCoverage.xml" ]; then
+            echo "Unit coverage report not found: ${ASSETS_DIR}/unit/genericCoverage.xml"
             exit 1
           fi
 
@@ -351,7 +359,11 @@ jobs:
             echo "UI Allure results not found: ${ASSETS_DIR}/ui/allure"
             exit 1
           fi
-          if [ ! -d "${ASSETS_DIR}/ui/allure-report" ]; then
-            echo "Generated UI Allure report not found: ${ASSETS_DIR}/ui/allure-report"
+          if [ ! -f "${ASSETS_DIR}/ui/genericCoverage.xml" ]; then
+            echo "UI coverage report not found: ${ASSETS_DIR}/ui/genericCoverage.xml"
+            exit 1
+          fi
+          if [ ! -d "${ASSETS_DIR}/allure-report" ]; then
+            echo "Generated Allure test report not found: ${ASSETS_DIR}/allure-report"
             exit 1
           fi
