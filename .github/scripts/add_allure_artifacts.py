@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 REPORT_CONFIGURATION_NAME = "Адаптер Kafka"
-REPORT_TEST_ENGINE = "YAXUNIT + Vanessa Automation"
+REPORT_TEST_ENGINE = "YAxUnit + Vanessa Automation"
 
 
 def coverage_summary(paths):
