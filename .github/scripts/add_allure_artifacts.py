@@ -13,6 +13,23 @@ REPORT_CONFIGURATION_NAME = "Адаптер Kafka"
 REPORT_TEST_ENGINE = "YAxUnit + Vanessa Automation"
 
 
+def normalize_version(value):
+    return value.strip().removeprefix("v").removeprefix("V")
+
+
+def report_test_engine_version():
+    versions = []
+    yaxunit_version = normalize_version(os.environ.get("YAXUNIT_VERSION", ""))
+    vanessa_version = normalize_version(os.environ.get("VANESSA_AUTOMATION_VERSION", ""))
+
+    if yaxunit_version:
+        versions.append(f"YAxUnit: {yaxunit_version}")
+    if vanessa_version:
+        versions.append(f"Vanessa Automation: {vanessa_version}")
+
+    return " + ".join(versions)
+
+
 def coverage_summary(paths):
     if isinstance(paths, Path):
         paths = [paths]
@@ -196,7 +213,7 @@ def set_label(labels, name, value):
     labels.append({"name": name, "value": value})
 
 
-def normalize_result_groups(results_dir, configuration_version):
+def normalize_result_groups(results_dir, configuration_version, test_engine_version):
     for path in results_dir.glob("*-result.json"):
         data = json.loads(path.read_text(encoding="utf-8"))
         labels = data.setdefault("labels", [])
@@ -223,13 +240,15 @@ def normalize_result_groups(results_dir, configuration_version):
 
         set_label(labels, "Конфигурация", REPORT_CONFIGURATION_NAME)
         set_label(labels, "ТестовыйДвижок", REPORT_TEST_ENGINE)
+        if test_engine_version:
+            set_label(labels, "ВерсияТестовогоДвижка", test_engine_version)
         changed = True
 
         if changed:
             path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def add_coverage_report(results_dir, title, configuration_version, source_dir):
+def add_coverage_report(results_dir, title, configuration_version, test_engine_version, source_dir):
     coverage_path = source_dir / "genericCoverage.xml"
     summary = coverage_summary(coverage_path)
 
@@ -275,6 +294,8 @@ def add_coverage_report(results_dir, title, configuration_version, source_dir):
     ]
     if configuration_version:
         diagnostic_labels.append({"name": "ВерсияКонфигурации", "value": configuration_version})
+    if test_engine_version:
+        diagnostic_labels.append({"name": "ВерсияТестовогоДвижка", "value": test_engine_version})
 
     add_result(
         results_dir,
@@ -326,10 +347,11 @@ def main():
     results_dir = Path(args.results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
     configuration_version = os.environ.get("RELEASE_TAG", "").strip()
+    test_engine_version = report_test_engine_version()
 
-    normalize_result_groups(results_dir, configuration_version)
-    add_coverage_report(results_dir, "Покрытие unit-тестами", configuration_version, Path(args.unit_dir))
-    add_coverage_report(results_dir, "Покрытие UI-тестами", configuration_version, Path(args.ui_dir))
+    normalize_result_groups(results_dir, configuration_version, test_engine_version)
+    add_coverage_report(results_dir, "Покрытие unit-тестами", configuration_version, test_engine_version, Path(args.unit_dir))
+    add_coverage_report(results_dir, "Покрытие UI-тестами", configuration_version, test_engine_version, Path(args.ui_dir))
 
 
 if __name__ == "__main__":

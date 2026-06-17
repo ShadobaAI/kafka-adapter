@@ -97,6 +97,7 @@ jobs:
       - name: Download Vanessa Automation
         run: |
           mkdir -p "${ASSETS_DIR}/ui"
+          echo "VANESSA_AUTOMATION_VERSION=$(gh release view --repo Pr-Mex/vanessa-automation --json tagName --jq .tagName)" >> "$GITHUB_ENV"
           gh release download --repo Pr-Mex/vanessa-automation --pattern "VAExtension*.cfe" --output "${ASSETS_DIR}/ui/VAExtension.cfe"
           gh release download --repo Pr-Mex/vanessa-automation --pattern "vanessa-automation-single.*.zip" --output "${RUNNER_TEMP}/vanessa-automation-single.zip"
           unzip -j "${RUNNER_TEMP}/vanessa-automation-single.zip" "vanessa-automation-single.epf" -d "${ASSETS_DIR}/ui"
@@ -106,6 +107,7 @@ jobs:
       - name: Download YAxUnit
         run: |
           mkdir -p "${ASSETS_DIR}/unit"
+          echo "YAXUNIT_VERSION=$(gh release view --repo bia-technologies/yaxunit --json tagName --jq .tagName)" >> "$GITHUB_ENV"
           gh release download --repo bia-technologies/yaxunit --pattern "YAxUnit-*.cfe" --output "${ASSETS_DIR}/unit/YAXUNIT.cfe"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
