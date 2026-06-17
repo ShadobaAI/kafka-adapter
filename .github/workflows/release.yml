@@ -42,7 +42,7 @@ jobs:
       - name: Add test report link
         run: |
           if [ -z "${TEST_REPORT_URL}" ]; then
-            echo "Test report URL is empty"
+            echo "URL отчета тестирования пустой"
             exit 1
           fi
 
@@ -56,11 +56,12 @@ jobs:
 
           body_path = pathlib.Path(sys.argv[1])
           report_url = sys.argv[2]
-          marker = "## Test report"
-          block = f"{marker}\n\n- [Allure test report]({report_url})\n"
+          marker = "## Отчет тестирования"
+          legacy_marker = "## Test report"
+          block = f"{marker}\n\n- [Allure-отчет тестирования]({report_url})\n"
 
           body = body_path.read_text(encoding="utf-8")
-          pattern = rf"(?ms)^{re.escape(marker)}\n.*?(?=^## |\Z)"
+          pattern = rf"(?ms)^({re.escape(marker)}|{re.escape(legacy_marker)})\n.*?(?=^## |\Z)"
           if re.search(pattern, body):
               body = re.sub(pattern, block + "\n", body).rstrip() + "\n"
           else:
