@@ -1,0 +1,50 @@
+{
+  "digest": "sha256:5c34b90b4bb43471fca8e456cbde4ff98b02ba5cc3a53202927b0d14fd45b48b",
+  "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+  "size": 1293,
+  "config": {
+    "digest": "sha256:f7c575eec000f7677ad25d8f7e6531be8ef0256d8ea5706b31f4effda423ce37",
+    "mediaType": "application/vnd.docker.container.image.v1+json",
+    "size": 3546
+  },
+  "layers": [
+    {
+      "digest": "sha256:068fedd6b0f109b8186d00d49327b6fc6747c428fd3c9a8739424ff5f38d7531",
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "size": 28233543
+    },
+    {
+      "digest": "sha256:f7c575eec000f7677ad25d8f7e6531be8ef0256d8ea5706b31f4effda423ce37",
+      "mediaType": "application/octet-stream",
+      "size": 3546
+    },
+    {
+      "digest": "sha256:c1c9051394878ef63ff9be30bcb960a245a96ff7b93fee8cc5a779809c2fd507",
+      "mediaType": "application/octet-stream",
+      "size": 94
+    },
+    {
+      "digest": "sha256:bba19089adb311813c891ea646adba7a86211aca248de8aac0157c7eb05c0309",
+      "mediaType": "application/octet-stream",
+      "size": 3403
+    },
+    {
+      "digest": "sha256:6e50a8ee855911edc2b1fdaa13ac37418000b76da10183ef0b937b5cbd1170f9",
+      "mediaType": "application/octet-stream",
+      "size": 120623964
+    },
+    {
+      "digest": "sha256:37f073a888e5c63ea2164eb96e94d9aab2cdadf093f3325ae58d20199f9b3585",
+      "mediaType": "application/octet-stream",
+      "size": 2700246597
+    }
+  ],
+  "labels": {
+    "org.opencontainers.image.description": "EDT CLI runtime for CI",
+    "ru.shadobaai.onec.profile": "edtcli",
+    "org.opencontainers.image.title": "1C CI EDT CLI",
+    "ru.shadobaai.onec.edt-version": "2025.2.6",
+    "ru.shadobaai.onec.revision": "r1",
+    "org.opencontainers.image.version": "2025.2.6"
+  }
+}
