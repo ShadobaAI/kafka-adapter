@@ -25,6 +25,7 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       RELEASE_TAG: ${{ github.event.release.tag_name }}
+      RELEASE_NAME: ${{ github.event.release.name }}
       ASSETS_DIR: assets
       ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
       TEST_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
@@ -59,6 +60,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read EDT version from image metadata
+        run: |
+          set -euo pipefail
+
+          edt_version="$(oras manifest fetch ghcr.io/shadobaai/edtcli:latest \
+            | jq -r '.labels["ru.shadobaai.onec.edt-version"] // .labels["org.opencontainers.image.version"] // empty')"
+
+          if [ -z "${edt_version}" ]; then
+            echo "::error::EDT version was not found in ghcr.io/shadobaai/edtcli:latest metadata"
+            exit 1
+          fi
+
+          echo "EDT_VERSION=${edt_version}" >> "$GITHUB_ENV"
+          echo "REPORT_RUN_STARTED_AT=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
 
       - name: Download base and examples release assets
         run: |
@@ -230,21 +246,13 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/ui"
           exit "$rc"
 
-      - name: Prepare Allure results
+      - name: Prepare Allure sources
         id: allure_results
         if: always()
         run: |
-          rm -rf "${ASSETS_DIR}/allure" "${ASSETS_DIR}/allure-report"
-          mkdir -p "${ASSETS_DIR}/allure"
+          rm -rf "${ASSETS_DIR}/allure-report"
 
-          if [ -d "${ASSETS_DIR}/unit/allure" ]; then
-            cp -a "${ASSETS_DIR}/unit/allure/." "${ASSETS_DIR}/allure/"
-          fi
-          if [ -d "${ASSETS_DIR}/ui/allure" ]; then
-            cp -a "${ASSETS_DIR}/ui/allure/." "${ASSETS_DIR}/allure/"
-          fi
-
-          python3 .github/scripts/add_allure_artifacts.py \
+          python3 .github/scripts/prepare_allure_results.py \
             --results-dir "${ASSETS_DIR}/allure" \
             --unit-dir "${ASSETS_DIR}/unit" \
             --ui-dir "${ASSETS_DIR}/ui"
@@ -260,8 +268,6 @@ jobs:
         if: always() && steps.allure_results.outputs.available == 'true'
         run: |
           npx --yes allure generate "${ASSETS_DIR}/allure" -o "${ASSETS_DIR}/allure-report"
-          python3 .github/scripts/patch_allure_report.py \
-            --report-dir "${ASSETS_DIR}/allure-report"
           test -f "${ASSETS_DIR}/allure-report/summary.json"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
