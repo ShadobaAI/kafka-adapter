@@ -3,6 +3,7 @@ import argparse
 import datetime
 import json
 import os
+import re
 import shutil
 import time
 import uuid
@@ -71,6 +72,83 @@ def property_escape(value):
     return "".join(escaped)
 
 
+def property_unescape(value):
+    result = []
+    index = 0
+    while index < len(value):
+        char = value[index]
+        if char != "\\" or index + 1 >= len(value):
+            result.append(char)
+            index += 1
+            continue
+
+        escape = value[index + 1]
+        if escape == "u" and index + 5 < len(value):
+            code = value[index + 2:index + 6]
+            if re.fullmatch(r"[0-9a-fA-F]{4}", code):
+                result.append(chr(int(code, 16)))
+                index += 6
+                continue
+        elif escape == "n":
+            result.append("\n")
+            index += 2
+            continue
+        elif escape == "r":
+            result.append("\r")
+            index += 2
+            continue
+        elif escape == "t":
+            result.append("\t")
+            index += 2
+            continue
+
+        result.append(escape)
+        index += 2
+
+    return "".join(result)
+
+
+def property_line_parts(line):
+    escaped = False
+    for index, char in enumerate(line):
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\":
+            escaped = True
+            continue
+        if char in {"=", ":"}:
+            return line[:index].rstrip(), line[index + 1:].lstrip()
+
+    return None, None
+
+
+def environment_property(path, name):
+    if not path.is_file():
+        return ""
+
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith(("#", "!")):
+            continue
+
+        key, value = property_line_parts(line)
+        if key is None:
+            continue
+        if property_unescape(key) == name:
+            return property_unescape(value).strip()
+
+    return ""
+
+
+def dbgs_platform_version(path):
+    if not path.is_file():
+        return ""
+
+    match = re.search(r"\((\d+(?:\.\d+)+)\)", path.read_text(encoding="utf-8", errors="replace"))
+    return match.group(1) if match else ""
+
+
 def coverage_summary(path):
     if not path.is_file():
         return None
@@ -124,18 +202,6 @@ def coverage_summary(path):
         "percent": percent,
         "modules": module_summaries,
     }
-
-
-def coverage_property(path, name):
-    if not path.is_file():
-        return ""
-
-    for event, elem in ET.iterparse(path, events=("start",)):
-        tag = elem.tag.rsplit("}", maxsplit=1)[-1]
-        if tag == "property" and elem.attrib.get("name") == name:
-            return elem.attrib.get("value", "").strip()
-
-    return ""
 
 
 def coverage_module_info(module_path):
@@ -432,15 +498,16 @@ def add_coverage_report(results_dir, title, test_scope, versions, source_dir):
         )
 
 
-def write_environment_properties(results_dir, unit_dir):
+def write_environment_properties(results_dir, unit_dir, ui_dir):
     release_version = os.environ.get("RELEASE_NAME", "").strip() or os.environ.get("RELEASE_TAG", "").strip()
     run_started_at = os.environ.get("REPORT_RUN_STARTED_AT", "").strip()
     if not run_started_at:
         run_started_at = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
 
     platform_version = (
-        coverage_property(unit_dir / "genericCoverage.xml", "ВерсияПлатформы")
-        or os.environ.get("PLATFORM_VERSION", "").strip()
+        environment_property(unit_dir / "allure" / "environment.properties", "ВерсияПлатформы")
+        or dbgs_platform_version(unit_dir / "dbgs.log")
+        or dbgs_platform_version(ui_dir / "dbgs.log")
     )
 
     properties = {
@@ -469,7 +536,7 @@ def main():
     versions = test_engine_versions()
 
     prepare_results_dir(results_dir, unit_dir, ui_dir)
-    write_environment_properties(results_dir, unit_dir)
+    write_environment_properties(results_dir, unit_dir, ui_dir)
     normalize_result_groups(results_dir, versions)
     add_coverage_report(results_dir, UNIT_COVERAGE_SUITE, UNIT_SCOPE, versions, unit_dir)
     add_coverage_report(results_dir, UI_COVERAGE_SUITE, UI_SCOPE, versions, ui_dir)
