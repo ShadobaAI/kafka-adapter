@@ -60,11 +60,28 @@ jobs:
         run: |
           set -euo pipefail
 
-          edt_version="$(oras manifest fetch --platform linux/amd64 ghcr.io/shadobaai/edtcli:latest \
-            | jq -r '.labels["ru.shadobaai.onec.edt-version"] // .labels["org.opencontainers.image.version"] // empty')"
+          image_ref="ghcr.io/shadobaai/edtcli:latest"
+
+          config_json="$(oras manifest fetch-config --platform linux/amd64 "${image_ref}")"
+          edt_version="$(jq -r '
+            (.config.Labels // .config.labels // .labels // {}) as $labels
+            | $labels["ru.shadobaai.onec.edt-version"]
+              // $labels["org.opencontainers.image.version"]
+              // empty
+          ' <<< "${config_json}")"
 
           if [ -z "${edt_version}" ]; then
-            echo "::error::EDT version was not found in ghcr.io/shadobaai/edtcli:latest metadata"
+            manifest_json="$(oras manifest fetch --platform linux/amd64 "${image_ref}")"
+            edt_version="$(jq -r '
+              (.annotations // .labels // {}) as $labels
+              | $labels["ru.shadobaai.onec.edt-version"]
+                // $labels["org.opencontainers.image.version"]
+                // empty
+            ' <<< "${manifest_json}")"
+          fi
+
+          if [ -z "${edt_version}" ]; then
+            echo "::error::EDT version was not found in ${image_ref} metadata"
             exit 1
           fi
 
