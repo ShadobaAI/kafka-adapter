@@ -65,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          edt_version="$(oras manifest fetch ghcr.io/shadobaai/edtcli:latest \
+          edt_version="$(oras manifest fetch --platform linux/amd64 ghcr.io/shadobaai/edtcli:latest \
             | jq -r '.labels["ru.shadobaai.onec.edt-version"] // .labels["org.opencontainers.image.version"] // empty')"
 
           if [ -z "${edt_version}" ]; then
