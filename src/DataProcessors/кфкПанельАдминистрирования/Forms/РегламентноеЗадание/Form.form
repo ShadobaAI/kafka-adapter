@@ -23,6 +23,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиОсновное</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -49,6 +50,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиФоновыеЗадания</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -178,6 +180,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиОчереди</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -204,6 +207,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиЛогирование</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -261,6 +265,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Command.ИспользоватьРегламентноеЗадание</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -334,6 +339,7 @@
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
             <editTextUpdate>OnValueChange</editTextUpdate>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <items xsi:type="form:FormField">
@@ -378,6 +384,7 @@
             <choiceButton>true</choiceButton>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <items xsi:type="form:FormField">
@@ -419,9 +426,6 @@
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
             <hyperlink>true</hyperlink>
-            <border xsi:type="core:BorderDef">
-              <width>1</width>
-            </border>
           </extInfo>
         </items>
         <visible>true</visible>
@@ -496,6 +500,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <items xsi:type="form:FormField">
@@ -541,6 +546,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <visible>true</visible>
@@ -569,11 +575,11 @@
         <extInfo xsi:type="form:UsualGroupExtInfo">
           <group>Vertical</group>
           <behavior>Collapsible</behavior>
-          <controlRepresentation>Picture</controlRepresentation>
+          <controlRepresentation>Button</controlRepresentation>
           <representation>StrongSeparation</representation>
           <showLeftMargin>true</showLeftMargin>
           <united>true</united>
-          <showTitle>true</showTitle>
+          <showTitle>auto</showTitle>
           <throughAlign>Auto</throughAlign>
           <currentRowUse>Auto</currentRowUse>
         </extInfo>
@@ -619,6 +625,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <items xsi:type="form:FormGroup">
@@ -662,6 +669,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -702,6 +710,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -767,6 +776,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <visible>true</visible>
@@ -796,11 +806,11 @@
         <extInfo xsi:type="form:UsualGroupExtInfo">
           <group>Vertical</group>
           <behavior>Collapsible</behavior>
-          <controlRepresentation>Picture</controlRepresentation>
+          <controlRepresentation>Button</controlRepresentation>
           <representation>StrongSeparation</representation>
           <showLeftMargin>true</showLeftMargin>
           <united>true</united>
-          <showTitle>true</showTitle>
+          <showTitle>auto</showTitle>
           <throughAlign>Auto</throughAlign>
           <currentRowUse>Auto</currentRowUse>
         </extInfo>
@@ -869,6 +879,7 @@
     <event>OnCreateAtServer</event>
     <name>ПриСозданииНаСервере</name>
   </handlers>
+  <windowOpeningMode>DontBlock</windowOpeningMode>
   <saveWindowSettings>true</saveWindowSettings>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
@@ -876,7 +887,7 @@
   <autoFillCheck>true</autoFillCheck>
   <allowFormCustomize>true</allowFormCustomize>
   <enabled>true</enabled>
-  <showTitle>true</showTitle>
+  <showTitle>auto</showTitle>
   <showCloseButton>true</showCloseButton>
   <attributes>
     <name>Идентификатор</name>
@@ -1117,6 +1128,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиОсновное</name>
@@ -1134,6 +1146,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиОчереди</name>
@@ -1151,6 +1164,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиФоновыеЗадания</name>
@@ -1171,6 +1185,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ИспользоватьРегламентноеЗадание</name>
@@ -1192,6 +1207,7 @@
     </action>
     <representation>TextPicture</representation>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <commandInterface>
     <navigationPanel/>

@@ -78,6 +78,7 @@
             <value>3</value>
           </value>
         </choiceList>
+        <textSize>Normal</textSize>
       </extInfo>
     </items>
     <items xsi:type="form:Addition">
@@ -172,7 +173,7 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>LabelField</type>
-      <editMode>EnterOnInput</editMode>
+      <editMode>Auto</editMode>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
@@ -180,9 +181,6 @@
         <maxWidth>25</maxWidth>
         <autoMaxHeight>true</autoMaxHeight>
         <horizontalStretch>false</horizontalStretch>
-        <border xsi:type="core:BorderDef">
-          <width>1</width>
-        </border>
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
@@ -213,7 +211,7 @@
       </contextMenu>
       <type>InputField</type>
       <readOnly>true</readOnly>
-      <editMode>EnterOnInput</editMode>
+      <editMode>Auto</editMode>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
@@ -227,6 +225,7 @@
         <chooseType>true</chooseType>
         <typeDomainEnabled>true</typeDomainEnabled>
         <textEdit>true</textEdit>
+        <textSize>Normal</textSize>
         <heightControlVariant>ByContent</heightControlVariant>
       </extInfo>
     </items>
@@ -258,7 +257,7 @@
       </contextMenu>
       <type>InputField</type>
       <readOnly>true</readOnly>
-      <editMode>EnterOnInput</editMode>
+      <editMode>Auto</editMode>
       <autoCellHeight>true</autoCellHeight>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -272,6 +271,7 @@
         <chooseType>true</chooseType>
         <typeDomainEnabled>true</typeDomainEnabled>
         <textEdit>true</textEdit>
+        <textSize>Normal</textSize>
         <heightControlVariant>ByContent</heightControlVariant>
       </extInfo>
     </items>
@@ -302,7 +302,7 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>LabelField</type>
-      <editMode>EnterOnInput</editMode>
+      <editMode>Auto</editMode>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
@@ -310,9 +310,6 @@
         <maxWidth>10</maxWidth>
         <autoMaxHeight>true</autoMaxHeight>
         <horizontalStretch>false</horizontalStretch>
-        <border xsi:type="core:BorderDef">
-          <width>1</width>
-        </border>
       </extInfo>
     </items>
     <autoCommandBar>
@@ -431,6 +428,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Item.Свойства.StandardCommand.Choose</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -459,6 +457,7 @@
             </extInfo>
           </extendedTooltip>
           <commandName>Form.Item.Свойства.StandardCommand.SortListAsc</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -484,6 +483,7 @@
             </extInfo>
           </extendedTooltip>
           <commandName>Form.Item.Свойства.StandardCommand.SortListDesc</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -531,6 +531,7 @@
             </extInfo>
           </extendedTooltip>
           <commandName>Form.Item.Свойства.StandardCommand.FindByCurrentValue</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -556,6 +557,7 @@
             </extInfo>
           </extendedTooltip>
           <commandName>Form.Item.Свойства.StandardCommand.Find</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -581,6 +583,7 @@
             </extInfo>
           </extendedTooltip>
           <commandName>Form.Item.Свойства.StandardCommand.CancelSearch</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -618,7 +621,7 @@
     <verticalScrollBar>AutoUse</verticalScrollBar>
     <horizontalLines>true</horizontalLines>
     <verticalLines>true</verticalLines>
-    <useAlternationRowColor>true</useAlternationRowColor>
+    <useAlternationRowColorBWA>true</useAlternationRowColorBWA>
     <autoInsertNewRow>true</autoInsertNewRow>
     <searchOnInput>Auto</searchOnInput>
     <initialListView>Auto</initialListView>
@@ -627,6 +630,7 @@
     <enableStartDrag>true</enableStartDrag>
     <enableDrag>true</enableDrag>
     <fileDragMode>AsFileRef</fileDragMode>
+    <autoMaxCardHeight>true</autoMaxCardHeight>
     <rowFilter xsi:type="core:UndefinedValue"/>
   </items>
   <items xsi:type="form:FormGroup">
@@ -776,6 +780,7 @@
         </extInfo>
       </extendedTooltip>
       <commandName>Form.StandardCommand.Cancel</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -804,6 +809,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Item.Свойства.StandardCommand.SortListAsc</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -830,6 +836,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Item.Свойства.StandardCommand.SortListDesc</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -878,6 +885,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Item.Свойства.StandardCommand.FindByCurrentValue</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -903,6 +911,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Item.Свойства.StandardCommand.Find</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -928,6 +937,7 @@
           </extInfo>
         </extendedTooltip>
         <commandName>Form.Item.Свойства.StandardCommand.CancelSearch</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -970,6 +980,7 @@
         </extInfo>
       </extendedTooltip>
       <commandName>Form.StandardCommand.CustomizeForm</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -985,14 +996,14 @@
   </handlers>
   <width>70</width>
   <height>30</height>
-  <windowOpeningMode>LockOwnerWindow</windowOpeningMode>
+  <windowOpeningMode>LockOwner</windowOpeningMode>
   <saveWindowSettings>true</saveWindowSettings>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
   <autoFillCheck>true</autoFillCheck>
   <allowFormCustomize>true</allowFormCustomize>
   <enabled>true</enabled>
-  <showTitle>true</showTitle>
+  <showTitle>auto</showTitle>
   <showCloseButton>true</showCloseButton>
   <attributes>
     <name>Свойства</name>

@@ -115,6 +115,7 @@
   <defaultObjectForm>Catalog.кфкКонсьюмеры.Form.ФормаЭлемента</defaultObjectForm>
   <defaultFolderForm>Catalog.кфкКонсьюмеры.Form.ФормаГруппы</defaultFolderForm>
   <defaultListForm>Catalog.кфкКонсьюмеры.Form.ФормаСписка</defaultListForm>
+  <defaultChoiceForm>Catalog.кфкКонсьюмеры.Form.ФормаСписка</defaultChoiceForm>
   <attributes uuid="94756e40-9507-48a8-b226-b6d94805920a">
     <name>Брокер</name>
     <synonym>

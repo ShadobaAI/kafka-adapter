@@ -107,6 +107,8 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.кфкБрокеры.Form.ФормаЭлемента</defaultObjectForm>
+  <defaultListForm>Catalog.кфкБрокеры.Form.ФормаСписка</defaultListForm>
+  <defaultChoiceForm>Catalog.кфкБрокеры.Form.ФормаСписка</defaultChoiceForm>
   <attributes uuid="15405d7f-a4ea-406a-806d-80bc0023e495">
     <name>БлокироватьПубликацию</name>
     <synonym>
@@ -249,20 +251,20 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
-  <forms uuid="ff6d75d0-db2d-41ca-8a05-d7c81baa8417">
-    <name>ФормаЭлемента</name>
-    <synonym>
-      <key>ru</key>
-      <value>Форма элемента</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
   <forms uuid="2cd7ad9f-5f76-42e6-8e36-ee9bfbc7b17a">
     <name>ФормаСписка</name>
     <synonym>
       <key>ru</key>
       <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="ff6d75d0-db2d-41ca-8a05-d7c81baa8417">
+    <name>ФормаЭлемента</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма элемента</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

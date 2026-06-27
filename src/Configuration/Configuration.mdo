@@ -9,10 +9,7 @@
   <extension xsi:type="mdclassExtension:ConfigurationExtension">
     <defaultRunMode>Checked</defaultRunMode>
     <usePurposes>Checked</usePurposes>
-    <commandInterface>Extended</commandInterface>
     <defaultLanguage>Checked</defaultLanguage>
-    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
-    <compatibilityMode>Checked</compatibilityMode>
     <logo>Extended</logo>
   </extension>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="37ec6b0a-6c07-44ee-b8b8-83f3ba0ade3b"/>
@@ -34,8 +31,6 @@
   <updateCatalogAddress>github.com/ShadobaAI/kafka-adapter</updateCatalogAddress>
   <defaultLanguage>Language.Русский</defaultLanguage>
   <logo/>
-  <interfaceCompatibilityMode>TaxiEnableVersion8_2</interfaceCompatibilityMode>
-  <compatibilityMode>8.3.21</compatibilityMode>
   <languages uuid="25982e3c-c02f-4173-97dc-1e5fa58c1eac">
     <name>Русский</name>
     <objectBelonging>Adopted</objectBelonging>
@@ -83,6 +78,8 @@
   <functionalOptions>FunctionalOption.кфкИспользоватьКонтрольИнтеграции</functionalOptions>
   <functionalOptions>FunctionalOption.кфкИспользоватьПотоковыйРежим</functionalOptions>
   <definedTypes>DefinedType.кфкПользователь</definedTypes>
+  <commandGroups>CommandGroup.кфкНастройкиПодключения</commandGroups>
+  <commandGroups>CommandGroup.кфкОчередиСообщений</commandGroups>
   <constants>Constant.кфкБлокировкаИнтеграции</constants>
   <constants>Constant.кфкИспользоватьИнтеграцию</constants>
   <constants>Constant.кфкИспользоватьКонтрольИнтеграции</constants>

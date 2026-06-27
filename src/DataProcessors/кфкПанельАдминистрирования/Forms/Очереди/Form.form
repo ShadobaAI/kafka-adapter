@@ -23,6 +23,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиОсновное</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -49,6 +50,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиФоновыеЗадания</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -75,6 +77,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиРегламентноеЗадание</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -143,6 +146,7 @@
       </extendedTooltip>
       <type>Hyperlink</type>
       <commandName>Form.Command.ПерейтиЛогирование</commandName>
+      <buttonImportance>Normal</buttonImportance>
       <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -263,6 +267,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -276,6 +281,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -313,6 +319,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -326,6 +333,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -391,6 +399,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -404,6 +413,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -441,6 +451,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -454,6 +465,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -506,7 +518,7 @@
           <behavior>Auto</behavior>
           <showLeftMargin>true</showLeftMargin>
           <united>true</united>
-          <showTitle>true</showTitle>
+          <showTitle>auto</showTitle>
           <throughAlign>Auto</throughAlign>
           <currentRowUse>Auto</currentRowUse>
         </extInfo>
@@ -552,6 +564,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -565,6 +578,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -602,6 +616,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -615,6 +630,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -680,6 +696,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -693,6 +710,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -745,7 +763,7 @@
           <behavior>Auto</behavior>
           <showLeftMargin>true</showLeftMargin>
           <united>true</united>
-          <showTitle>true</showTitle>
+          <showTitle>auto</showTitle>
           <throughAlign>Auto</throughAlign>
           <currentRowUse>Auto</currentRowUse>
         </extInfo>
@@ -788,6 +806,7 @@
             <autoFill>true</autoFill>
           </contextMenu>
           <type>InputField</type>
+          <markRequiredComplete>true</markRequiredComplete>
           <editMode>Enter</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -801,6 +820,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <visible>true</visible>
@@ -828,7 +848,7 @@
           <behavior>Auto</behavior>
           <showLeftMargin>true</showLeftMargin>
           <united>true</united>
-          <showTitle>true</showTitle>
+          <showTitle>auto</showTitle>
           <throughAlign>Auto</throughAlign>
           <currentRowUse>Auto</currentRowUse>
         </extInfo>
@@ -859,11 +879,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>Vertical</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -893,6 +913,7 @@
             </extInfo>
           </extendedTooltip>
           <commandName>Form.Command.ИспользоватьКонтрольИнтеграции</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -959,6 +980,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -972,6 +994,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -1009,6 +1032,7 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -1022,6 +1046,7 @@
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -1060,10 +1085,20 @@
               <id>78</id>
               <autoFill>true</autoFill>
             </contextMenu>
+            <type>InputField</type>
             <editMode>Enter</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
             <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+            </extInfo>
           </items>
           <visible>true</visible>
           <enabled>true</enabled>
@@ -1090,7 +1125,7 @@
             <behavior>Auto</behavior>
             <showLeftMargin>true</showLeftMargin>
             <united>true</united>
-            <showTitle>true</showTitle>
+            <showTitle>auto</showTitle>
             <throughAlign>Auto</throughAlign>
             <currentRowUse>Auto</currentRowUse>
           </extInfo>
@@ -1145,6 +1180,7 @@
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
               <editTextUpdate>OnValueChange</editTextUpdate>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <items xsi:type="form:FormField">
@@ -1195,6 +1231,7 @@
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
               <editTextUpdate>OnValueChange</editTextUpdate>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -1222,7 +1259,7 @@
             <behavior>Auto</behavior>
             <showLeftMargin>true</showLeftMargin>
             <united>true</united>
-            <showTitle>true</showTitle>
+            <showTitle>auto</showTitle>
             <throughAlign>Auto</throughAlign>
             <currentRowUse>Auto</currentRowUse>
           </extInfo>
@@ -1278,11 +1315,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>Vertical</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -1326,6 +1363,7 @@
     <event>OnCreateAtServer</event>
     <name>ПриСозданииНаСервере</name>
   </handlers>
+  <windowOpeningMode>DontBlock</windowOpeningMode>
   <saveWindowSettings>true</saveWindowSettings>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
@@ -1333,7 +1371,7 @@
   <autoFillCheck>true</autoFillCheck>
   <allowFormCustomize>true</allowFormCustomize>
   <enabled>true</enabled>
-  <showTitle>true</showTitle>
+  <showTitle>auto</showTitle>
   <showCloseButton>true</showCloseButton>
   <attributes>
     <name>ПараметрыОчисткиХранилища</name>
@@ -1422,6 +1460,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиФоновыеЗадания</name>
@@ -1442,6 +1481,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиРегламентноеЗадание</name>
@@ -1462,6 +1502,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиЛогирование</name>
@@ -1479,6 +1520,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ИспользоватьКонтрольИнтеграции</name>
@@ -1504,6 +1546,7 @@
     </action>
     <representation>TextPicture</representation>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <commandInterface>
     <navigationPanel/>

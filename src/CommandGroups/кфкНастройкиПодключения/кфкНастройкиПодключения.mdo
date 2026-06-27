@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommandGroup xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dc83afd3-1d1c-4e4e-8e0d-7fdc14956f26">
+  <name>кфкНастройкиПодключения</name>
+  <synonym>
+    <key>ru</key>
+    <value>Настройки</value>
+  </synonym>
+  <representation>Auto</representation>
+</mdclass:CommandGroup>

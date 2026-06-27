@@ -113,6 +113,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>Form.Command.ПерейтиФоновыеЗадания</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -139,6 +140,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>Form.Command.ПерейтиРегламентноеЗадание</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -165,6 +167,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>Form.Command.ПерейтиОчереди</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -191,6 +194,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>Form.Command.ПерейтиЛогирование</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -246,6 +250,7 @@
         </extendedTooltip>
         <type>UsualButton</type>
         <commandName>Form.Command.ВключитьПодсистему</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -272,6 +277,7 @@
         </extendedTooltip>
         <type>UsualButton</type>
         <commandName>Form.Command.ВыключитьПодсистему</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -367,6 +373,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>Catalog.кфкБрокеры.StandardCommand.OpenList</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -408,6 +415,7 @@
           </extendedTooltip>
           <type>Hyperlink</type>
           <commandName>Catalog.кфкПродюсеры.StandardCommand.OpenList</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -446,6 +454,7 @@
           </extendedTooltip>
           <type>Hyperlink</type>
           <commandName>Catalog.кфкКонсьюмеры.StandardCommand.OpenList</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -501,11 +510,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>Vertical</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -543,6 +552,7 @@
             </extendedTooltip>
             <type>Hyperlink</type>
             <commandName>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commandName>
+            <buttonImportance>Normal</buttonImportance>
             <representation>Auto</representation>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
@@ -573,6 +583,7 @@
             </extendedTooltip>
             <type>Hyperlink</type>
             <commandName>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commandName>
+            <buttonImportance>Normal</buttonImportance>
             <representation>Auto</representation>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
@@ -698,6 +709,7 @@
             </extendedTooltip>
             <type>Hyperlink</type>
             <commandName>DataProcessor.кфкРегистрацияИзменений.StandardCommand.Open</commandName>
+            <buttonImportance>Normal</buttonImportance>
             <representation>Auto</representation>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
@@ -728,6 +740,7 @@
             </extendedTooltip>
             <type>Hyperlink</type>
             <commandName>DataProcessor.кфкРегистрацияИзменений.Command.ПакетнаяРегистрацияИзменений</commandName>
+            <buttonImportance>Normal</buttonImportance>
             <representation>Auto</representation>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
@@ -849,11 +862,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>Vertical</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -889,6 +902,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -924,6 +938,7 @@
         </extendedTooltip>
         <type>Hyperlink</type>
         <commandName>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commandName>
+        <buttonImportance>Normal</buttonImportance>
         <representation>Auto</representation>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -954,11 +969,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>HorizontalIfPossible</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -996,6 +1011,7 @@
           </extendedTooltip>
           <type>Hyperlink</type>
           <commandName>Form.Command.ПерейтиФоновыеЗадания</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -1030,6 +1046,7 @@
           </extendedTooltip>
           <type>Hyperlink</type>
           <commandName>Form.Command.ПерейтиРегламентноеЗадание</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -1092,6 +1109,7 @@
           </extendedTooltip>
           <type>Hyperlink</type>
           <commandName>Form.Command.ПерейтиОчереди</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -1126,6 +1144,7 @@
           </extendedTooltip>
           <type>Hyperlink</type>
           <commandName>Form.Command.ПерейтиЛогирование</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Auto</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -1181,11 +1200,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>Vertical</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -1227,9 +1246,6 @@
         <extInfo xsi:type="form:LabelFieldExtInfo">
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
-          <border xsi:type="core:BorderDef">
-            <width>1</width>
-          </border>
         </extInfo>
       </items>
       <items xsi:type="form:FormField">
@@ -1266,9 +1282,6 @@
         <extInfo xsi:type="form:LabelFieldExtInfo">
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
-          <border xsi:type="core:BorderDef">
-            <width>1</width>
-          </border>
         </extInfo>
       </items>
       <visible>true</visible>
@@ -1294,11 +1307,11 @@
       <extInfo xsi:type="form:UsualGroupExtInfo">
         <group>Vertical</group>
         <behavior>Collapsible</behavior>
-        <controlRepresentation>Picture</controlRepresentation>
+        <controlRepresentation>Button</controlRepresentation>
         <representation>StrongSeparation</representation>
         <showLeftMargin>true</showLeftMargin>
         <united>true</united>
-        <showTitle>true</showTitle>
+        <showTitle>auto</showTitle>
         <throughAlign>Auto</throughAlign>
         <currentRowUse>Auto</currentRowUse>
       </extInfo>
@@ -1341,13 +1354,14 @@
     <event>OnCreateAtServer</event>
     <name>ПриСозданииНаСервере</name>
   </handlers>
+  <windowOpeningMode>DontBlock</windowOpeningMode>
   <saveWindowSettings>true</saveWindowSettings>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
   <autoFillCheck>true</autoFillCheck>
   <allowFormCustomize>true</allowFormCustomize>
   <enabled>true</enabled>
-  <showTitle>true</showTitle>
+  <showTitle>auto</showTitle>
   <showCloseButton>true</showCloseButton>
   <attributes>
     <name>Объект</name>
@@ -1489,6 +1503,7 @@
     </action>
     <representation>TextPicture</representation>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ВыключитьПодсистему</name>
@@ -1510,6 +1525,7 @@
     </action>
     <representation>TextPicture</representation>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиФоновыеЗадания</name>
@@ -1530,6 +1546,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиРегламентноеЗадание</name>
@@ -1550,6 +1567,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиОчереди</name>
@@ -1567,6 +1585,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиЛогирование</name>
@@ -1584,6 +1603,7 @@
       </handler>
     </action>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <parameters>
     <name>ИмяСтраницы</name>

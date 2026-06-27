@@ -40,6 +40,7 @@
             <autoFill>true</autoFill>
           </contextMenu>
           <type>InputField</type>
+          <markRequiredComplete>true</markRequiredComplete>
           <editMode>Enter</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
@@ -52,6 +53,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <items xsi:type="form:Button">
@@ -74,6 +76,7 @@
           </extendedTooltip>
           <type>UsualButton</type>
           <commandName>DataProcessor.кфкРегистрацияИзменений.StandardCommand.Open</commandName>
+          <buttonImportance>Normal</buttonImportance>
           <representation>Picture</representation>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -204,6 +207,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <items xsi:type="form:FormField">
@@ -244,6 +248,7 @@
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
             <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
           </extInfo>
         </items>
         <autoCommandBar>
@@ -346,7 +351,7 @@
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
         <autoMaxRowsCount>true</autoMaxRowsCount>
-        <selectionMode>MultiRow</selectionMode>
+        <rowSelectionMode>Row</rowSelectionMode>
         <header>true</header>
         <headerHeight>1</headerHeight>
         <footerHeight>1</footerHeight>
@@ -354,6 +359,7 @@
         <verticalScrollBar>AutoUse</verticalScrollBar>
         <horizontalLines>true</horizontalLines>
         <verticalLines>true</verticalLines>
+        <useAlternationRowColorBWA>false</useAlternationRowColorBWA>
         <searchOnInput>Auto</searchOnInput>
         <initialListView>Auto</initialListView>
         <initialTreeView>ExpandAllLevels</initialTreeView>
@@ -363,6 +369,7 @@
         <enableDrag>true</enableDrag>
         <fileDragMode>AsFileRef</fileDragMode>
         <searchStringLocation>Top</searchStringLocation>
+        <autoMaxCardHeight>true</autoMaxCardHeight>
       </items>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -511,11 +518,15 @@
         <verticalScrollBar>AutoUse</verticalScrollBar>
         <horizontalLines>true</horizontalLines>
         <verticalLines>true</verticalLines>
+        <useAlternationRowColorBWA>false</useAlternationRowColorBWA>
         <searchOnInput>Auto</searchOnInput>
         <initialListView>Auto</initialListView>
         <horizontalStretch>true</horizontalStretch>
         <verticalStretch>true</verticalStretch>
         <fileDragMode>AsFileRef</fileDragMode>
+        <autoMaxCardHeight>true</autoMaxCardHeight>
+        <viewMode>All</viewMode>
+        <settingsNamedItemDetailedRepresentation>false</settingsNamedItemDetailedRepresentation>
       </items>
       <items xsi:type="form:Table">
         <name>Список</name>
@@ -632,12 +643,14 @@
         <verticalScrollBar>AutoUse</verticalScrollBar>
         <horizontalLines>true</horizontalLines>
         <verticalLines>true</verticalLines>
+        <useAlternationRowColorBWA>false</useAlternationRowColorBWA>
         <searchOnInput>Auto</searchOnInput>
         <initialListView>Auto</initialListView>
         <horizontalStretch>true</horizontalStretch>
         <verticalStretch>true</verticalStretch>
         <enableStartDrag>true</enableStartDrag>
         <fileDragMode>AsFileRef</fileDragMode>
+        <autoMaxCardHeight>true</autoMaxCardHeight>
         <extInfo xsi:type="form:DynamicListTableExtInfo">
           <autoRefreshPeriod>60</autoRefreshPeriod>
           <period>
@@ -798,6 +811,7 @@
     <event>OnCreateAtServer</event>
     <name>ПриСозданииНаСервере</name>
   </handlers>
+  <windowOpeningMode>DontBlock</windowOpeningMode>
   <saveWindowSettings>true</saveWindowSettings>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
@@ -805,7 +819,7 @@
   <autoFillCheck>true</autoFillCheck>
   <allowFormCustomize>true</allowFormCustomize>
   <enabled>true</enabled>
-  <showTitle>true</showTitle>
+  <showTitle>auto</showTitle>
   <showCloseButton>true</showCloseButton>
   <attributes>
     <name>Объект</name>
@@ -992,6 +1006,7 @@
     </action>
     <representation>TextPicture</representation>
     <currentRowUse>Auto</currentRowUse>
+    <selectedRowsUse>Auto</selectedRowsUse>
   </formCommands>
   <commandInterface>
     <navigationPanel/>

@@ -56,7 +56,6 @@
   <content>Role.кфкПолныеПрава</content>
   <content>CommonTemplate.кфкJSONEditor</content>
   <content>DefinedType.кфкПользователь</content>
-  <content>DataProcessor.кфкПанельАдминистрирования</content>
   <content>CommonPicture.кфкПауза16</content>
   <content>FunctionalOption.кфкИспользоватьВнешнееЛогирование</content>
   <content>InformationRegister.кфкПараметрыЛогирования</content>
@@ -74,6 +73,7 @@
   <content>CommonPicture.кфкДесериализацияПриостановлена</content>
   <content>CommonPicture.кфкРегистрацияПриостановлена</content>
   <content>CommonPicture.кфкСериализацияПриостановлена</content>
-  <subsystems>кфкНастройки</subsystems>
-  <subsystems>кфкОчередьСообщений</subsystems>
+  <content>CommandGroup.кфкНастройкиПодключения</content>
+  <content>CommandGroup.кфкОчередиСообщений</content>
+  <content>DataProcessor.кфкПанельАдминистрирования</content>
 </mdclass:Subsystem>

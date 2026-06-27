@@ -2,26 +2,6 @@
 <cmi:CommandInterface xmlns:cmi="http://g5.1c.ru/v8/dt/cmi">
   <commandsVisibility>
     <visibilityFragments>
-      <command>Catalog.кфкБрокеры.StandardCommand.OpenList</command>
-      <visible/>
-    </visibilityFragments>
-    <visibilityFragments>
-      <command>Catalog.кфкПродюсеры.StandardCommand.OpenList</command>
-      <visible/>
-    </visibilityFragments>
-    <visibilityFragments>
-      <command>Catalog.кфкКонсьюмеры.StandardCommand.OpenList</command>
-      <visible/>
-    </visibilityFragments>
-    <visibilityFragments>
-      <command>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</command>
-      <visible/>
-    </visibilityFragments>
-    <visibilityFragments>
-      <command>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</command>
-      <visible/>
-    </visibilityFragments>
-    <visibilityFragments>
       <command>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</command>
       <visible/>
     </visibilityFragments>
@@ -29,30 +9,38 @@
   <commandsPlacement>
     <placementFragments>
       <group>NavigationPanelSeeAlso</group>
-      <commands>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commands>
-      <commands>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
+    </placementFragments>
+    <placementFragments>
+      <group>CommandGroup.кфкНастройкиПодключения</group>
+      <commands>Catalog.кфкБрокеры.StandardCommand.OpenList</commands>
+      <commands>Catalog.кфкПродюсеры.StandardCommand.OpenList</commands>
+      <commands>Catalog.кфкКонсьюмеры.StandardCommand.OpenList</commands>
+    </placementFragments>
+    <placementFragments>
+      <group>CommandGroup.кфкОчередиСообщений</group>
+      <commands>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commands>
     </placementFragments>
   </commandsPlacement>
   <commandsOrder>
     <orderFragments>
-      <group>NavigationPanelSeeAlso</group>
-      <commands>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commands>
-      <commands>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commands>
-      <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
-      <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
+      <group>ActionsPanelTools</group>
+      <commands>DataProcessor.кфкПанельАдминистрирования.StandardCommand.Open</commands>
+      <commands>DataProcessor.кфкРегистрацияИзменений.StandardCommand.Open</commands>
+      <commands>DataProcessor.кфкРегистрацияИзменений.Command.ПакетнаяРегистрацияИзменений</commands>
     </orderFragments>
     <orderFragments>
-      <group>NavigationPanelOrdinary</group>
+      <group>CommandGroup.кфкНастройкиПодключения</group>
       <commands>Catalog.кфкБрокеры.StandardCommand.OpenList</commands>
       <commands>Catalog.кфкПродюсеры.StandardCommand.OpenList</commands>
       <commands>Catalog.кфкКонсьюмеры.StandardCommand.OpenList</commands>
     </orderFragments>
     <orderFragments>
-      <group>ActionsPanelTools</group>
-      <commands>DataProcessor.кфкПанельАдминистрирования.StandardCommand.Open</commands>
-      <commands>DataProcessor.кфкРегистрацияИзменений.StandardCommand.Open</commands>
+      <group>CommandGroup.кфкОчередиСообщений</group>
+      <commands>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commands>
     </orderFragments>
   </commandsOrder>
 </cmi:CommandInterface>

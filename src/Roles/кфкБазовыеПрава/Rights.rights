@@ -210,13 +210,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Subsystem.кфкИнтеграция.Subsystem.кфкНастройки</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
 		<name>InformationRegister.кфкИсходящиеСообщения</name>
 		<right>
 			<name>Read</name>
@@ -331,13 +324,6 @@
 		</right>
 		<right>
 			<name>ViewDataHistory</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Subsystem.кфкИнтеграция.Subsystem.кфкОчередьСообщений</name>
-		<right>
-			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
