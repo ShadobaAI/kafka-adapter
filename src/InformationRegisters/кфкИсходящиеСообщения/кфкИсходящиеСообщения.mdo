@@ -401,4 +401,17 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
+  <commands uuid="8b310fa6-f6cc-42a3-a7e1-e927d207ad16">
+    <name>ИсторияВыгрузки</name>
+    <synonym>
+      <key>ru</key>
+      <value>История выгрузки (Kafka)</value>
+    </synonym>
+    <group>ActionsPanelTools</group>
+    <representation>Auto</representation>
+    <picture xsi:type="core:PictureRef">
+      <picture>StdPicture.History</picture>
+    </picture>
+    <shortcut>Ctrl+Alt+H</shortcut>
+  </commands>
 </mdclass:InformationRegister>

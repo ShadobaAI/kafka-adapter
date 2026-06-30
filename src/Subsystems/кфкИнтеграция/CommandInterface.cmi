@@ -5,6 +5,10 @@
       <command>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</command>
       <visible/>
     </visibilityFragments>
+    <visibilityFragments>
+      <command>InformationRegister.кфкИсходящиеСообщения.Command.ИсторияВыгрузки</command>
+      <visible/>
+    </visibilityFragments>
   </commandsVisibility>
   <commandsPlacement>
     <placementFragments>
