@@ -24,4 +24,9 @@
   <content>Constant.кфкИспользоватьКонтрольИнтеграции</content>
   <content>InformationRegister.кфкПараметрыКонтроляИнтеграции</content>
   <content>Constant.кфкИспользоватьПотоковыйРежим</content>
+  <content>Enum.кфкСобытияРегистрации</content>
+  <content>CommonForm.кфкФормаВыбораСвойстваLibrdKafka</content>
+  <content>InformationRegister.кфкПараметрыЛогирования</content>
+  <content>Enum.кфкТипыОбработчиков</content>
+  <content>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</content>
 </mdclass:FunctionalOption>
