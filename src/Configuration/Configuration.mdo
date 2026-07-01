@@ -39,6 +39,7 @@
     </extension>
     <languageCode>ru</languageCode>
   </languages>
+  <CompatibilityMode>Version8_3_21</CompatibilityMode>
   <subsystems>Subsystem.кфкИнтеграция</subsystems>
   <commonPictures>CommonPicture.кфкДесериализацияПриостановлена</commonPictures>
   <commonPictures>CommonPicture.кфкЗаблокироватьПотоки16</commonPictures>
