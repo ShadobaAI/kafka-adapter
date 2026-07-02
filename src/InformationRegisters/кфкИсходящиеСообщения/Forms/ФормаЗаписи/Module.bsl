@@ -77,27 +77,26 @@
 #Область ОбработчикиСобытийЭлементовШапкиФормы
 
 &НаКлиенте
+//@skip-check dynamic-access-method-not-found
 Процедура СтраницаРедактораJSONДокументСформирован(Элемент)
 	
 	Если РедакторJSON = Неопределено Тогда
+		
+		ТемаРедактора = ?(кфкИнтеграцияСлужебныйВызовСервера.ЭтоТемнаяТема(), "dark", "light");
+		
 		//@skip-check property-return-type
-		//@skip-check dynamic-access-method-not-found
-		РедакторJSON = Элемент.Документ.defaultView.Init(); // ВнешнийОбъект
+		РедакторJSON = Элемент.Документ.defaultView.Init(ТемаРедактора); // ВнешнийОбъект
 		Если РедакторJSON = Неопределено Тогда // Ошибка инициализации
 			Возврат;
 		КонецЕсли;
+		
 	КонецЕсли;
 	
-	//@skip-check property-return-type
-	РедакторJSON.menu.style.backgroundColor = "#d0d0d0";
-	//@skip-check dynamic-access-method-not-found
 	РедакторJSON.focus();
 	
 	ТелоСообщения = ПолучитьИзВременногоХранилища(АдресТелаСообщения); // Строка
-	//@skip-check dynamic-access-method-not-found
 	РедакторJSON.setText(ТелоСообщения);
 	
-	//@skip-check dynamic-access-method-not-found
 	РедакторJSON.setMode("tree");
 	
 КонецПроцедуры
@@ -133,6 +132,12 @@
 	кфкИнтеграцияСлужебныйКлиент.ИнициализироватьРедакторJSON(ЭтотОбъект);
 	
 	ОповеститьОбИзменении(Запись.ИсходныйКлючЗаписи);
+	
+	Если РедакторJSON <> Неопределено Тогда
+		ТелоСообщения = ПолучитьИзВременногоХранилища(АдресТелаСообщения); // Строка
+		//@skip-check dynamic-access-method-not-found
+		РедакторJSON.setText(ТелоСообщения);
+	КонецЕсли;
 	
 КонецПроцедуры
 
