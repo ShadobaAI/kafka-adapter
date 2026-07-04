@@ -264,22 +264,6 @@
     <use>ForFolder</use>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="59712b8f-7507-471a-b138-f0187f807762">
-    <name>ИспользоватьПакетнуюПубликацию</name>
-    <synonym>
-      <key>ru</key>
-      <value>Использовать пакетную публикацию</value>
-    </synonym>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <use>ForFolder</use>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <tabularSections uuid="39fc1700-47ec-456f-913f-211eb6af2d45">
     <producedTypes>
       <objectType typeId="23097c13-ce2c-4492-981f-7fe9161ac884" valueTypeId="21d49a54-569e-4919-be50-e834c506ceea"/>

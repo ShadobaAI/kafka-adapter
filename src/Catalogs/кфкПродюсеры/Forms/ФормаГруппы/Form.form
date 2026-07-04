@@ -178,50 +178,6 @@
       <currentRowUse>Auto</currentRowUse>
     </extInfo>
   </items>
-  <items xsi:type="form:FormField">
-    <name>ИспользоватьПакетнуюПубликацию</name>
-    <id>15</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Объект.ИспользоватьПакетнуюПубликацию</segments>
-    </dataPath>
-    <toolTip>
-      <key>ru</key>
-      <value>Доставка сообщений не гарантируется</value>
-    </toolTip>
-    <toolTipRepresentation>ShowRight</toolTipRepresentation>
-    <handlers>
-      <event>OnChange</event>
-      <name>ИспользоватьПакетнуюПубликациюПриИзменении</name>
-    </handlers>
-    <extendedTooltip>
-      <name>ИспользоватьПакетнуюПубликациюРасширеннаяПодсказка</name>
-      <id>17</id>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>ИспользоватьПакетнуюПубликациюКонтекстноеМеню</name>
-      <id>16</id>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>CheckBoxField</type>
-    <editMode>Enter</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:CheckBoxFieldExtInfo">
-      <checkBoxType>Switcher</checkBoxType>
-    </extInfo>
-  </items>
   <autoCommandBar>
     <name>ФормаКоманднаяПанель</name>
     <id>-1</id>

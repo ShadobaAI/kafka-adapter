@@ -394,47 +394,6 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>ИспользоватьПакетнуюПубликацию</name>
-      <id>77</id>
-      <title>
-        <key>ru</key>
-        <value>ПАКЕТ</value>
-      </title>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.ИспользоватьПакетнуюПубликацию</segments>
-      </dataPath>
-      <toolTip>
-        <key>ru</key>
-        <value>Доставка сообщений не гарантируется</value>
-      </toolTip>
-      <extendedTooltip>
-        <name>ИспользоватьПакетнуюПубликациюРасширеннаяПодсказка</name>
-        <id>79</id>
-        <type>Label</type>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <extInfo xsi:type="form:LabelDecorationExtInfo">
-          <horizontalAlign>Left</horizontalAlign>
-        </extInfo>
-      </extendedTooltip>
-      <contextMenu>
-        <name>ИспользоватьПакетнуюПубликациюКонтекстноеМеню</name>
-        <id>78</id>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>CheckBoxField</type>
-      <editMode>Auto</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
-    </items>
-    <items xsi:type="form:FormField">
       <name>РежимАсинх</name>
       <id>31</id>
       <enabled>true</enabled>
