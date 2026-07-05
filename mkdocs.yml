@@ -155,6 +155,8 @@ nav:
       - Как расширение конфигурации: user/installation/extension.md
       - В основную конфигурацию: user/installation/main-config.md
       - Адаптация подсистемы: user/installation/adaptation.md
+      - Роли и права: user/installation/roles.md
+      - Обновление версий: user/installation/updating.md
     - Настройка подсистемы:
       - user/configuration/index.md
       - Брокеры: user/configuration/brokers.md
@@ -178,6 +180,7 @@ nav:
       - Исходящие — независимый регистр: user/examples/outgoing-register.md
       - Исходящие — регистр по регистратору: user/examples/outgoing-recorder.md
       - Подавление регистрации: user/examples/suppress.md
+      - Идемпотентность: user/examples/idempotency.md
       - Входящие — upsert справочника: user/examples/incoming-catalog.md
       - Входящие — регистр сведений: user/examples/incoming-register.md
       - Входящие — отмена обработки: user/examples/incoming-cancel.md
@@ -189,11 +192,13 @@ nav:
       - user/operations/index.md
       - Мониторинг очередей: user/operations/monitoring.md
       - Статусы сообщений: user/operations/statuses.md
+      - Обслуживание очередей: user/operations/queue-maintenance.md
       - Диагностика: user/operations/diagnostics.md
       - Типовые проблемы: user/operations/troubleshooting.md
       - Производительность: user/operations/performance.md
   - Разработка проекта:
     - project/index.md
+    - Участие в разработке: project/contributing.md
     - Окружение: project/environment.md
     - Репозитории: project/repositories.md
     - Форматы поставки: project/delivery-formats.md

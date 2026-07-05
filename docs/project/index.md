@@ -61,7 +61,7 @@
 
     Список констант, управляющих поведением подсистемы.
 
--   :material-extension:{ .lg } **[Расширение адаптера](extending.md)**
+-   :material-puzzle-plus:{ .lg } **[Расширение адаптера](extending.md)**
 
     ---
 
