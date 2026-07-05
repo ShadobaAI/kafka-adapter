@@ -87,6 +87,12 @@
 
 <div class="grid cards" markdown>
 
+-   :material-fingerprint:{ .lg } **[Идемпотентность](idempotency.md)**
+
+    ---
+
+    Контроль повторов: когда сообщение не уйдёт повторно и как форсировать отправку.
+
 -   :material-security:{ .lg } **[Защищённое подключение](secure-connection.md)**
 
     ---

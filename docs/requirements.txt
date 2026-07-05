@@ -1,7 +1,13 @@
-mkdocs-material
-mkdocs-glightbox
-mkdocs-awesome-pages-plugin
-mkdocs-section-index
-mkdocs-git-revision-date-localized-plugin
-mkdocs-redirects
-mkdocs-minify-plugin
+# Версии запинены намеренно (2026-07-05): свежие mkdocs-redirects 1.2.3 и
+# mkdocs-section-index 0.3.11+ тянут пакет properdocs (форк MkDocs), который
+# вклинивает WARNING в сборку и роняет mkdocs build --strict.
+# Перед обновлением пинов проверяйте, что пакеты не тянут properdocs.
+mkdocs==1.6.1
+mkdocs-material[imaging]==9.7.6
+mkdocs-glightbox==0.5.2
+mkdocs-awesome-pages-plugin==2.10.1
+mkdocs-section-index==0.3.10
+mkdocs-git-revision-date-localized-plugin==1.5.3
+mkdocs-redirects==1.2.2
+mkdocs-minify-plugin==0.8.0
+mkdocs-llmstxt==0.5.0

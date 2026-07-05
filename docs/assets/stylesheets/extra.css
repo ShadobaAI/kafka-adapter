@@ -63,6 +63,16 @@
   cursor: zoom-in;
 }
 
+/* Светлые PNG в тёмной теме: рамка и мягкое приглушение, чтобы не «вспыхивали» */
+.md-typeset img:not(.twemoji) {
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+[data-md-color-scheme="slate"] .md-typeset img:not(.twemoji) {
+  filter: brightness(0.9) contrast(1.02);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
 .md-typeset figure {
   margin: 1.5em auto;
   text-align: center;
