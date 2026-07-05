@@ -15,6 +15,7 @@
       <group>NavigationPanelSeeAlso</group>
       <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкХэшСуммыСообщений.StandardCommand.OpenList</commands>
     </placementFragments>
     <placementFragments>
       <group>CommandGroup.кфкНастройкиПодключения</group>
@@ -45,6 +46,13 @@
       <group>CommandGroup.кфкОчередиСообщений</group>
       <commands>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commands>
+    </orderFragments>
+    <orderFragments>
+      <group>NavigationPanelSeeAlso</group>
+      <commands>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</commands>
+      <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкХэшСуммыСообщений.StandardCommand.OpenList</commands>
     </orderFragments>
   </commandsOrder>
 </cmi:CommandInterface>

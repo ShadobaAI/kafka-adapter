@@ -1497,6 +1497,44 @@
         <showInFooter>true</showInFooter>
         <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
       </items>
+      <items xsi:type="form:FormField">
+        <name>ИдемпотентнаяОтправка</name>
+        <id>179</id>
+        <title>
+          <key>ru</key>
+          <value>Идемп. отправка</value>
+        </title>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:DataPath">
+          <segments>Объект.ИдемпотентнаяОтправка</segments>
+        </dataPath>
+        <toolTipRepresentation>ShowAuto</toolTipRepresentation>
+        <extendedTooltip>
+          <name>ИдемпотентнаяОтправкаРасширеннаяПодсказка</name>
+          <id>181</id>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>ИдемпотентнаяОтправкаКонтекстноеМеню</name>
+          <id>180</id>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>CheckBoxField</type>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+      </items>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>

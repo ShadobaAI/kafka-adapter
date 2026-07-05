@@ -105,4 +105,5 @@
   <informationRegisters>InformationRegister.кфкПараметрыЛогирования</informationRegisters>
   <informationRegisters>InformationRegister.кфкПараметрыОчисткиХранилища</informationRegisters>
   <informationRegisters>InformationRegister.кфкПозицииОпераций</informationRegisters>
+  <informationRegisters>InformationRegister.кфкХэшСуммыСообщений</informationRegisters>
 </mdclass:Configuration>

@@ -70,4 +70,11 @@
       <value>Ошибка выгрузки</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="b1566b75-70c6-497a-8ff6-bdaa91eddbbe">
+    <name>ВыгрузкаОтменена</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выгрузка отменена</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

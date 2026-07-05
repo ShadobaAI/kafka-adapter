@@ -454,6 +454,43 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>ИдемпотентнаяОбработка</name>
+      <id>72</id>
+      <title>
+        <key>ru</key>
+        <value>Идемп. обработка</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.ИдемпотентнаяОбработка</segments>
+      </dataPath>
+      <extendedTooltip>
+        <name>ИдемпотентнаяОбработкаРасширеннаяПодсказка</name>
+        <id>74</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ИдемпотентнаяОбработкаКонтекстноеМеню</name>
+        <id>73</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>CheckBoxField</type>
+      <editMode>Auto</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+    </items>
+    <items xsi:type="form:FormField">
       <name>Ссылка</name>
       <id>43</id>
       <visible>true</visible>

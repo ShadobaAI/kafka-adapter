@@ -225,6 +225,25 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="34d0b5e0-3aa2-44ca-a203-0c7d820bc4d6">
+    <name>ИдемпотентнаяОбработка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Идемпотентная обработка</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Не обрабатывать повторно сообщения с одинаковым содержимым.</value>
+    </toolTip>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="3e4f1717-6ac0-4976-94a5-9ad5b2ed0092">
     <name>ПодпотокиОбработки</name>
     <synonym>

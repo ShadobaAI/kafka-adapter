@@ -76,4 +76,5 @@
   <content>CommandGroup.кфкНастройкиПодключения</content>
   <content>CommandGroup.кфкОчередиСообщений</content>
   <content>DataProcessor.кфкПанельАдминистрирования</content>
+  <content>InformationRegister.кфкХэшСуммыСообщений</content>
 </mdclass:Subsystem>

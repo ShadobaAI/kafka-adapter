@@ -200,6 +200,25 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="665b5718-ea26-48f6-8284-907bb101e0ae">
+    <name>ИдемпотентнаяОтправка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Идемпотентная отправка</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Не отправлять повторно сообщения с одинаковым содержимым.</value>
+    </toolTip>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="45b8cecb-2ca6-44e6-a68b-154c06105fca">
     <name>ПодпотокиОбработки</name>
     <synonym>

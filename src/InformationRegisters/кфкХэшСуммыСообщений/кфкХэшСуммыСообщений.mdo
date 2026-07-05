@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f45d016c-0e16-49fe-96be-aad03457b042">
+  <producedTypes>
+    <selectionType typeId="de11b20f-9f38-4ecb-937c-b07fca46acdb" valueTypeId="b6448146-5f1d-4a8a-b9ce-8ad70c759336"/>
+    <listType typeId="faf464f5-c5e8-4d7a-ad49-65722cee2c0d" valueTypeId="1ad0a12e-7a55-4222-9ff1-863006b7e6b1"/>
+    <managerType typeId="1522251d-6206-46da-a4ca-66c2ee103080" valueTypeId="b6ac7193-df60-429f-8a33-eea670128693"/>
+    <recordSetType typeId="48dcd286-0c11-48e3-832f-ffe73983a8ab" valueTypeId="9e2c1661-0526-4097-813a-6ddde9758630"/>
+    <recordKeyType typeId="18fd5f11-9b02-4231-b9de-41e3816885f2" valueTypeId="0b448cb7-b24a-40f3-b667-9c703c453bdd"/>
+    <recordType typeId="5b016d6b-a65c-456a-87a3-3e4334512b6a" valueTypeId="e1d5f859-c1fa-4ff7-a54c-3305827b7313"/>
+    <recordManagerType typeId="ae80597f-d35e-4b43-948d-0f3fefa1b7be" valueTypeId="63d65a7b-2e63-44d5-8f76-b5419d474445"/>
+  </producedTypes>
+  <name>кфкХэшСуммыСообщений</name>
+  <synonym>
+    <key>ru</key>
+    <value>Хэш-суммы сообщений (Kafka)</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <defaultRecordForm>InformationRegister.кфкХэшСуммыСообщений.Form.ФормаЗаписи</defaultRecordForm>
+  <defaultListForm>InformationRegister.кфкХэшСуммыСообщений.Form.ФормаСписка</defaultListForm>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Хэш-сумма сообщения</value>
+  </recordPresentation>
+  <resources uuid="c302b2b8-33a8-4e5c-8cd1-2be30149e001">
+    <name>ХэшСумма</name>
+    <synonym>
+      <key>ru</key>
+      <value>Хэш-сумма</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>64</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <attributes uuid="df817096-dd76-4ee3-85a7-ece95ad824e6">
+    <name>ДатаОбновления</name>
+    <synonym>
+      <key>ru</key>
+      <value>Дата обновления</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="3440aaea-419c-42e5-b38c-4c1ba670ffe4">
+    <name>МеткаИзмененияМС</name>
+    <synonym>
+      <key>ru</key>
+      <value>Метка изменения (мс)</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>15</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Последнее изменение, мс</value>
+    </toolTip>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <dimensions uuid="434797ff-3de3-47ee-a4df-d4b2d42da03a">
+    <name>КлючЗаписи</name>
+    <synonym>
+      <key>ru</key>
+      <value>Ключ записи</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>64</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <forms uuid="942f4503-ad01-40ba-aadb-5c34b7527585">
+    <name>ФормаСписка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="2b40068f-33be-4d17-afd7-00e5a38d025a">
+    <name>ФормаЗаписи</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма записи</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:InformationRegister>
