@@ -10,7 +10,7 @@ on:
 jobs:
   sonar:
     name: SonarQube
-    runs-on: [self-hosted, sonar]
+    runs-on: [self-hosted, linux, x64, sonar-docker]
     defaults:
       run:
         shell: bash
@@ -26,6 +26,7 @@ jobs:
       SONAR_PROJECT_KEY: ${{ github.event.repository.name }}
       SONAR_PROJECT_NAME: ${{ github.event.repository.name }}
       SONARQUBE_BACKUP_DIRS: ${{ vars.SONARQUBE_BACKUP_DIRS }}
+      SONARQUBE_DB_CONTAINER: ${{ vars.SONARQUBE_DB_CONTAINER || 'db' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,12 +66,17 @@ jobs:
           if command -v sonar-scanner >/dev/null 2>&1; then
             sonar-scanner "${scanner_args[@]}"
           else
-            docker run --rm --init --user "$(id -u):$(id -g)" \
-              -e SONAR_HOST_URL="${SONAR_HOST_URL}" \
-              -v "${GITHUB_WORKSPACE}:/usr/src" \
-              -w /usr/src \
-              sonarsource/sonar-scanner-cli:latest \
-              "${scanner_args[@]}"
+            docker_args=(
+              run --rm --init --user "$(id -u):$(id -g)"
+              -e SONAR_HOST_URL="${SONAR_HOST_URL}"
+            )
+            if [ -f /.dockerenv ] && docker container inspect "${HOSTNAME}" >/dev/null 2>&1; then
+              docker_args+=(--volumes-from "${HOSTNAME}" -w "${GITHUB_WORKSPACE}")
+            else
+              docker_args+=(-v "${GITHUB_WORKSPACE}:/usr/src" -w /usr/src)
+            fi
+
+            docker "${docker_args[@]}" sonarsource/sonar-scanner-cli:latest "${scanner_args[@]}"
           fi
           rc=$?
           set -e
@@ -136,15 +142,15 @@ jobs:
             exit 0
           fi
 
-          if ! docker ps --format '{{.Names}}' | grep -Fxq db; then
-            echo "PostgreSQL container 'db' is not running"
+          if ! docker ps --format '{{.Names}}' | grep -Fxq "${SONARQUBE_DB_CONTAINER}"; then
+            echo "PostgreSQL container '${SONARQUBE_DB_CONTAINER}' is not running"
             exit 1
           fi
 
           backup_name="sonarqube-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-$(date -u +%Y%m%dT%H%M%SZ).dump"
           backup_file="${RUNNER_TEMP:-/tmp}/${backup_name}"
 
-          docker exec db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -F c' > "${backup_file}"
+          docker exec "${SONARQUBE_DB_CONTAINER}" sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -F c' > "${backup_file}"
 
           printf '%s\n' "${SONARQUBE_BACKUP_DIRS}" \
             | tr ',;' '\n\n' \
