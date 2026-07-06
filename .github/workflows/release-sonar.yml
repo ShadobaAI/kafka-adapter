@@ -27,6 +27,7 @@ jobs:
       SONAR_PROJECT_NAME: ${{ github.event.repository.name }}
       SONARQUBE_BACKUP_DIRS: ${{ vars.SONARQUBE_BACKUP_DIRS }}
       SONARQUBE_DB_CONTAINER: ${{ vars.SONARQUBE_DB_CONTAINER || 'db' }}
+      SONAR_SCANNER_DOCKER_NETWORK: ${{ vars.SONAR_SCANNER_DOCKER_NETWORK }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,6 +53,19 @@ jobs:
             echo "dashboard_url=${SONAR_HOST_URL%/}/dashboard?id=${SONAR_PROJECT_KEY}" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          if [ ! -d src ]; then
+            echo "status=failed" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=Source directory src is missing" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+          bsl_count="$(find src -type f -name '*.bsl' | wc -l | tr -d '[:space:]')"
+          if [ "${bsl_count}" -eq 0 ]; then
+            echo "status=failed" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=No BSL source files found in src" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          echo "Found ${bsl_count} BSL source files in src"
 
           scanner_args=(
             "-Dsonar.host.url=${SONAR_HOST_URL}"
@@ -70,6 +84,15 @@ jobs:
               run --rm --init --user "$(id -u):$(id -g)"
               -e SONAR_HOST_URL="${SONAR_HOST_URL}"
             )
+            if [ -n "${SONAR_SCANNER_DOCKER_NETWORK}" ]; then
+              docker_args+=(--network "${SONAR_SCANNER_DOCKER_NETWORK}")
+            else
+              case "${SONAR_HOST_URL}" in
+                http://localhost:*|https://localhost:*|http://127.0.0.1:*|https://127.0.0.1:*)
+                  docker_args+=(--network host)
+                  ;;
+              esac
+            fi
             if [ -f /.dockerenv ] && docker container inspect "${HOSTNAME}" >/dev/null 2>&1; then
               docker_args+=(--volumes-from "${HOSTNAME}" -w "${GITHUB_WORKSPACE}")
             else
@@ -93,6 +116,7 @@ jobs:
           else
             echo "status=failed" >> "$GITHUB_OUTPUT"
             echo "skip_reason=sonar-scanner exited with code ${rc}" >> "$GITHUB_OUTPUT"
+            exit "$rc"
           fi
 
       - name: Generate SonarQube summary
