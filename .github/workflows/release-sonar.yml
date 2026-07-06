@@ -1,0 +1,170 @@
+name: Release / SonarQube
+
+on:
+  workflow_call:
+    outputs:
+      sonar_dashboard_url:
+        description: SonarQube dashboard URL
+        value: ${{ jobs.sonar.outputs.sonar_dashboard_url }}
+
+jobs:
+  sonar:
+    name: SonarQube
+    runs-on: [self-hosted, sonar]
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      sonar_dashboard_url: ${{ steps.sonar_report.outputs.dashboard_url }}
+    permissions:
+      contents: read
+      actions: read
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      ASSETS_DIR: assets
+      SONAR_HOST_URL: "${{ vars.SONAR_HOST_URL || 'http://localhost:9000' }}"
+      SONAR_PROJECT_KEY: ${{ github.event.repository.name }}
+      SONAR_PROJECT_NAME: ${{ github.event.repository.name }}
+      SONARQUBE_BACKUP_DIRS: ${{ vars.SONARQUBE_BACKUP_DIRS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download SonarQube coverage inputs
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: sonar-coverage-inputs
+          path: .
+
+      - name: Run SonarQube analysis
+        id: sonar_scan
+        run: |
+          if [ -z "${SONAR_HOST_URL}" ]; then
+            echo "status=skipped" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=SONAR_HOST_URL is not configured" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ ! -f "${ASSETS_DIR}/unit/genericCoverage.xml" ] || [ ! -f "${ASSETS_DIR}/ui/genericCoverage.xml" ]; then
+            echo "status=skipped" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=Unit or UI coverage XML is missing" >> "$GITHUB_OUTPUT"
+            echo "dashboard_url=${SONAR_HOST_URL%/}/dashboard?id=${SONAR_PROJECT_KEY}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          scanner_args=(
+            "-Dsonar.host.url=${SONAR_HOST_URL}"
+            "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
+            "-Dsonar.projectName=${SONAR_PROJECT_NAME}"
+            "-Dsonar.projectVersion=${RELEASE_TAG}"
+            "-Dsonar.coverageReportPaths=${ASSETS_DIR}/unit/genericCoverage.xml,${ASSETS_DIR}/ui/genericCoverage.xml"
+          )
+
+          rm -rf .scannerwork
+          set +e
+          if command -v sonar-scanner >/dev/null 2>&1; then
+            sonar-scanner "${scanner_args[@]}"
+          else
+            docker run --rm --init --user "$(id -u):$(id -g)" \
+              -e SONAR_HOST_URL="${SONAR_HOST_URL}" \
+              -v "${GITHUB_WORKSPACE}:/usr/src" \
+              -w /usr/src \
+              sonarsource/sonar-scanner-cli:latest \
+              "${scanner_args[@]}"
+          fi
+          rc=$?
+          set -e
+
+          if [ -f .scannerwork/report-task.txt ]; then
+            dashboard_url="$(awk -F= '$1 == "dashboardUrl" {print $2}' .scannerwork/report-task.txt)"
+            if [ -n "${dashboard_url}" ]; then
+              echo "dashboard_url=${dashboard_url}" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+          if [ "$rc" -eq 0 ]; then
+            echo "status=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=failed" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=sonar-scanner exited with code ${rc}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate SonarQube summary
+        id: sonar_report
+        if: always()
+        run: |
+          skip_reason="${{ steps.sonar_scan.outputs.skip_reason }}"
+          args=()
+          if [ -n "${skip_reason}" ]; then
+            args+=(--skip-reason "${skip_reason}")
+          fi
+
+          python3 .github/scripts/generate_sonar_summary.py \
+            --output-dir "${ASSETS_DIR}/sonar" \
+            --project-key "${SONAR_PROJECT_KEY}" \
+            --project-name "${SONAR_PROJECT_NAME}" \
+            --project-version "${RELEASE_TAG}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --run-attempt "${GITHUB_RUN_ATTEMPT}" \
+            --host-url "${SONAR_HOST_URL}" \
+            --report-task-file ".scannerwork/report-task.txt" \
+            --unit-coverage "${ASSETS_DIR}/unit/genericCoverage.xml" \
+            --ui-coverage "${ASSETS_DIR}/ui/genericCoverage.xml" \
+            "${args[@]}"
+
+          dashboard_url="${{ steps.sonar_scan.outputs.dashboard_url }}"
+          if [ -z "${dashboard_url}" ] && [ -n "${SONAR_HOST_URL}" ]; then
+            dashboard_url="${SONAR_HOST_URL%/}/dashboard?id=${SONAR_PROJECT_KEY}"
+          fi
+          echo "dashboard_url=${dashboard_url}" >> "$GITHUB_OUTPUT"
+          echo "generated=true" >> "$GITHUB_OUTPUT"
+
+      - name: Upload SonarQube summary
+        if: always() && steps.sonar_report.outputs.generated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-summary
+          path: ${{ env.ASSETS_DIR }}/sonar
+          if-no-files-found: warn
+
+      - name: Backup SonarQube database
+        if: always()
+        run: |
+          if [ -z "${SONARQUBE_BACKUP_DIRS}" ]; then
+            echo "SONARQUBE_BACKUP_DIRS is not configured, skipping SonarQube database backup"
+            exit 0
+          fi
+
+          if ! docker ps --format '{{.Names}}' | grep -Fxq db; then
+            echo "PostgreSQL container 'db' is not running"
+            exit 1
+          fi
+
+          backup_name="sonarqube-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-$(date -u +%Y%m%dT%H%M%SZ).dump"
+          backup_file="${RUNNER_TEMP:-/tmp}/${backup_name}"
+
+          docker exec db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -F c' > "${backup_file}"
+
+          printf '%s\n' "${SONARQUBE_BACKUP_DIRS}" \
+            | tr ',;' '\n\n' \
+            | while IFS= read -r backup_dir; do
+                backup_dir="$(printf '%s' "${backup_dir}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+                if [ -z "${backup_dir}" ]; then
+                  continue
+                fi
+                backup_dir="$(printf '%s' "${backup_dir}" | sed -E 's#^([A-Za-z]):\\#\1:/#;s#\\#/#g')"
+
+                mkdir -p "${backup_dir}"
+                cp "${backup_file}" "${backup_dir}/${backup_name}"
+
+                find "${backup_dir}" -maxdepth 1 -type f -name 'sonarqube-*.dump' \
+                  -printf '%T@ %p\n' \
+                  | sort -rn \
+                  | awk 'NR > 10 {print substr($0, index($0, $2))}' \
+                  | while IFS= read -r old_backup; do
+                      rm -f "${old_backup}"
+                    done
+              done
+
+          rm -f "${backup_file}"

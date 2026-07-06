@@ -283,8 +283,13 @@ def copy_directory_contents(source_dir, target_dir):
             shutil.copy2(source, target)
 
 
-def prepare_results_dir(results_dir, unit_dir, ui_dir):
-    source_dirs = [(unit_dir / "allure").resolve(), (ui_dir / "allure").resolve()]
+def prepare_results_dir(results_dir, unit_dir, ui_dir, scopes):
+    source_dirs = []
+    if UNIT_SCOPE in scopes:
+        source_dirs.append((unit_dir / "allure").resolve())
+    if UI_SCOPE in scopes:
+        source_dirs.append((ui_dir / "allure").resolve())
+
     if results_dir.resolve() in source_dirs:
         raise ValueError("--results-dir must differ from unit/ui source allure directories")
 
@@ -292,8 +297,10 @@ def prepare_results_dir(results_dir, unit_dir, ui_dir):
         shutil.rmtree(results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    copy_directory_contents(unit_dir / "allure", results_dir)
-    copy_directory_contents(ui_dir / "allure", results_dir)
+    if UNIT_SCOPE in scopes:
+        copy_directory_contents(unit_dir / "allure", results_dir)
+    if UI_SCOPE in scopes:
+        copy_directory_contents(ui_dir / "allure", results_dir)
 
     for file_name in ALLURE_METADATA_FILES:
         (results_dir / file_name).unlink(missing_ok=True)
@@ -528,18 +535,22 @@ def main():
     parser.add_argument("--results-dir", required=True)
     parser.add_argument("--unit-dir", required=True)
     parser.add_argument("--ui-dir", required=True)
+    parser.add_argument("--scope", choices=("all", UNIT_SCOPE, UI_SCOPE), default="all")
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
     unit_dir = Path(args.unit_dir)
     ui_dir = Path(args.ui_dir)
     versions = test_engine_versions()
+    scopes = (UNIT_SCOPE, UI_SCOPE) if args.scope == "all" else (args.scope,)
 
-    prepare_results_dir(results_dir, unit_dir, ui_dir)
+    prepare_results_dir(results_dir, unit_dir, ui_dir, scopes)
     write_environment_properties(results_dir, unit_dir, ui_dir)
     normalize_result_groups(results_dir, versions)
-    add_coverage_report(results_dir, UNIT_COVERAGE_SUITE, UNIT_SCOPE, versions, unit_dir)
-    add_coverage_report(results_dir, UI_COVERAGE_SUITE, UI_SCOPE, versions, ui_dir)
+    if UNIT_SCOPE in scopes:
+        add_coverage_report(results_dir, UNIT_COVERAGE_SUITE, UNIT_SCOPE, versions, unit_dir)
+    if UI_SCOPE in scopes:
+        add_coverage_report(results_dir, UI_COVERAGE_SUITE, UI_SCOPE, versions, ui_dir)
 
 
 if __name__ == "__main__":

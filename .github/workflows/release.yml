@@ -17,8 +17,8 @@ jobs:
     uses: ./.github/workflows/release-build-cf-xml.yml
     secrets: inherit
 
-  tests:
-    name: Tests
+  quality:
+    name: Quality
     needs: [build_cf_xml]
     permissions:
       contents: read
@@ -26,42 +26,57 @@ jobs:
       checks: write
       packages: read
       pull-requests: write
-    uses: ./.github/workflows/release-tests.yml
+    uses: ./.github/workflows/release-quality.yml
     secrets: inherit
 
   update_release_notes:
-    name: Add test report link to release
-    needs: [tests]
+    name: Add release report links to release
+    needs: [quality]
+    if: always() && needs.quality.result != 'skipped'
     runs-on: ubuntu-latest
     permissions:
       contents: write
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
-      TEST_REPORT_URL: ${{ needs.tests.outputs.test_report_url }}
+      ALLURE_UI_REPORT_URL: ${{ needs.quality.outputs.allure_ui_report_url }}
+      ALLURE_UNIT_REPORT_URL: ${{ needs.quality.outputs.allure_unit_report_url }}
+      SONAR_SUMMARY_URL: ${{ needs.quality.outputs.sonar_summary_url }}
+      SONAR_DASHBOARD_URL: ${{ needs.quality.outputs.sonar_dashboard_url }}
     steps:
-      - name: Add test report link
+      - name: Add release report links
         run: |
-          if [ -z "${TEST_REPORT_URL}" ]; then
-            echo "URL отчета тестирования пустой"
-            exit 1
+          if [ -z "${ALLURE_UI_REPORT_URL}" ] || [ -z "${ALLURE_UNIT_REPORT_URL}" ] || [ -z "${SONAR_SUMMARY_URL}" ]; then
+            echo "::warning::Release report URLs are incomplete. Release notes were not changed."
+            exit 0
           fi
 
           body_file="$(mktemp)"
           gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --json body --jq .body > "$body_file"
 
-          python3 - "$body_file" "$TEST_REPORT_URL" <<'PY'
+          python3 - "$body_file" "$ALLURE_UI_REPORT_URL" "$ALLURE_UNIT_REPORT_URL" "$SONAR_SUMMARY_URL" "$SONAR_DASHBOARD_URL" <<'PY'
           import pathlib
           import re
           import sys
 
           body_path = pathlib.Path(sys.argv[1])
-          report_url = sys.argv[2]
-          marker = "## Отчет тестирования"
+          allure_ui_url = sys.argv[2]
+          allure_unit_url = sys.argv[3]
+          sonar_summary_url = sys.argv[4]
+          sonar_dashboard_url = sys.argv[5]
+          marker = "## Отчеты релиза"
+          legacy_marker_ru = "## Отчет тестирования"
           legacy_marker = "## Test report"
-          block = f"{marker}\n\n- [Allure-отчет тестирования]({report_url})\n"
+          links = [
+              f"- [Allure UI tests report]({allure_ui_url})",
+              f"- [Allure Unit tests report]({allure_unit_url})",
+              f"- [SonarQube summary]({sonar_summary_url})",
+          ]
+          if sonar_dashboard_url:
+              links.append(f"- [SonarQube dashboard]({sonar_dashboard_url})")
+          block = f"{marker}\n\n" + "\n".join(links) + "\n"
 
           body = body_path.read_text(encoding="utf-8")
-          pattern = rf"(?ms)^({re.escape(marker)}|{re.escape(legacy_marker)})\n.*?(?=^## |\Z)"
+          pattern = rf"(?ms)^({re.escape(marker)}|{re.escape(legacy_marker_ru)}|{re.escape(legacy_marker)})\n.*?(?=^## |\Z)"
           if re.search(pattern, body):
               body = re.sub(pattern, block + "\n", body).rstrip() + "\n"
           else:
@@ -76,13 +91,13 @@ jobs:
 
   build_cf:
     name: Build CF
-    needs: [tests]
+    needs: [quality]
     uses: ./.github/workflows/release-build-cf.yml
     secrets: inherit
 
   build_cfe:
     name: Build CFE
-    needs: [tests]
+    needs: [quality]
     uses: ./.github/workflows/release-build-cfe.yml
     secrets: inherit
 

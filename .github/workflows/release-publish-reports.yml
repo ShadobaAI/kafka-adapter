@@ -1,0 +1,181 @@
+name: Release / Publish Reports
+
+on:
+  workflow_call:
+    inputs:
+      sonar_dashboard_url:
+        description: SonarQube dashboard URL
+        required: false
+        type: string
+    outputs:
+      test_report_url:
+        description: Published release reports root URL
+        value: ${{ jobs.publish_reports.outputs.test_report_url }}
+      allure_ui_report_url:
+        description: Published Allure UI test report URL
+        value: ${{ jobs.publish_reports.outputs.allure_ui_report_url }}
+      allure_unit_report_url:
+        description: Published Allure unit test report URL
+        value: ${{ jobs.publish_reports.outputs.allure_unit_report_url }}
+      sonar_summary_url:
+        description: Published SonarQube Markdown summary URL
+        value: ${{ jobs.publish_reports.outputs.sonar_summary_url }}
+    secrets:
+      REPORTS_TOKEN:
+        required: true
+
+jobs:
+  publish_reports:
+    name: Publish release reports
+    runs-on: ubuntu-latest
+    outputs:
+      test_report_url: ${{ steps.test_report_publish.outputs.remote_href }}
+      allure_ui_report_url: ${{ steps.test_report_publish.outputs.allure_ui_href }}
+      allure_unit_report_url: ${{ steps.test_report_publish.outputs.allure_unit_href }}
+      sonar_summary_url: ${{ steps.test_report_publish.outputs.sonar_summary_href }}
+    permissions:
+      contents: read
+      actions: read
+      checks: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      ASSETS_DIR: assets
+      TEST_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
+      TEST_REPORTS_BRANCH: main
+      TEST_REPORTS_DIR: test-reports
+      TEST_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-reports
+      TEST_REPORTS_KEEP_RUNS: 30
+    steps:
+      - name: Download Allure unit report
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: allure-unit-report
+          path: ${{ env.ASSETS_DIR }}/allure-unit-report
+
+      - name: Download Allure UI report
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: allure-ui-report
+          path: ${{ env.ASSETS_DIR }}/allure-ui-report
+
+      - name: Download SonarQube summary
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: sonar-summary
+          path: ${{ env.ASSETS_DIR }}/sonar
+
+      - name: Prepare test report publishing
+        id: test_report_publish
+        run: |
+          if [ ! -f "${ASSETS_DIR}/allure-unit-report/summary.json" ]; then
+            echo "Allure unit report is not available."
+            exit 0
+          fi
+          if [ ! -f "${ASSETS_DIR}/allure-ui-report/summary.json" ]; then
+            echo "Allure UI report is not available."
+            exit 0
+          fi
+          if [ ! -f "${ASSETS_DIR}/sonar/summary.md" ]; then
+            echo "SonarQube summary is not available."
+            exit 0
+          fi
+
+          report_path="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "path=${report_path}" >> "$GITHUB_OUTPUT"
+          echo "remote_href=${TEST_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
+          echo "allure_unit_href=${TEST_REPORTS_BASE_URL}/${report_path}/allure-unit/" >> "$GITHUB_OUTPUT"
+          echo "allure_ui_href=${TEST_REPORTS_BASE_URL}/${report_path}/allure-ui/" >> "$GITHUB_OUTPUT"
+          echo "sonar_summary_href=${TEST_REPORTS_BASE_URL}/${report_path}/sonar/summary.md" >> "$GITHUB_OUTPUT"
+          echo "latest_allure_unit_href=${TEST_REPORTS_BASE_URL}/latest/allure-unit/" >> "$GITHUB_OUTPUT"
+          echo "latest_allure_ui_href=${TEST_REPORTS_BASE_URL}/latest/allure-ui/" >> "$GITHUB_OUTPUT"
+          echo "latest_sonar_summary_href=${TEST_REPORTS_BASE_URL}/latest/sonar/summary.md" >> "$GITHUB_OUTPUT"
+
+      - name: Publish test report links
+        if: always() && steps.test_report_publish.outputs.path != ''
+        run: |
+          {
+            echo "### Release reports"
+            echo ""
+            echo "- [Allure UI](${{ steps.test_report_publish.outputs.allure_ui_href }})"
+            echo "- [Allure Unit](${{ steps.test_report_publish.outputs.allure_unit_href }})"
+            echo "- [SonarQube summary](${{ steps.test_report_publish.outputs.sonar_summary_href }})"
+            if [ -n "${{ inputs.sonar_dashboard_url }}" ]; then
+              echo "- [SonarQube dashboard](${{ inputs.sonar_dashboard_url }})"
+            fi
+            echo ""
+            echo "Latest:"
+            echo "- [Allure UI](${{ steps.test_report_publish.outputs.latest_allure_ui_href }})"
+            echo "- [Allure Unit](${{ steps.test_report_publish.outputs.latest_allure_unit_href }})"
+            echo "- [SonarQube summary](${{ steps.test_report_publish.outputs.latest_sonar_summary_href }})"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Checkout test report storage
+        if: always() && steps.test_report_publish.outputs.path != ''
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.TEST_REPORTS_REPOSITORY }}
+          ref: ${{ env.TEST_REPORTS_BRANCH }}
+          path: ${{ env.TEST_REPORTS_DIR }}
+          token: ${{ secrets.REPORTS_TOKEN }}
+
+      - name: Publish release reports
+        if: always() && steps.test_report_publish.outputs.path != ''
+        run: |
+          report_path="${{ steps.test_report_publish.outputs.path }}"
+          report_target="${TEST_REPORTS_DIR}/${report_path}"
+          latest_target="${TEST_REPORTS_DIR}/latest"
+
+          rm -rf "${report_target}" "${latest_target}"
+          mkdir -p \
+            "${report_target}/allure-ui" \
+            "${report_target}/allure-unit" \
+            "${report_target}/sonar" \
+            "${latest_target}/allure-ui" \
+            "${latest_target}/allure-unit" \
+            "${latest_target}/sonar"
+
+          cp -a "${ASSETS_DIR}/allure-ui-report/." "${report_target}/allure-ui/"
+          cp -a "${ASSETS_DIR}/allure-unit-report/." "${report_target}/allure-unit/"
+          cp -a "${ASSETS_DIR}/sonar/." "${report_target}/sonar/"
+          cp -a "${ASSETS_DIR}/allure-ui-report/." "${latest_target}/allure-ui/"
+          cp -a "${ASSETS_DIR}/allure-unit-report/." "${latest_target}/allure-unit/"
+          cp "${ASSETS_DIR}/sonar/summary.md" "${latest_target}/sonar/summary.md"
+          touch "${TEST_REPORTS_DIR}/.nojekyll"
+
+          find "${TEST_REPORTS_DIR}" -mindepth 1 -maxdepth 1 -type d \
+            -regextype posix-extended -regex ".*/[0-9]+-[0-9]+" -printf "%f\n" \
+            | sort -t '-' -k1,1nr -k2,2nr \
+            | tail -n +"$((TEST_REPORTS_KEEP_RUNS + 1))" \
+            | while IFS= read -r old_report; do
+                rm -rf "${TEST_REPORTS_DIR}/${old_report}"
+              done
+
+          git -C "${TEST_REPORTS_DIR}" config user.name "github-actions[bot]"
+          git -C "${TEST_REPORTS_DIR}" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "${TEST_REPORTS_DIR}" add .
+
+          if git -C "${TEST_REPORTS_DIR}" diff --cached --quiet; then
+            echo "No release report changes to publish."
+          else
+            git -C "${TEST_REPORTS_DIR}" commit -m "Publish release reports ${report_path}"
+            git -C "${TEST_REPORTS_DIR}" push origin "HEAD:${TEST_REPORTS_BRANCH}"
+          fi
+
+      - name: Publish Allure unit summary
+        if: always() && steps.test_report_publish.outputs.allure_unit_href != ''
+        uses: allure-framework/allure-action@v0
+        with:
+          report-directory: ${{ env.ASSETS_DIR }}/allure-unit-report
+          remote-href: ${{ steps.test_report_publish.outputs.allure_unit_href }}
+          github-token: ${{ github.token }}
+
+      - name: Publish Allure UI summary
+        if: always() && steps.test_report_publish.outputs.allure_ui_href != ''
+        uses: allure-framework/allure-action@v0
+        with:
+          report-directory: ${{ env.ASSETS_DIR }}/allure-ui-report
+          remote-href: ${{ steps.test_report_publish.outputs.allure_ui_href }}
+          github-token: ${{ github.token }}

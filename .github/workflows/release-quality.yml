@@ -1,11 +1,23 @@
-name: Release / Tests
+name: Release / Quality
 
 on:
   workflow_call:
     outputs:
       test_report_url:
-        description: Published Allure test report URL
-        value: ${{ jobs.tests.outputs.test_report_url }}
+        description: Published release reports root URL
+        value: ${{ jobs.publish_reports.outputs.test_report_url }}
+      allure_ui_report_url:
+        description: Published Allure UI test report URL
+        value: ${{ jobs.publish_reports.outputs.allure_ui_report_url }}
+      allure_unit_report_url:
+        description: Published Allure unit test report URL
+        value: ${{ jobs.publish_reports.outputs.allure_unit_report_url }}
+      sonar_summary_url:
+        description: Published SonarQube Markdown summary URL
+        value: ${{ jobs.publish_reports.outputs.sonar_summary_url }}
+      sonar_dashboard_url:
+        description: SonarQube dashboard URL
+        value: ${{ jobs.sonar.outputs.sonar_dashboard_url }}
     secrets:
       REPORTS_TOKEN:
         required: true
@@ -14,8 +26,6 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
-    outputs:
-      test_report_url: ${{ steps.test_report_publish.outputs.remote_href }}
     permissions:
       contents: read
       actions: read
@@ -28,11 +38,6 @@ jobs:
       RELEASE_NAME: ${{ github.event.release.name }}
       ASSETS_DIR: assets
       ADAPTER_CF_XML: ${{ github.event.repository.name }}-cf-xml.zip
-      TEST_REPORTS_REPOSITORY: ShadobaAI/kafka-adapter-tests-reports
-      TEST_REPORTS_BRANCH: main
-      TEST_REPORTS_DIR: test-reports
-      TEST_REPORTS_BASE_URL: https://shadobaai.github.io/kafka-adapter-tests-reports
-      TEST_REPORTS_KEEP_RUNS: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -262,100 +267,76 @@ jobs:
         id: allure_results
         if: always()
         run: |
-          rm -rf "${ASSETS_DIR}/allure-report"
+          rm -rf \
+            "${ASSETS_DIR}/allure-unit" \
+            "${ASSETS_DIR}/allure-ui" \
+            "${ASSETS_DIR}/allure-unit-report" \
+            "${ASSETS_DIR}/allure-ui-report"
 
           python3 .github/scripts/prepare_allure_results.py \
-            --results-dir "${ASSETS_DIR}/allure" \
+            --results-dir "${ASSETS_DIR}/allure-unit" \
             --unit-dir "${ASSETS_DIR}/unit" \
-            --ui-dir "${ASSETS_DIR}/ui"
+            --ui-dir "${ASSETS_DIR}/ui" \
+            --scope unit
 
-          if find "${ASSETS_DIR}/allure" -name '*-result.json' -print -quit | grep -q .; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/prepare_allure_results.py \
+            --results-dir "${ASSETS_DIR}/allure-ui" \
+            --unit-dir "${ASSETS_DIR}/unit" \
+            --ui-dir "${ASSETS_DIR}/ui" \
+            --scope ui
+
+          if find "${ASSETS_DIR}/allure-unit" -name '*-result.json' -print -quit | grep -q .; then
+            echo "unit_available=true" >> "$GITHUB_OUTPUT"
           else
-            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "unit_available=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Generate Allure report
-        id: allure_report
-        if: always() && steps.allure_results.outputs.available == 'true'
+          if find "${ASSETS_DIR}/allure-ui" -name '*-result.json' -print -quit | grep -q .; then
+            echo "ui_available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ui_available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate Allure unit report
+        id: allure_unit_report
+        if: always() && steps.allure_results.outputs.unit_available == 'true'
         run: |
-          npx --yes allure generate "${ASSETS_DIR}/allure" -o "${ASSETS_DIR}/allure-report"
-          test -f "${ASSETS_DIR}/allure-report/summary.json"
+          npx --yes allure generate "${ASSETS_DIR}/allure-unit" -o "${ASSETS_DIR}/allure-unit-report"
+          test -f "${ASSETS_DIR}/allure-unit-report/summary.json"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
-      - name: Prepare test report publishing
-        id: test_report_publish
-        if: always() && steps.allure_report.outputs.generated == 'true'
+      - name: Generate Allure UI report
+        id: allure_ui_report
+        if: always() && steps.allure_results.outputs.ui_available == 'true'
         run: |
-          report_path="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          echo "path=${report_path}" >> "$GITHUB_OUTPUT"
-          echo "remote_href=${TEST_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
+          npx --yes allure generate "${ASSETS_DIR}/allure-ui" -o "${ASSETS_DIR}/allure-ui-report"
+          test -f "${ASSETS_DIR}/allure-ui-report/summary.json"
+          echo "generated=true" >> "$GITHUB_OUTPUT"
 
-      - name: Publish test report links
-        if: always() && steps.allure_report.outputs.generated == 'true'
-        run: |
-          {
-            echo "### Allure test report"
-            echo ""
-            echo "- [Current run](${{ steps.test_report_publish.outputs.remote_href }})"
-            echo "- [Latest](${TEST_REPORTS_BASE_URL}/latest/)"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Checkout test report storage
-        if: always() && steps.allure_report.outputs.generated == 'true'
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.TEST_REPORTS_REPOSITORY }}
-          ref: ${{ env.TEST_REPORTS_BRANCH }}
-          path: ${{ env.TEST_REPORTS_DIR }}
-          token: ${{ secrets.REPORTS_TOKEN }}
-
-      - name: Publish Allure test report
-        if: always() && steps.allure_report.outputs.generated == 'true'
-        run: |
-          report_path="${{ steps.test_report_publish.outputs.path }}"
-          report_target="${TEST_REPORTS_DIR}/${report_path}"
-          latest_target="${TEST_REPORTS_DIR}/latest"
-
-          rm -rf "${report_target}" "${latest_target}"
-          mkdir -p "${report_target}" "${latest_target}"
-          cp -a "${ASSETS_DIR}/allure-report/." "${report_target}/"
-          cp -a "${ASSETS_DIR}/allure-report/." "${latest_target}/"
-          touch "${TEST_REPORTS_DIR}/.nojekyll"
-
-          find "${TEST_REPORTS_DIR}" -mindepth 1 -maxdepth 1 -type d \
-            -regextype posix-extended -regex ".*/[0-9]+-[0-9]+" -printf "%f\n" \
-            | sort -t '-' -k1,1nr -k2,2nr \
-            | tail -n +"$((TEST_REPORTS_KEEP_RUNS + 1))" \
-            | while IFS= read -r old_report; do
-                rm -rf "${TEST_REPORTS_DIR}/${old_report}"
-              done
-
-          git -C "${TEST_REPORTS_DIR}" config user.name "github-actions[bot]"
-          git -C "${TEST_REPORTS_DIR}" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C "${TEST_REPORTS_DIR}" add .
-
-          if git -C "${TEST_REPORTS_DIR}" diff --cached --quiet; then
-            echo "No Allure test report changes to publish."
-          else
-            git -C "${TEST_REPORTS_DIR}" commit -m "Publish Allure test report ${report_path}"
-            git -C "${TEST_REPORTS_DIR}" push origin "HEAD:${TEST_REPORTS_BRANCH}"
-          fi
-
-      - name: Publish Allure test summary
-        if: always() && steps.allure_report.outputs.generated == 'true'
-        uses: allure-framework/allure-action@v0
-        with:
-          report-directory: ${{ env.ASSETS_DIR }}/allure-report
-          remote-href: ${{ steps.test_report_publish.outputs.remote_href }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Allure test report
-        if: always() && steps.allure_report.outputs.generated == 'true'
+      - name: Upload Allure unit report
+        if: always() && steps.allure_unit_report.outputs.generated == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: test-report
-          path: ${{ env.ASSETS_DIR }}/allure-report
+          name: allure-unit-report
+          path: ${{ env.ASSETS_DIR }}/allure-unit-report
+          if-no-files-found: warn
+
+      - name: Upload Allure UI report
+        if: always() && steps.allure_ui_report.outputs.generated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-ui-report
+          path: ${{ env.ASSETS_DIR }}/allure-ui-report
+          if-no-files-found: warn
+
+      - name: Upload SonarQube coverage inputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-coverage-inputs
+          path: |
+            ${{ env.ASSETS_DIR }}/unit/genericCoverage.xml
+            ${{ env.ASSETS_DIR }}/ui/genericCoverage.xml
           if-no-files-found: warn
 
       - name: Fail on test errors
@@ -386,7 +367,27 @@ jobs:
             echo "UI coverage report not found: ${ASSETS_DIR}/ui/genericCoverage.xml"
             exit 1
           fi
-          if [ ! -d "${ASSETS_DIR}/allure-report" ]; then
-            echo "Generated Allure test report not found: ${ASSETS_DIR}/allure-report"
+          if [ ! -d "${ASSETS_DIR}/allure-unit-report" ]; then
+            echo "Generated Allure unit test report not found: ${ASSETS_DIR}/allure-unit-report"
             exit 1
           fi
+          if [ ! -d "${ASSETS_DIR}/allure-ui-report" ]; then
+            echo "Generated Allure UI test report not found: ${ASSETS_DIR}/allure-ui-report"
+            exit 1
+          fi
+
+  sonar:
+    name: SonarQube
+    needs: [tests]
+    if: always() && needs.tests.result != 'skipped'
+    uses: ./.github/workflows/release-sonar.yml
+    secrets: inherit
+
+  publish_reports:
+    name: Publish release reports
+    needs: [tests, sonar]
+    if: always() && needs.tests.result != 'skipped' && needs.sonar.result != 'skipped'
+    uses: ./.github/workflows/release-publish-reports.yml
+    with:
+      sonar_dashboard_url: ${{ needs.sonar.outputs.sonar_dashboard_url }}
+    secrets: inherit
