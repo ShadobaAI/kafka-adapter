@@ -301,17 +301,17 @@ jobs:
 
       - name: Generate Allure unit report
         id: allure_unit_report
-        if: always() && steps.allure_results.outputs.unit_available == 'true'
+        if: always()
         run: |
-          npx --yes allure generate "${ASSETS_DIR}/allure-unit" -o "${ASSETS_DIR}/allure-unit-report"
+          npx --yes allure@3 generate "${ASSETS_DIR}/allure-unit" -o "${ASSETS_DIR}/allure-unit-report"
           test -f "${ASSETS_DIR}/allure-unit-report/summary.json"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
       - name: Generate Allure UI report
         id: allure_ui_report
-        if: always() && steps.allure_results.outputs.ui_available == 'true'
+        if: always() && steps.ui_tests.outcome != 'skipped'
         run: |
-          npx --yes allure generate "${ASSETS_DIR}/allure-ui" -o "${ASSETS_DIR}/allure-ui-report"
+          npx --yes allure@3 generate "${ASSETS_DIR}/allure-ui" -o "${ASSETS_DIR}/allure-ui-report"
           test -f "${ASSETS_DIR}/allure-ui-report/summary.json"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
@@ -352,6 +352,10 @@ jobs:
             echo "Unit Allure results not found: ${ASSETS_DIR}/unit/allure"
             exit 1
           fi
+          if ! find "${ASSETS_DIR}/unit/allure" -name '*-result.json' -print -quit | grep -q .; then
+            echo "Unit Allure result files not found: ${ASSETS_DIR}/unit/allure"
+            exit 1
+          fi
           if [ ! -f "${ASSETS_DIR}/unit/genericCoverage.xml" ]; then
             echo "Unit coverage report not found: ${ASSETS_DIR}/unit/genericCoverage.xml"
             exit 1
@@ -365,16 +369,20 @@ jobs:
             echo "UI Allure results not found: ${ASSETS_DIR}/ui/allure"
             exit 1
           fi
+          if ! find "${ASSETS_DIR}/ui/allure" -name '*-result.json' -print -quit | grep -q .; then
+            echo "UI Allure result files not found: ${ASSETS_DIR}/ui/allure"
+            exit 1
+          fi
           if [ ! -f "${ASSETS_DIR}/ui/genericCoverage.xml" ]; then
             echo "UI coverage report not found: ${ASSETS_DIR}/ui/genericCoverage.xml"
             exit 1
           fi
-          if [ ! -d "${ASSETS_DIR}/allure-unit-report" ]; then
-            echo "Generated Allure unit test report not found: ${ASSETS_DIR}/allure-unit-report"
+          if [ ! -f "${ASSETS_DIR}/allure-unit-report/summary.json" ]; then
+            echo "Generated Allure unit test report not found: ${ASSETS_DIR}/allure-unit-report/summary.json"
             exit 1
           fi
-          if [ ! -d "${ASSETS_DIR}/allure-ui-report" ]; then
-            echo "Generated Allure UI test report not found: ${ASSETS_DIR}/allure-ui-report"
+          if [ ! -f "${ASSETS_DIR}/allure-ui-report/summary.json" ]; then
+            echo "Generated Allure UI test report not found: ${ASSETS_DIR}/allure-ui-report/summary.json"
             exit 1
           fi
 
