@@ -838,53 +838,6 @@
       <name>СтраницаТелоСообщения</name>
       <id>66</id>
       <items xsi:type="form:FormField">
-        <name>РедакторJSONРежимТекста</name>
-        <id>95</id>
-        <title>
-          <key>ru</key>
-          <value>Режим</value>
-        </title>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <dataPath xsi:type="form:DataPath">
-          <segments>РедакторJSONРежимТекста</segments>
-        </dataPath>
-        <handlers>
-          <event>OnChange</event>
-          <name>РедакторJSONРежимТекстаПриИзменении</name>
-        </handlers>
-        <extendedTooltip>
-          <name>РедакторJSONРежимТекстаРасширеннаяПодсказка</name>
-          <id>97</id>
-          <type>Label</type>
-          <autoMaxWidth>true</autoMaxWidth>
-          <autoMaxHeight>true</autoMaxHeight>
-          <extInfo xsi:type="form:LabelDecorationExtInfo">
-            <horizontalAlign>Left</horizontalAlign>
-          </extInfo>
-        </extendedTooltip>
-        <contextMenu>
-          <name>РедакторJSONРежимТекстаКонтекстноеМеню</name>
-          <id>96</id>
-          <autoFill>true</autoFill>
-        </contextMenu>
-        <type>CheckBoxField</type>
-        <editMode>Enter</editMode>
-        <showInHeader>true</showInHeader>
-        <headerHorizontalAlign>Left</headerHorizontalAlign>
-        <showInFooter>true</showInFooter>
-        <extInfo xsi:type="form:CheckBoxFieldExtInfo">
-          <checkBoxType>Tumbler</checkBoxType>
-          <editFormat>
-            <key>ru</key>
-            <value>БЛ=Дерево; БИ=Текст</value>
-          </editFormat>
-        </extInfo>
-      </items>
-      <items xsi:type="form:FormField">
         <name>РедакторJSONСтраница</name>
         <id>98</id>
         <visible>true</visible>
@@ -1478,23 +1431,6 @@
     <valueType>
       <types>String</types>
       <stringQualifiers/>
-    </valueType>
-    <view>
-      <common>true</common>
-    </view>
-    <edit>
-      <common>true</common>
-    </edit>
-  </attributes>
-  <attributes>
-    <name>РедакторJSONРежимТекста</name>
-    <title>
-      <key>ru</key>
-      <value>Режим текста</value>
-    </title>
-    <id>7</id>
-    <valueType>
-      <types>Boolean</types>
     </valueType>
     <view>
       <common>true</common>
