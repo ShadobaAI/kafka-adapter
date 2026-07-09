@@ -301,18 +301,30 @@ jobs:
 
       - name: Generate Allure unit report
         id: allure_unit_report
-        if: always()
+        if: always() && steps.allure_results.outputs.unit_available == 'true'
         run: |
+          python3 .github/scripts/validate_allure_report.py \
+            --results-dir "${ASSETS_DIR}/allure-unit" \
+            --name "Unit Allure"
           npx --yes allure@3 generate "${ASSETS_DIR}/allure-unit" -o "${ASSETS_DIR}/allure-unit-report"
-          test -f "${ASSETS_DIR}/allure-unit-report/summary.json"
+          python3 .github/scripts/validate_allure_report.py \
+            --results-dir "${ASSETS_DIR}/allure-unit" \
+            --summary "${ASSETS_DIR}/allure-unit-report/summary.json" \
+            --name "Unit Allure"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
       - name: Generate Allure UI report
         id: allure_ui_report
-        if: always() && steps.ui_tests.outcome != 'skipped'
+        if: always() && steps.allure_results.outputs.ui_available == 'true'
         run: |
+          python3 .github/scripts/validate_allure_report.py \
+            --results-dir "${ASSETS_DIR}/allure-ui" \
+            --name "UI Allure"
           npx --yes allure@3 generate "${ASSETS_DIR}/allure-ui" -o "${ASSETS_DIR}/allure-ui-report"
-          test -f "${ASSETS_DIR}/allure-ui-report/summary.json"
+          python3 .github/scripts/validate_allure_report.py \
+            --results-dir "${ASSETS_DIR}/allure-ui" \
+            --summary "${ASSETS_DIR}/allure-ui-report/summary.json" \
+            --name "UI Allure"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
       - name: Upload Allure unit report
@@ -352,14 +364,14 @@ jobs:
             echo "Unit Allure results not found: ${ASSETS_DIR}/unit/allure"
             exit 1
           fi
-          if ! find "${ASSETS_DIR}/unit/allure" -name '*-result.json' -print -quit | grep -q .; then
-            echo "Unit Allure result files not found: ${ASSETS_DIR}/unit/allure"
-            exit 1
-          fi
           if [ ! -f "${ASSETS_DIR}/unit/genericCoverage.xml" ]; then
             echo "Unit coverage report not found: ${ASSETS_DIR}/unit/genericCoverage.xml"
             exit 1
           fi
+          python3 .github/scripts/validate_allure_report.py \
+            --results-dir "${ASSETS_DIR}/allure-unit" \
+            --summary "${ASSETS_DIR}/allure-unit-report/summary.json" \
+            --name "Unit Allure"
 
           if [ "${{ steps.ui_tests.outcome }}" != "success" ]; then
             echo "UI tests failed"
@@ -369,22 +381,14 @@ jobs:
             echo "UI Allure results not found: ${ASSETS_DIR}/ui/allure"
             exit 1
           fi
-          if ! find "${ASSETS_DIR}/ui/allure" -name '*-result.json' -print -quit | grep -q .; then
-            echo "UI Allure result files not found: ${ASSETS_DIR}/ui/allure"
-            exit 1
-          fi
           if [ ! -f "${ASSETS_DIR}/ui/genericCoverage.xml" ]; then
             echo "UI coverage report not found: ${ASSETS_DIR}/ui/genericCoverage.xml"
             exit 1
           fi
-          if [ ! -f "${ASSETS_DIR}/allure-unit-report/summary.json" ]; then
-            echo "Generated Allure unit test report not found: ${ASSETS_DIR}/allure-unit-report/summary.json"
-            exit 1
-          fi
-          if [ ! -f "${ASSETS_DIR}/allure-ui-report/summary.json" ]; then
-            echo "Generated Allure UI test report not found: ${ASSETS_DIR}/allure-ui-report/summary.json"
-            exit 1
-          fi
+          python3 .github/scripts/validate_allure_report.py \
+            --results-dir "${ASSETS_DIR}/allure-ui" \
+            --summary "${ASSETS_DIR}/allure-ui-report/summary.json" \
+            --name "UI Allure"
 
   sonar:
     name: SonarQube

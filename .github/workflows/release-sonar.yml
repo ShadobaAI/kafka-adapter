@@ -139,14 +139,51 @@ jobs:
             exit 1
           fi
 
+          sonar_api="${SONAR_HOST_URL%/}"
+          for attempt in $(seq 1 60); do
+            if curl -fsS --connect-timeout 5 --max-time 15 -u "${SONAR_TOKEN}:" \
+              "${sonar_api}/api/system/status" | grep -Eq '"status"[[:space:]]*:[[:space:]]*"UP"'; then
+              break
+            fi
+            if [ "$attempt" -eq 60 ]; then
+              echo "SonarQube API is not reachable: ${sonar_api}"
+              exit 1
+            fi
+            sleep 2
+          done
+
+          ce_task_url=""
+          if [ -f .scannerwork/report-task.txt ]; then
+            ce_task_url="$(awk -F= '$1 == "ceTaskUrl" {print $2}' .scannerwork/report-task.txt)"
+          fi
+          if [ -n "${ce_task_url}" ]; then
+            for attempt in $(seq 1 120); do
+              ce_status="$(curl -fsS --connect-timeout 5 --max-time 15 -u "${SONAR_TOKEN}:" "${ce_task_url}" \
+                | python3 -c 'import json,sys; print(json.load(sys.stdin).get("task", {}).get("status", ""))')"
+              case "${ce_status}" in
+                SUCCESS)
+                  break
+                  ;;
+                FAILED|CANCELED)
+                  echo "SonarQube background task finished with status: ${ce_status}"
+                  exit 1
+                  ;;
+              esac
+              if [ "$attempt" -eq 120 ]; then
+                echo "Timed out waiting for SonarQube background task: ${ce_task_url}"
+                exit 1
+              fi
+              sleep 2
+            done
+          fi
+
           rm -rf "${ASSETS_DIR}/sonar"
           python3 .github/scripts/sonar_static_report.py \
             --url "${SONAR_HOST_URL}" \
             --project "${SONAR_PROJECT_KEY}" \
             --language bsl \
             --out "${ASSETS_DIR}/sonar" \
-            --token "${SONAR_TOKEN}" \
-            --allow-partial
+            --token "${SONAR_TOKEN}"
 
           dashboard_url="${{ steps.sonar_scan.outputs.dashboard_url }}"
           if [ -z "${dashboard_url}" ] && [ -n "${SONAR_HOST_URL}" ]; then
