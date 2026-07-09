@@ -17,9 +17,9 @@ on:
       allure_unit_report_url:
         description: Published Allure unit test report URL
         value: ${{ jobs.publish_reports.outputs.allure_unit_report_url }}
-      sonar_summary_url:
-        description: Published SonarQube Markdown summary URL
-        value: ${{ jobs.publish_reports.outputs.sonar_summary_url }}
+      sonar_report_url:
+        description: Published SonarQube static report URL
+        value: ${{ jobs.publish_reports.outputs.sonar_report_url }}
     secrets:
       REPORTS_TOKEN:
         required: true
@@ -32,7 +32,7 @@ jobs:
       test_report_url: ${{ steps.test_report_publish.outputs.remote_href }}
       allure_ui_report_url: ${{ steps.test_report_publish.outputs.allure_ui_href }}
       allure_unit_report_url: ${{ steps.test_report_publish.outputs.allure_unit_href }}
-      sonar_summary_url: ${{ steps.test_report_publish.outputs.sonar_summary_href }}
+      sonar_report_url: ${{ steps.test_report_publish.outputs.sonar_report_href }}
     permissions:
       contents: read
       actions: read
@@ -60,11 +60,11 @@ jobs:
           name: allure-ui-report
           path: ${{ env.ASSETS_DIR }}/allure-ui-report
 
-      - name: Download SonarQube summary
+      - name: Download SonarQube static report
         uses: actions/download-artifact@v4
         continue-on-error: true
         with:
-          name: sonar-summary
+          name: sonar-static-report
           path: ${{ env.ASSETS_DIR }}/sonar
 
       - name: Prepare test report publishing
@@ -78,8 +78,8 @@ jobs:
             echo "Allure UI report is not available."
             exit 0
           fi
-          if [ ! -f "${ASSETS_DIR}/sonar/summary.md" ]; then
-            echo "SonarQube summary is not available."
+          if [ ! -f "${ASSETS_DIR}/sonar/index.html" ]; then
+            echo "SonarQube static report is not available."
             exit 0
           fi
 
@@ -88,10 +88,10 @@ jobs:
           echo "remote_href=${TEST_REPORTS_BASE_URL}/${report_path}/" >> "$GITHUB_OUTPUT"
           echo "allure_unit_href=${TEST_REPORTS_BASE_URL}/${report_path}/allure-unit/" >> "$GITHUB_OUTPUT"
           echo "allure_ui_href=${TEST_REPORTS_BASE_URL}/${report_path}/allure-ui/" >> "$GITHUB_OUTPUT"
-          echo "sonar_summary_href=${TEST_REPORTS_BASE_URL}/${report_path}/sonar/summary.md" >> "$GITHUB_OUTPUT"
+          echo "sonar_report_href=${TEST_REPORTS_BASE_URL}/${report_path}/sonar/" >> "$GITHUB_OUTPUT"
           echo "latest_allure_unit_href=${TEST_REPORTS_BASE_URL}/latest/allure-unit/" >> "$GITHUB_OUTPUT"
           echo "latest_allure_ui_href=${TEST_REPORTS_BASE_URL}/latest/allure-ui/" >> "$GITHUB_OUTPUT"
-          echo "latest_sonar_summary_href=${TEST_REPORTS_BASE_URL}/latest/sonar/summary.md" >> "$GITHUB_OUTPUT"
+          echo "latest_sonar_report_href=${TEST_REPORTS_BASE_URL}/latest/sonar/" >> "$GITHUB_OUTPUT"
 
       - name: Publish test report links
         if: always() && steps.test_report_publish.outputs.path != ''
@@ -101,7 +101,7 @@ jobs:
             echo ""
             echo "- [Allure UI](${{ steps.test_report_publish.outputs.allure_ui_href }})"
             echo "- [Allure Unit](${{ steps.test_report_publish.outputs.allure_unit_href }})"
-            echo "- [SonarQube summary](${{ steps.test_report_publish.outputs.sonar_summary_href }})"
+            echo "- [SonarQube static report](${{ steps.test_report_publish.outputs.sonar_report_href }})"
             if [ -n "${{ inputs.sonar_dashboard_url }}" ]; then
               echo "- [SonarQube dashboard](${{ inputs.sonar_dashboard_url }})"
             fi
@@ -109,7 +109,7 @@ jobs:
             echo "Latest:"
             echo "- [Allure UI](${{ steps.test_report_publish.outputs.latest_allure_ui_href }})"
             echo "- [Allure Unit](${{ steps.test_report_publish.outputs.latest_allure_unit_href }})"
-            echo "- [SonarQube summary](${{ steps.test_report_publish.outputs.latest_sonar_summary_href }})"
+            echo "- [SonarQube static report](${{ steps.test_report_publish.outputs.latest_sonar_report_href }})"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Checkout test report storage
@@ -142,7 +142,7 @@ jobs:
           cp -a "${ASSETS_DIR}/sonar/." "${report_target}/sonar/"
           cp -a "${ASSETS_DIR}/allure-ui-report/." "${latest_target}/allure-ui/"
           cp -a "${ASSETS_DIR}/allure-unit-report/." "${latest_target}/allure-unit/"
-          cp "${ASSETS_DIR}/sonar/summary.md" "${latest_target}/sonar/summary.md"
+          cp -a "${ASSETS_DIR}/sonar/." "${latest_target}/sonar/"
           touch "${TEST_REPORTS_DIR}/.nojekyll"
 
           find "${TEST_REPORTS_DIR}" -mindepth 1 -maxdepth 1 -type d \

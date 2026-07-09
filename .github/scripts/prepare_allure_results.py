@@ -5,9 +5,6 @@ import json
 import os
 import re
 import shutil
-import time
-import uuid
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
@@ -21,8 +18,6 @@ LABEL_TEST_ENGINE = "ТестовыйДвижок"
 LABEL_TEST_ENGINE_VERSION = "ВерсияТестовогоДвижка"
 UNIT_PARENT_SUITE = "Unit-тесты"
 UI_PARENT_SUITE = "UI-тесты"
-UNIT_COVERAGE_SUITE = "Покрытие unit-тестами"
-UI_COVERAGE_SUITE = "Покрытие UI-тестами"
 ALLURE_METADATA_FILES = ("environment.properties",)
 TEST_ENGINES = {
     UNIT_SCOPE: UNIT_TEST_ENGINE,
@@ -149,128 +144,6 @@ def dbgs_platform_version(path):
     return match.group(1) if match else ""
 
 
-def coverage_summary(path):
-    if not path.is_file():
-        return None
-
-    modules = {}
-    current_file_path = None
-
-    for event, elem in ET.iterparse(path, events=("start", "end")):
-        tag = elem.tag.rsplit("}", maxsplit=1)[-1]
-
-        if event == "start" and tag == "file":
-            current_file_path = elem.attrib.get("path")
-            if current_file_path:
-                modules.setdefault(current_file_path, {"covered_lines": set(), "total_lines": set()})
-        elif event == "start" and tag == "lineToCover" and current_file_path:
-            line_number = elem.attrib.get("lineNumber")
-            if line_number:
-                module = modules.setdefault(current_file_path, {"covered_lines": set(), "total_lines": set()})
-                module["total_lines"].add(line_number)
-                if elem.attrib.get("covered") == "true":
-                    module["covered_lines"].add(line_number)
-        elif event == "end" and tag == "file":
-            current_file_path = None
-            elem.clear()
-
-    module_summaries = []
-    for module_path, module in sorted(modules.items()):
-        module_info = coverage_module_info(module_path)
-        module_total = len(module["total_lines"])
-        module_covered = len(module["covered_lines"])
-        module_summaries.append(
-            {
-                "path": module_path,
-                "display_path": module_info["display"],
-                "tree_name": module_info["tree_name"],
-                "tree_suite": module_info["tree_suite"],
-                "tree_sub_suite": module_info["tree_sub_suite"],
-                "covered": module_covered,
-                "total": module_total,
-                "percent": (module_covered / module_total * 100) if module_total else 0,
-            }
-        )
-
-    total = sum(module["total"] for module in module_summaries)
-    covered = sum(module["covered"] for module in module_summaries)
-    percent = (covered / total * 100) if total else 0
-    return {
-        "files": len(modules),
-        "covered": covered,
-        "total": total,
-        "percent": percent,
-        "modules": module_summaries,
-    }
-
-
-def coverage_module_info(module_path):
-    parts = [part for part in module_path.replace("\\", "/").split("/") if part]
-
-    if parts and parts[0] == "src":
-        parts = parts[1:]
-
-    if parts and parts[-1].endswith(".bsl"):
-        if parts[-1] == "Module.bsl":
-            parts = parts[:-1]
-        else:
-            parts = [*parts[:-1], parts[-1][:-4]]
-
-    if len(parts) < 2:
-        return {
-            "display": f"path={module_path}",
-            "tree_name": module_path,
-            "tree_suite": "Прочее",
-            "tree_sub_suite": "",
-        }
-
-    if len(parts) >= 4 and parts[2] == "Forms":
-        parts = [parts[0], parts[1], *parts[3:]]
-
-    tree_name = "/".join(parts[2:]) if len(parts) > 2 else parts[1]
-
-    return {
-        "display": "/".join(parts),
-        "tree_name": tree_name,
-        "tree_suite": parts[0],
-        "tree_sub_suite": parts[1] if len(parts) > 2 else "",
-    }
-
-
-def format_coverage_summary(summary):
-    lines = [
-        (
-            f"Итого: покрыто {summary['covered']} из {summary['total']} строк "
-            f"({summary['percent']:.2f}%), модулей: {summary['files']}"
-        ),
-        "",
-        "Покрытие по модулям:",
-    ]
-
-    for module in summary["modules"]:
-        lines.append(
-            f"{module['percent']:6.2f}% "
-            f"{module['covered']}/{module['total']} "
-            f"{module['display_path']}"
-        )
-
-    return "\n".join(lines) + "\n"
-
-
-def copy_attachment(results_dir, path, name, mime_type):
-    if not path.is_file():
-        return None
-
-    suffix = path.suffix or ".txt"
-    source = f"{uuid.uuid4()}-attachment{suffix}"
-    shutil.copyfile(path, results_dir / source)
-    return {
-        "name": name,
-        "source": source,
-        "type": mime_type,
-    }
-
-
 def copy_directory_contents(source_dir, target_dir):
     if not source_dir.is_dir():
         return
@@ -306,41 +179,6 @@ def prepare_results_dir(results_dir, unit_dir, ui_dir, scopes):
         (results_dir / file_name).unlink(missing_ok=True)
 
 
-def add_result(results_dir, name, suite, status, message, attachments, extra_labels=None):
-    now = int(time.time() * 1000)
-    labels = [
-        {"name": "suite", "value": suite},
-        {"name": "framework", "value": "ci"},
-    ]
-    if extra_labels:
-        labels.extend(extra_labels)
-
-    label_identity = "/".join(
-        f"{label['name']}={label['value']}"
-        for label in labels
-        if label.get("name") in {"parentSuite", "suite", "subSuite", "testType"}
-    )
-    full_name = f"{label_identity}/{name}" if label_identity else name
-
-    result = {
-        "uuid": str(uuid.uuid4()),
-        "historyId": str(uuid.uuid5(uuid.NAMESPACE_URL, full_name)),
-        "name": name,
-        "fullName": full_name,
-        "status": status,
-        "statusDetails": {"message": message},
-        "stage": "finished",
-        "labels": labels,
-        "attachments": [item for item in attachments if item],
-        "start": now,
-        "stop": now,
-    }
-    (results_dir / f"{result['uuid']}-result.json").write_text(
-        json.dumps(result, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-
-
 def get_label(labels, name):
     for label in labels:
         if label.get("name") == name:
@@ -363,7 +201,7 @@ def remove_labels(labels, names):
 def is_unit_result(labels):
     parent_suite = get_label(labels, "parentSuite")
     return (
-        parent_suite in {"Unit tests", UNIT_PARENT_SUITE, UNIT_COVERAGE_SUITE}
+        parent_suite in {"Unit tests", UNIT_PARENT_SUITE}
         or get_label(labels, "framework") == "YAxUnit"
     )
 
@@ -371,7 +209,7 @@ def is_unit_result(labels):
 def is_ui_result(labels):
     parent_suite = get_label(labels, "parentSuite")
     return (
-        parent_suite in {UI_PARENT_SUITE, UI_COVERAGE_SUITE}
+        parent_suite == UI_PARENT_SUITE
         or get_label(labels, "package") == "features"
         or bool(get_label(labels, "host"))
     )
@@ -418,93 +256,6 @@ def normalize_result_groups(results_dir, versions):
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def add_coverage_report(results_dir, title, test_scope, versions, source_dir):
-    coverage_path = source_dir / "genericCoverage.xml"
-    summary = coverage_summary(coverage_path)
-
-    if summary:
-        message = (
-            f"Покрыто {summary['covered']} из {summary['total']} строк "
-            f"({summary['percent']:.2f}%), файлов: {summary['files']}"
-        )
-        summary_text = format_coverage_summary(summary)
-        status = "passed"
-    else:
-        message = f"Файл покрытия не найден: {coverage_path}"
-        summary_text = message + "\n"
-        status = "broken"
-
-    summary_path = results_dir / f"{uuid.uuid4()}-coverage-summary.txt"
-    summary_path.write_text(summary_text, encoding="utf-8")
-
-    attachments = [
-        {
-            "name": "coverage-summary.txt",
-            "source": summary_path.name,
-            "type": "text/plain",
-        },
-        copy_attachment(results_dir, coverage_path, "genericCoverage.xml", "application/xml"),
-    ]
-
-    for file_name in (
-        "coverage41c.log",
-        "dbgs.log",
-        "unit.log",
-        "vrunner.log",
-        "1cv8c.log",
-        "1cv8c-command.log",
-        "ibsrv.log",
-        "exit-code.txt",
-    ):
-        attachments.append(copy_attachment(results_dir, source_dir / file_name, file_name, "text/plain"))
-
-    engine, engine_version = test_engine_info(test_scope, versions)
-    diagnostic_labels = [
-        {"name": LABEL_TEST_ENGINE, "value": engine},
-    ]
-    if engine_version:
-        diagnostic_labels.append({"name": LABEL_TEST_ENGINE_VERSION, "value": engine_version})
-
-    add_result(
-        results_dir,
-        f"Итого {summary['percent']:.2f}%" if summary else "Итого",
-        title,
-        status,
-        message,
-        attachments,
-        extra_labels=[
-            {"name": "parentSuite", "value": title},
-            *diagnostic_labels,
-        ],
-    )
-
-    if not summary:
-        return
-
-    for module in summary["modules"]:
-        module_message = (
-            f"Покрыто {module['covered']} из {module['total']} строк "
-            f"({module['percent']:.2f}%). {title}: {module['display_path']}"
-        )
-        module_labels = [
-            {"name": "parentSuite", "value": title},
-            {"name": "testType", "value": title},
-            *diagnostic_labels,
-        ]
-        if module["tree_sub_suite"]:
-            module_labels.append({"name": "subSuite", "value": module["tree_sub_suite"]})
-
-        add_result(
-            results_dir,
-            f"{module['tree_name']} ({module['percent']:.2f}%, {module['covered']}/{module['total']})",
-            module["tree_suite"],
-            "passed",
-            module_message,
-            [],
-            extra_labels=module_labels,
-        )
-
-
 def write_environment_properties(results_dir, unit_dir, ui_dir):
     release_version = os.environ.get("RELEASE_NAME", "").strip() or os.environ.get("RELEASE_TAG", "").strip()
     run_started_at = os.environ.get("REPORT_RUN_STARTED_AT", "").strip()
@@ -547,10 +298,6 @@ def main():
     prepare_results_dir(results_dir, unit_dir, ui_dir, scopes)
     write_environment_properties(results_dir, unit_dir, ui_dir)
     normalize_result_groups(results_dir, versions)
-    if UNIT_SCOPE in scopes:
-        add_coverage_report(results_dir, UNIT_COVERAGE_SUITE, UNIT_SCOPE, versions, unit_dir)
-    if UI_SCOPE in scopes:
-        add_coverage_report(results_dir, UI_COVERAGE_SUITE, UI_SCOPE, versions, ui_dir)
 
 
 if __name__ == "__main__":

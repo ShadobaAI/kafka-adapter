@@ -6,6 +6,9 @@ on:
       sonar_dashboard_url:
         description: SonarQube dashboard URL
         value: ${{ jobs.sonar.outputs.sonar_dashboard_url }}
+    secrets:
+      SONAR_TOKEN:
+        required: true
 
 jobs:
   sonar:
@@ -25,6 +28,7 @@ jobs:
       SONAR_HOST_URL: "${{ vars.SONAR_HOST_URL || 'http://localhost:9000' }}"
       SONAR_PROJECT_KEY: ${{ github.event.repository.name }}
       SONAR_PROJECT_NAME: ${{ github.event.repository.name }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONARQUBE_BACKUP_DIRS: ${{ vars.SONARQUBE_BACKUP_DIRS }}
       SONARQUBE_DB_CONTAINER: ${{ vars.SONARQUBE_DB_CONTAINER || 'db' }}
       SONAR_SCANNER_DOCKER_NETWORK: ${{ vars.SONAR_SCANNER_DOCKER_NETWORK }}
@@ -46,6 +50,11 @@ jobs:
             echo "status=skipped" >> "$GITHUB_OUTPUT"
             echo "skip_reason=SONAR_HOST_URL is not configured" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+          if [ -z "${SONAR_TOKEN}" ]; then
+            echo "status=failed" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=SONAR_TOKEN is not configured" >> "$GITHUB_OUTPUT"
+            exit 1
           fi
           if [ ! -f "${ASSETS_DIR}/unit/genericCoverage.xml" ] || [ ! -f "${ASSETS_DIR}/ui/genericCoverage.xml" ]; then
             echo "status=skipped" >> "$GITHUB_OUTPUT"
@@ -73,6 +82,7 @@ jobs:
             "-Dsonar.projectName=${SONAR_PROJECT_NAME}"
             "-Dsonar.projectVersion=${RELEASE_TAG}"
             "-Dsonar.coverageReportPaths=${ASSETS_DIR}/unit/genericCoverage.xml,${ASSETS_DIR}/ui/genericCoverage.xml"
+            "-Dsonar.token=${SONAR_TOKEN}"
           )
 
           rm -rf .scannerwork
@@ -83,6 +93,7 @@ jobs:
             docker_args=(
               run --rm --init --user "$(id -u):$(id -g)"
               -e SONAR_HOST_URL="${SONAR_HOST_URL}"
+              -e SONAR_TOKEN="${SONAR_TOKEN}"
             )
             if [ -n "${SONAR_SCANNER_DOCKER_NETWORK}" ]; then
               docker_args+=(--network "${SONAR_SCANNER_DOCKER_NETWORK}")
@@ -119,42 +130,37 @@ jobs:
             exit "$rc"
           fi
 
-      - name: Generate SonarQube summary
+      - name: Generate SonarQube static report
         id: sonar_report
         if: always()
         run: |
-          skip_reason="${{ steps.sonar_scan.outputs.skip_reason }}"
-          args=()
-          if [ -n "${skip_reason}" ]; then
-            args+=(--skip-reason "${skip_reason}")
+          if [ -z "${SONAR_TOKEN}" ]; then
+            echo "SonarQube token is not configured; static report cannot be generated."
+            exit 1
           fi
 
-          python3 .github/scripts/generate_sonar_summary.py \
-            --output-dir "${ASSETS_DIR}/sonar" \
-            --project-key "${SONAR_PROJECT_KEY}" \
-            --project-name "${SONAR_PROJECT_NAME}" \
-            --project-version "${RELEASE_TAG}" \
-            --commit-sha "${GITHUB_SHA}" \
-            --run-id "${GITHUB_RUN_ID}" \
-            --run-attempt "${GITHUB_RUN_ATTEMPT}" \
-            --host-url "${SONAR_HOST_URL}" \
-            --report-task-file ".scannerwork/report-task.txt" \
-            --unit-coverage "${ASSETS_DIR}/unit/genericCoverage.xml" \
-            --ui-coverage "${ASSETS_DIR}/ui/genericCoverage.xml" \
-            "${args[@]}"
+          rm -rf "${ASSETS_DIR}/sonar"
+          python3 .github/scripts/sonar_static_report.py \
+            --url "${SONAR_HOST_URL}" \
+            --project "${SONAR_PROJECT_KEY}" \
+            --language bsl \
+            --out "${ASSETS_DIR}/sonar" \
+            --token "${SONAR_TOKEN}" \
+            --allow-partial
 
           dashboard_url="${{ steps.sonar_scan.outputs.dashboard_url }}"
           if [ -z "${dashboard_url}" ] && [ -n "${SONAR_HOST_URL}" ]; then
             dashboard_url="${SONAR_HOST_URL%/}/dashboard?id=${SONAR_PROJECT_KEY}"
           fi
           echo "dashboard_url=${dashboard_url}" >> "$GITHUB_OUTPUT"
+          test -f "${ASSETS_DIR}/sonar/index.html"
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
-      - name: Upload SonarQube summary
+      - name: Upload SonarQube static report
         if: always() && steps.sonar_report.outputs.generated == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: sonar-summary
+          name: sonar-static-report
           path: ${{ env.ASSETS_DIR }}/sonar
           if-no-files-found: warn
 

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отчет SonarQube</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="title-block">
+      <div class="eyebrow" data-i18n="headerEyebrow">Статический отчет SonarQube</div>
+      <h1 id="reportTitle">SonarQube</h1>
+      <div id="reportMeta" class="muted"></div>
+    </div>
+    <nav class="nav" aria-label="Разделы отчета" data-i18n-aria="navAria">
+      <a href="#overview" data-i18n="navOverview">Обзор</a>
+      <a href="#metrics" data-i18n="navMetrics">Метрики</a>
+      <a href="#files" data-i18n="navFiles">Файлы</a>
+      <a href="#issues" data-i18n="navIssues">Нарушения</a>
+      <a href="#rules" data-i18n="navRules">Диагностики</a>
+    </nav>
+  </header>
+  <main>
+    <section id="overview"></section>
+    <section id="metrics"></section>
+    <section id="files"></section>
+    <section id="issues"></section>
+    <section id="rules"></section>
+  </main>
+  <script src="assets/report-data.js"></script>
+  <script src="assets/i18n/ru.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

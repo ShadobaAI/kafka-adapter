@@ -40,12 +40,11 @@ jobs:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
       ALLURE_UI_REPORT_URL: ${{ needs.quality.outputs.allure_ui_report_url }}
       ALLURE_UNIT_REPORT_URL: ${{ needs.quality.outputs.allure_unit_report_url }}
-      SONAR_SUMMARY_URL: ${{ needs.quality.outputs.sonar_summary_url }}
-      SONAR_DASHBOARD_URL: ${{ needs.quality.outputs.sonar_dashboard_url }}
+      SONAR_REPORT_URL: ${{ needs.quality.outputs.sonar_report_url }}
     steps:
       - name: Add release report links
         run: |
-          if [ -z "${ALLURE_UI_REPORT_URL}" ] || [ -z "${ALLURE_UNIT_REPORT_URL}" ] || [ -z "${SONAR_SUMMARY_URL}" ]; then
+          if [ -z "${ALLURE_UI_REPORT_URL}" ] || [ -z "${ALLURE_UNIT_REPORT_URL}" ] || [ -z "${SONAR_REPORT_URL}" ]; then
             echo "::warning::Release report URLs are incomplete. Release notes were not changed."
             exit 0
           fi
@@ -53,7 +52,7 @@ jobs:
           body_file="$(mktemp)"
           gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --json body --jq .body > "$body_file"
 
-          python3 - "$body_file" "$ALLURE_UI_REPORT_URL" "$ALLURE_UNIT_REPORT_URL" "$SONAR_SUMMARY_URL" "$SONAR_DASHBOARD_URL" <<'PY'
+          python3 - "$body_file" "$ALLURE_UI_REPORT_URL" "$ALLURE_UNIT_REPORT_URL" "$SONAR_REPORT_URL" <<'PY'
           import pathlib
           import re
           import sys
@@ -61,18 +60,15 @@ jobs:
           body_path = pathlib.Path(sys.argv[1])
           allure_ui_url = sys.argv[2]
           allure_unit_url = sys.argv[3]
-          sonar_summary_url = sys.argv[4]
-          sonar_dashboard_url = sys.argv[5]
+          sonar_report_url = sys.argv[4]
           marker = "## Отчеты релиза"
           legacy_marker_ru = "## Отчет тестирования"
           legacy_marker = "## Test report"
           links = [
               f"- [Allure UI tests report]({allure_ui_url})",
               f"- [Allure Unit tests report]({allure_unit_url})",
-              f"- [SonarQube summary]({sonar_summary_url})",
+              f"- [SonarQube static report]({sonar_report_url})",
           ]
-          if sonar_dashboard_url:
-              links.append(f"- [SonarQube dashboard]({sonar_dashboard_url})")
           block = f"{marker}\n\n" + "\n".join(links) + "\n"
 
           body = body_path.read_text(encoding="utf-8")

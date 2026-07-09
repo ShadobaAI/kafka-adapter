@@ -12,14 +12,16 @@ on:
       allure_unit_report_url:
         description: Published Allure unit test report URL
         value: ${{ jobs.publish_reports.outputs.allure_unit_report_url }}
-      sonar_summary_url:
-        description: Published SonarQube Markdown summary URL
-        value: ${{ jobs.publish_reports.outputs.sonar_summary_url }}
+      sonar_report_url:
+        description: Published SonarQube static report URL
+        value: ${{ jobs.publish_reports.outputs.sonar_report_url }}
       sonar_dashboard_url:
         description: SonarQube dashboard URL
         value: ${{ jobs.sonar.outputs.sonar_dashboard_url }}
     secrets:
       REPORTS_TOKEN:
+        required: true
+      SONAR_TOKEN:
         required: true
 
 jobs:
