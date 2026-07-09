@@ -253,7 +253,19 @@ jobs:
           find "${ASSETS_DIR}/unit" -type f -printf '%p\t%s bytes\n' | sort
 
           echo "Allure result files:"
-          find "${ASSETS_DIR}/unit" -type f -name '*-result.json' -print | sort
+          result_files="$(find "${ASSETS_DIR}/unit" -type f -name '*-result.json' -print | sort)"
+          if [ -n "${result_files}" ]; then
+            printf '%s\n' "${result_files}"
+            exit 0
+          fi
+
+          for log_file in unit.log vrunner.log; do
+            log_path="${ASSETS_DIR}/unit/${log_file}"
+            if [ -f "${log_path}" ]; then
+              echo "${log_file}:"
+              cat "${log_path}"
+            fi
+          done
 
       - name: Run UI tests
         id: ui_tests
