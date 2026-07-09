@@ -241,6 +241,20 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/unit"
           exit "$rc"
 
+      - name: Inspect unit test outputs
+        if: always()
+        run: |
+          if [ ! -d "${ASSETS_DIR}/unit" ]; then
+            echo "Unit test output directory not found: ${ASSETS_DIR}/unit"
+            exit 0
+          fi
+
+          echo "Unit test output files:"
+          find "${ASSETS_DIR}/unit" -type f -printf '%p\t%s bytes\n' | sort
+
+          echo "Allure result files:"
+          find "${ASSETS_DIR}/unit" -type f -name '*-result.json' -print | sort
+
       - name: Run UI tests
         id: ui_tests
         if: steps.unit_tests.outcome == 'success'
