@@ -25,7 +25,7 @@ jobs:
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
       ASSETS_DIR: assets
-      SONAR_HOST_URL: "${{ vars.SONAR_HOST_URL || 'http://localhost:9000' }}"
+      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
       SONAR_PROJECT_KEY: ${{ github.event.repository.name }}
       SONAR_PROJECT_NAME: ${{ github.event.repository.name }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -43,13 +43,26 @@ jobs:
           name: sonar-coverage-inputs
           path: ${{ env.ASSETS_DIR }}
 
+      - name: Validate SonarQube URL
+        run: |
+          if [ -z "${SONAR_HOST_URL}" ]; then
+            echo "::error::SONAR_HOST_URL is not configured. Set the repository or environment variable SONAR_HOST_URL to the SonarQube URL reachable from this self-hosted runner, for example http://<sonarqube-host-ip>:9000."
+            exit 1
+          fi
+
+          case "${SONAR_HOST_URL}" in
+            http://localhost:*|https://localhost:*|http://127.0.0.1:*|https://127.0.0.1:*)
+              echo "::warning::SONAR_HOST_URL points to ${SONAR_HOST_URL}. In GitHub Actions localhost is the self-hosted runner. If SonarQube Docker runs on another PC, use that PC IP address or DNS name instead."
+              ;;
+          esac
+
       - name: Run SonarQube analysis
         id: sonar_scan
         run: |
           if [ -z "${SONAR_HOST_URL}" ]; then
-            echo "status=skipped" >> "$GITHUB_OUTPUT"
+            echo "status=failed" >> "$GITHUB_OUTPUT"
             echo "skip_reason=SONAR_HOST_URL is not configured" >> "$GITHUB_OUTPUT"
-            exit 0
+            exit 1
           fi
           if [ -z "${SONAR_TOKEN}" ]; then
             echo "status=failed" >> "$GITHUB_OUTPUT"
@@ -139,6 +152,10 @@ jobs:
         run: |
           if [ -z "${SONAR_TOKEN}" ]; then
             echo "SonarQube token is not configured; static report cannot be generated."
+            exit 1
+          fi
+          if [ -z "${SONAR_HOST_URL}" ]; then
+            echo "SonarQube URL is not configured; static report cannot be generated."
             exit 1
           fi
 

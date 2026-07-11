@@ -241,32 +241,6 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/unit"
           exit "$rc"
 
-      - name: Inspect unit test outputs
-        if: always()
-        run: |
-          if [ ! -d "${ASSETS_DIR}/unit" ]; then
-            echo "Unit test output directory not found: ${ASSETS_DIR}/unit"
-            exit 0
-          fi
-
-          echo "Unit test output files:"
-          find "${ASSETS_DIR}/unit" -type f -printf '%p\t%s bytes\n' | sort
-
-          echo "Allure result files:"
-          result_files="$(find "${ASSETS_DIR}/unit" -type f -name '*-result.json' -print | sort)"
-          if [ -n "${result_files}" ]; then
-            printf '%s\n' "${result_files}"
-            exit 0
-          fi
-
-          for log_file in unit.log vrunner.log; do
-            log_path="${ASSETS_DIR}/unit/${log_file}"
-            if [ -f "${log_path}" ]; then
-              echo "${log_file}:"
-              cat "${log_path}"
-            fi
-          done
-
       - name: Run UI tests
         id: ui_tests
         if: steps.unit_tests.outcome == 'success'
