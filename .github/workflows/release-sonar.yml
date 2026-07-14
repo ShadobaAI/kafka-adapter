@@ -83,10 +83,6 @@ jobs:
             "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
             "-Dsonar.projectName=${SONAR_PROJECT_NAME}"
             "-Dsonar.projectVersion=${RELEASE_TAG}"
-            "-Dsonar.sources=src"
-            "-Dsonar.sourceEncoding=UTF-8"
-            "-Dsonar.inclusions=**/*.bsl"
-            "-Dsonar.coverageReportPaths=${ASSETS_DIR}/unit/genericCoverage.xml,${ASSETS_DIR}/ui/genericCoverage.xml"
             "-Dsonar.token=${SONAR_TOKEN}"
           )
 

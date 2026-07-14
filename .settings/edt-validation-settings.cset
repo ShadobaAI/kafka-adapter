@@ -19,14 +19,8 @@
     "module-consecutive-blank-lines": {
       "enabled": true
     },
-    "form-list-field-ref-not-added": {
-      "enabled": false
-    },
     "bsl-ql-hub": {
       "enabled": true
-    },
-    "ql-temp-table-index": {
-      "enabled": false
     }
   }
 }
