@@ -11,8 +11,8 @@
 | [**UI-тесты**](https://github.com/ShadobaAI/kafka-adapter-tests-ui) | UI-тесты адаптера Kafka: Vanessa Automation |
 | [**Отчеты тестов**](https://github.com/ShadobaAI/kafka-adapter-tests-reports) | Опубликованные Allure HTML-отчеты тестов |
 | [**Набор скриптов**](https://github.com/ShadobaAI/kafka-tools) | Скрипты для развёртывания среды разработки |
-| [**Расширение КД**](https://github.com/ShadobaAI/kafka-adapter-conv) | Расширение для КД 3.1.6+, адаптирующее типовую конвертацию данных под произвольный XDTO |
-| [**Трекер задач**](https://github.com/ShadobaAI/kfk-tasks) | Все задачи проекта; ход работ — на [доске GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1) |
+| [**Расширение КД**](https://github.com/ShadobaAI/kafka-adapter-conv) | Расширение для КД 3.1+, адаптирующее типовую конвертацию данных под произвольный XDTO |
+| [**Задачи и база знаний**](https://github.com/ShadobaAI/kfk-tasks) | Issues и [доска GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1), Memory Bank, SDD/ADR, локальный MCP-сервер и валидатор документации |
 
 ## Взаимосвязи
 
@@ -26,6 +26,7 @@ flowchart LR
     TESTS_UI_REPORTS["Отчеты UI-тестов<br/>(Allure + GitHub Pages)"]
     TOOLS["Набор скриптов<br/>(dev-окружение)"]
     CONV["Расширение КД<br/>(КД 3.1 + XDTO)"]
+    TASKS["Задачи и база знаний<br/>(Issues + Memory Bank + SDD/ADR)"]
 
     BASE -.подключает.-> ADAPTER
     examples -.расширяет.-> BASE
@@ -34,6 +35,7 @@ flowchart LR
     TESTS_UI_REPORTS -.публикует отчеты.-> TESTS_UI
     TOOLS -.поднимает.-> ADAPTER
     CONV -.дополняет.-> ADAPTER
+    TASKS -.сопровождает.-> ADAPTER
 ```
 
 ## Что где лежит и когда нужно
@@ -56,7 +58,15 @@ Docker Compose-манифесты и скрипты: локальный клас
 
 ### Расширение КД
 
-Расширение для 1С:Конвертация данных 3.1.6+, адаптирующее типовую конвертацию под произвольный XDTO. Нужно только тем, кто использует [КД 3.1](../user/development/conversion-data.md) как способ сериализации.
+Расширение для 1С:Конвертация данных 3.1+, адаптирующее типовую конвертацию под произвольный XDTO. Нужно только тем, кто использует [КД 3.1](../user/development/conversion-data.md) как способ сериализации.
+
+### Задачи и база знаний (kfk-tasks)
+
+Единый репозиторий сопровождения проекта. [GitHub Issues](https://github.com/ShadobaAI/kfk-tasks/issues) используются для постановки и обсуждения задач, а ход работ отображается на [доске GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1).
+
+Каталог [`memory-bank/`](https://github.com/ShadobaAI/kfk-tasks/tree/main/memory-bank) содержит поддерживаемый проектный контекст: архитектуру адаптера, карту репозиториев, компоненты, публичный API, потоки данных и правила разработки. Изменения проектируются в SDD-спецификациях, а значимые архитектурные решения фиксируются в ADR.
+
+Локальный Memory Bank MCP предоставляет ограниченное чтение, поиск и формирование контекста задачи без загрузки всей документации. В этом же репозитории находятся валидатор структуры и ссылок, автоматические тесты MCP и [инструкции по установке](https://github.com/ShadobaAI/kfk-tasks/blob/main/docs/installation.md). Markdown остаётся каноническим форматом и читается без MCP, расширений VS Code или плагинов Obsidian.
 
 ## Тестирование { #тестирование }
 
