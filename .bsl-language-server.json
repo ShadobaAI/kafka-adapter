@@ -8,6 +8,11 @@
     "parameters": {
       "AssignAliasFieldsInQuery": false,
       "UsingServiceTag": false,
+      "LineLength": {
+        "maxLineLength": 120,
+        "checkMethodDescription": false,
+        "excludeTrailingComments": false
+      },
       "Typo": {
         "minWordLength": 3,
         "userWordsToIgnore": "асинх,кфк,подпотоки,партишионер,партишионера,автообновления,консьюмер,консьюмеры,консьюмеров,консьюмера,сериализации,сериализацию,десериализации,десериализацию",
