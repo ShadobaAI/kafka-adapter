@@ -12,9 +12,7 @@ Current local 1C sources and tests are the primary evidence of actual behavior. 
 
 ## Repository-Specific Rules
 
-- Use `kfk_edt` as the authoritative current-state and editing interface for this 1C project.
-- Use `code-metadata-mcp` and `graph-metadata-mcp` only for bounded navigation and impact analysis in this repository.
-- Treat `kfk_edt` as current when it conflicts with navigation indexes.
+- Use only the EDT-MCP instance named `kfk-edt` as the authoritative current-state, navigation, platform-documentation, diagnostics, and editing interface for this 1C project.
 - Prefix new repository-owned 1C metadata objects with `кфк`.
 - Update the relevant local document under `docs/` when a documented product contract changes.
 
