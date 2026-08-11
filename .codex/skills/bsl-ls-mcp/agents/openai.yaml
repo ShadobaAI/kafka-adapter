@@ -1,0 +1,11 @@
+interface:
+  display_name: "BSL LS MCP"
+  short_description: "Fast focused BSL diagnostics through MCP"
+  default_prompt: "Use $bsl-ls-mcp to analyze the changed BSL files with their workspace configuration and classify new diagnostics."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "bsl-ls"
+      description: "BSL Language Server static analysis and semantic navigation"
+      transport: "stdio"

@@ -13,6 +13,7 @@ Current local 1C sources and tests are the primary evidence of actual behavior. 
 ## Repository-Specific Rules
 
 - Use only the EDT-MCP instance named `kfk-edt` as the authoritative current-state, navigation, platform-documentation, diagnostics, and editing interface for this 1C project.
+- Repository-local Codex configuration is stored in `.codex/config.toml`: it owns `kfk-edt`, SonarQube, and `bsl-ls`. The adapter-specific `bsl-ls-mcp` skill must remain under `.codex/skills/bsl-ls-mcp` and must not be installed from `kafka-tools`.
 - Prefix new repository-owned 1C metadata objects with `кфк`.
 - Update the relevant local document under `docs/` when a documented product contract changes.
 
