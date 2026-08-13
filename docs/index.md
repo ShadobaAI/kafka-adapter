@@ -7,7 +7,7 @@ hide:
 # 1С: Адаптер Kafka
 
 [![OpenYellow](https://openyellow.openintegrations.dev/data/badges/1183456860.svg)](https://openyellow.org/grid?filter=top&repo=1183456860)
-![Платформа](https://badgen.net/badge/Платформа/8.3.21+/blue)
+![Платформа](https://badgen.net/badge/Платформа/8.3.25+/blue)
 ![Лицензия](https://badgen.net/badge/Лицензия/MPL-2.0/green)
 ![БСП](https://badgen.net/badge/БСП/3.1.10+/blue)
 

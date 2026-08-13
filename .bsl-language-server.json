@@ -2,6 +2,9 @@
   "$schema": "https://1c-syntax.github.io/bsl-language-server/configuration/schema.json",
   "language": "ru",
   "configurationRoot": "src",
+  "v8platform": {
+    "targetVersion": "8.3.25"
+  },
   "diagnostics": {
     "computeTrigger": "onSave",
     "skipSupport": "never",
