@@ -1,7 +1,7 @@
 interface:
   display_name: "BSL LS MCP"
   short_description: "Fast focused BSL diagnostics through MCP"
-  default_prompt: "Use $bsl-ls-mcp to analyze the changed BSL files with their workspace configuration and classify new diagnostics."
+  default_prompt: "Use $bsl-ls-mcp to analyze only the relevant BSL files in this configured repository and classify changed diagnostics."
 
 dependencies:
   tools:
