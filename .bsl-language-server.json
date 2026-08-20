@@ -3,7 +3,7 @@
   "language": "ru",
   "configurationRoot": "src",
   "v8platform": {
-    "targetVersion": "8.3.25"
+    "targetVersion": "8.3.26"
   },
   "diagnostics": {
     "computeTrigger": "onSave",

@@ -1,7 +1,7 @@
 # 1С: Адаптер Kafka
 
 [![OpenYellow](https://openyellow.openintegrations.dev/data/badges/1183456860.svg)](https://openyellow.org/grid?filter=top&repo=1183456860)
-![Платформа](https://badgen.net/badge/Платформа/8.3.25+/blue)
+![Платформа](https://badgen.net/badge/Платформа/8.3.26+/blue)
 ![Лицензия](https://badgen.net/badge/Лицензия/MPL-2.0/green)
 ![БСП](https://badgen.net/badge/БСП/3.1.10+/blue)
 
@@ -42,7 +42,7 @@
 
 | | |
 |---|---|
-| **Платформа запуска** | 1С:Предприятие 8.3.25+ |
+| **Платформа запуска** | 1С:Предприятие 8.3.26+ |
 | **Режим совместимости** | 8.3.21 |
 | **ОС** | Windows 64-bit / Linux 64-bit |
 | **Linux-зависимость** | glibc 2.28+; на старых дистрибутивах возможны проблемы с запуском внешней компоненты |
