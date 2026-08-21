@@ -1,0 +1,29 @@
+[mcp_servers.bsl-ls]
+command = "node"
+args = [".codex\\mcp\\bsl-ls-proxy.mjs", "--root", "."]
+cwd = "C:\\EDT\\projects\\kafka\\adapter\\adapter"
+enabled = true
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+description = "Focused BSL static analysis and semantic navigation"
+default_tools_approval_mode = "approve"
+
+[mcp_servers.sonarqube]
+url = "http://ia11:9001/mcp"
+enabled = true
+required = false
+startup_timeout_sec = 10
+description = "SonarQube MCP server on ia11 over Streamable HTTP"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.sonarqube.http_headers]
+Authorization = "Bearer ВСТАВЬ_ТОКЕН_СЮДА"
+
+[mcp_servers.kfk-edt]
+url = "http://localhost:8765/mcp"
+enabled = true
+required = false
+startup_timeout_sec = 2
+description = "1C:EDT workspace for projects: adapter, base, examples."
+default_tools_approval_mode = "approve"

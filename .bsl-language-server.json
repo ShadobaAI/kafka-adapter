@@ -2,12 +2,20 @@
   "$schema": "https://1c-syntax.github.io/bsl-language-server/configuration/schema.json",
   "language": "ru",
   "configurationRoot": "src",
+  "v8platform": {
+    "targetVersion": "8.3.26"
+  },
   "diagnostics": {
     "computeTrigger": "onSave",
     "skipSupport": "never",
     "parameters": {
       "AssignAliasFieldsInQuery": false,
       "UsingServiceTag": false,
+      "LineLength": {
+        "maxLineLength": 120,
+        "checkMethodDescription": false,
+        "excludeTrailingComments": false
+      },
       "Typo": {
         "minWordLength": 3,
         "userWordsToIgnore": "асинх,кфк,подпотоки,партишионер,партишионера,автообновления,консьюмер,консьюмеры,консьюмеров,консьюмера,сериализации,сериализацию,десериализации,десериализацию",
