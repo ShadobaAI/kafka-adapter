@@ -7,13 +7,16 @@
     "rollback-transaction": {
       "enabled": true
     },
-    "code-after-async-call": {
-      "enabled": true
-    },
     "commit-transaction": {
       "enabled": true
     },
+    "code-after-async-call": {
+      "enabled": true
+    },
     "doc-comment-description-ends-on-dot": {
+      "enabled": true
+    },
+    "common-module-server-call": {
       "enabled": true
     },
     "module-consecutive-blank-lines": {
@@ -21,6 +24,9 @@
     },
     "bsl-ql-hub": {
       "enabled": true
+    },
+    "ql-temp-table-index": {
+      "enabled": false
     }
   }
 }
