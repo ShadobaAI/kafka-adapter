@@ -29,4 +29,5 @@
   <content>InformationRegister.кфкПараметрыЛогирования</content>
   <content>Enum.кфкТипыОбработчиков</content>
   <content>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</content>
+  <content>InformationRegister.кфкХэшСуммыСообщений</content>
 </mdclass:FunctionalOption>
