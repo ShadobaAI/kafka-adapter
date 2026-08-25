@@ -160,23 +160,19 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>Дата</name>
-      <id>31</id>
-      <title>
-        <key>ru</key>
-        <value>Дата</value>
-      </title>
+      <name>Указатель</name>
+      <id>34</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>Список.Дата</segments>
+        <segments>Список.Указатель</segments>
       </dataPath>
       <extendedTooltip>
-        <name>ДатаРасширеннаяПодсказка</name>
-        <id>33</id>
+        <name>УказательРасширеннаяПодсказка</name>
+        <id>36</id>
         <type>Label</type>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -185,8 +181,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>ДатаКонтекстноеМеню</name>
-        <id>32</id>
+        <name>УказательКонтекстноеМеню</name>
+        <id>35</id>
         <autoFill>true</autoFill>
       </contextMenu>
       <type>LabelField</type>
@@ -364,12 +360,14 @@
     </edit>
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
-      <queryText>ВЫБРАТЬ
-	кфкОчередьПотоков.Ключ КАК Ключ,
-	кфкОчередьПотоков.ВременнаяМетка КАК ВременнаяМетка,
-	кфкОчередьПотоков.ИдентификаторПотока КАК ИдентификаторПотока
-ИЗ
-	РегистрСведений.кфкОчередьПотоков КАК кфкОчередьПотоков</queryText>
+      <queryText>ВЫБРАТЬ 
+       кфкОчередьПотоков.Ключ, 
+       кфкОчередьПотоков.ВременнаяМетка, 
+       кфкОчередьПотоков.ИдентификаторПотока
+ ИЗ 
+       РегистрСведений.кфкОчередьПотоков
+ КАК 
+       кфкОчередьПотоков</queryText>
       <mainTable>InformationRegister.кфкОчередьПотоков</mainTable>
       <dynamicDataRead>true</dynamicDataRead>
       <autoFillAvailableFields>true</autoFillAvailableFields>
@@ -389,16 +387,25 @@
         <field>ИдентификаторПотока</field>
       </fields>
       <calculatedFields>
-        <dataPath>Дата</dataPath>
-        <expression>ВЫБОР КОГДА ВременнаяМетка > 0 ТОГДА ДобавитьКДате(ДАТАВРЕМЯ(1, 1, 1), &quot;СЕКУНДА&quot;,  ВременнаяМетка / 1000 + СмещениеСтандартногоВремени(ЧасовойПоясСеанса())) ИНАЧЕ ДАТАВРЕМЯ(1, 1, 1) КОНЕЦ</expression>
+        <dataPath>Указатель</dataPath>
+        <expression>кфкОбщегоНазначенияСлужебный.ДатаИзМС(УказательМС)</expression>
         <title>
           <localValue>
             <content>
               <key>ru</key>
-              <value>Дата</value>
+              <value>Указатель</value>
             </content>
           </localValue>
         </title>
+        <useRestriction>
+          <condition>true</condition>
+          <group>true</group>
+          <order>true</order>
+        </useRestriction>
+        <valueType>
+          <types>Date</types>
+          <dateQualifiers/>
+        </valueType>
       </calculatedFields>
     </extInfo>
   </attributes>
