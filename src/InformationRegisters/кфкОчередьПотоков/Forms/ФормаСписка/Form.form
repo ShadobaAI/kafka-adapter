@@ -160,23 +160,19 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>Указатель</name>
-      <id>34</id>
-      <title>
-        <key>ru</key>
-        <value>Указатель</value>
-      </title>
+      <name>Дата</name>
+      <id>37</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>Список.Указатель</segments>
+        <segments>Список.Дата</segments>
       </dataPath>
       <extendedTooltip>
-        <name>УказательРасширеннаяПодсказка</name>
-        <id>36</id>
+        <name>ДатаРасширеннаяПодсказка</name>
+        <id>39</id>
         <type>Label</type>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -185,8 +181,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>УказательКонтекстноеМеню</name>
-        <id>35</id>
+        <name>ДатаКонтекстноеМеню</name>
+        <id>38</id>
         <autoFill>true</autoFill>
       </contextMenu>
       <type>LabelField</type>
@@ -391,13 +387,13 @@
         <field>ИдентификаторПотока</field>
       </fields>
       <calculatedFields>
-        <dataPath>Указатель</dataPath>
-        <expression>кфкОбщегоНазначенияСлужебный.ДатаИзМС(УказательМС)</expression>
+        <dataPath>Дата</dataPath>
+        <expression>кфкОбщегоНазначенияСлужебный.ДатаИзМС(ВременнаяМетка)</expression>
         <title>
           <localValue>
             <content>
               <key>ru</key>
-              <value>Указатель</value>
+              <value>Дата</value>
             </content>
           </localValue>
         </title>
