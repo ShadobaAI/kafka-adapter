@@ -1,10 +1,9 @@
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const BSL_LS_JAR = ".\\bsl-language-server-1.0.7-exec.jar";
-const BSL_LS_CONFIGURATION = ".bsl-language-server.json";
 const MAX_HELPER_OUTPUT = 64 * 1024;
 
 function failStartup(message) {
@@ -12,30 +11,94 @@ function failStartup(message) {
   process.exit(1);
 }
 
-function parseRootArgument(argv) {
-  const rootIndex = argv.indexOf("--root");
-  if (rootIndex === -1 || rootIndex === argv.length - 1 || !argv[rootIndex + 1]) {
-    failStartup("missing required --root argument");
+const nodeMajorVersion = Number.parseInt(process.versions.node.split(".", 1)[0], 10);
+if (!Number.isInteger(nodeMajorVersion) || nodeMajorVersion < 18) {
+  failStartup(`Node.js 18 or newer is required; current version is ${process.versions.node}`);
+}
+
+function parseArguments(argv) {
+  const result = {};
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (!argument.startsWith("--") || index === argv.length - 1) {
+      failStartup(`invalid argument '${argument}'`);
+    }
+    const value = argv[index + 1];
+    if (!value || value.startsWith("--")) {
+      failStartup(`missing value for '${argument}'`);
+    }
+    result[argument.slice(2)] = value;
+    index += 1;
+  }
+  return result;
+}
+
+function resolveExistingFile(value, basePath, description) {
+  if (!value) {
+    return undefined;
+  }
+  const resolved = path.isAbsolute(value) ? value : path.resolve(basePath, value);
+  if (!fs.existsSync(resolved) || !fs.statSync(resolved).isFile()) {
+    failStartup(`${description} does not exist: '${resolved}'`);
+  }
+  return resolved;
+}
+
+function resolveJar(options, repositoryRoot) {
+  const explicitJar = options.jar || process.env.BSL_LANGUAGE_SERVER_JAR;
+  if (explicitJar) {
+    return resolveExistingFile(explicitJar, repositoryRoot, "BSL Language Server JAR");
   }
 
-  return argv[rootIndex + 1];
+  const codexHome = process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
+  const searchRoots = [repositoryRoot, path.join(codexHome, "bsl-ls")];
+  const discoveredJars = [];
+  for (const searchRoot of searchRoots) {
+    if (!fs.existsSync(searchRoot) || !fs.statSync(searchRoot).isDirectory()) {
+      continue;
+    }
+    const conventionalJar = path.join(searchRoot, "bsl-language-server-exec.jar");
+    if (fs.existsSync(conventionalJar) && fs.statSync(conventionalJar).isFile()) {
+      discoveredJars.push(conventionalJar);
+    }
+    for (const name of fs.readdirSync(searchRoot)) {
+      if (/^bsl-language-server-.*-exec\.jar$/i.test(name)) {
+        discoveredJars.push(path.join(searchRoot, name));
+      }
+    }
+  }
+
+  const uniqueJars = [...new Set(discoveredJars.map((jar) => path.resolve(jar)))];
+  if (uniqueJars.length === 1) {
+    return uniqueJars[0];
+  }
+  if (uniqueJars.length > 1) {
+    failStartup(
+      "multiple BSL Language Server JARs found; set BSL_LANGUAGE_SERVER_JAR or --jar explicitly",
+    );
+  }
+  failStartup(
+    "BSL Language Server JAR is missing; set BSL_LANGUAGE_SERVER_JAR or place one JAR in the repository root or CODEX_HOME/bsl-ls",
+  );
 }
 
-const repositoryRoot = path.resolve(parseRootArgument(process.argv.slice(2)));
+const options = parseArguments(process.argv.slice(2));
+if (!options.root) {
+  failStartup("missing required --root argument");
+}
 
+const repositoryRoot = path.resolve(options.root);
 if (!fs.existsSync(repositoryRoot) || !fs.statSync(repositoryRoot).isDirectory()) {
-  failStartup("repository root does not exist or is not a directory");
+  failStartup(`repository root does not exist or is not a directory: '${repositoryRoot}'`);
 }
 
-if (!fs.existsSync(BSL_LS_JAR) || !fs.statSync(BSL_LS_JAR).isFile()) {
-  failStartup("BSL Language Server JAR does not exist");
-}
-
-const configurationPath = path.join(repositoryRoot, BSL_LS_CONFIGURATION);
-if (!fs.existsSync(configurationPath) || !fs.statSync(configurationPath).isFile()) {
-  failStartup("BSL Language Server configuration does not exist");
-}
-
+const configurationPath = resolveExistingFile(
+  options.configuration || ".bsl-language-server.json",
+  repositoryRoot,
+  "BSL Language Server configuration",
+);
+const bslLanguageServerJar = resolveJar(options, repositoryRoot);
+const javaCommand = options.java || process.env.BSL_LANGUAGE_SERVER_JAVA || "java";
 const repositoryRealPath = fs.realpathSync.native(repositoryRoot);
 const repositoryUri = pathToFileURL(repositoryRealPath).href;
 const pendingPathRestorations = new Map();
@@ -99,7 +162,6 @@ function parseFileArgument(fileArgument) {
 
   const isFileUri = /^file:/i.test(fileArgument);
   let resolvedPath;
-
   try {
     resolvedPath = isFileUri
       ? fileURLToPath(new URL(fileArgument))
@@ -122,7 +184,6 @@ function parseFileArgument(fileArgument) {
   if (!isInsideRepository(realPath)) {
     throw new Error("outside-root");
   }
-
   if (!fs.statSync(realPath).isFile()) {
     throw new Error("not-file");
   }
@@ -154,11 +215,9 @@ function getWindowsShortPath(longPath) {
   if (!shortPath || /[^\x00-\x7f]/.test(shortPath)) {
     throw new Error("short-path-unavailable");
   }
-
   if (!fs.existsSync(shortPath) || !fs.statSync(shortPath).isFile()) {
     throw new Error("short-path-invalid");
   }
-
   return shortPath;
 }
 
@@ -196,11 +255,9 @@ function restorePaths(value, replacements) {
   if (typeof value === "string") {
     return restoreString(value, replacements);
   }
-
   if (Array.isArray(value)) {
     return value.map((item) => restorePaths(item, replacements));
   }
-
   if (value && typeof value === "object") {
     return Object.fromEntries(
       Object.entries(value).map(([key, item]) => [
@@ -209,7 +266,6 @@ function restorePaths(value, replacements) {
       ]),
     );
   }
-
   return value;
 }
 
@@ -217,28 +273,26 @@ function writeJson(stream, message) {
   stream.write(`${JSON.stringify(message)}\n`);
 }
 
-function writeJsonRpcError(id) {
+function writeJsonRpcError(id, message) {
   if (id === undefined) {
     return;
   }
-
   writeJson(process.stdout, {
     jsonrpc: "2.0",
     id,
     error: {
       code: -32602,
-      message:
-        "arguments.file must identify an existing file inside the repository root",
+      message,
     },
   });
 }
 
 const child = spawn(
-  "java",
+  javaCommand,
   [
     "-jar",
-    BSL_LS_JAR,
-    `--configuration=${BSL_LS_CONFIGURATION}`,
+    bslLanguageServerJar,
+    `--configuration=${configurationPath}`,
     "mcp",
   ],
   {
@@ -272,33 +326,27 @@ function handleClientMessage(line) {
     if (!Object.hasOwn(message, "id")) {
       return;
     }
-
     try {
       const { isFileUri, realPath } = parseFileArgument(fileArgument);
-
       if (process.platform === "win32" && /[^\x00-\x7f]/.test(realPath)) {
         const shortPath = getWindowsShortPath(realPath);
         const key = requestKey(message.id);
-
         if (pendingPathRestorations.has(key)) {
           throw new Error("duplicate-request-id");
         }
-
         message.params.arguments.file = isFileUri
           ? pathToFileURL(shortPath).href
           : shortPath;
         pendingPathRestorations.set(
           key,
-          createPathReplacements(
-            shortPath,
-            fileArgument,
-            realPath,
-            isFileUri,
-          ),
+          createPathReplacements(shortPath, fileArgument, realPath, isFileUri),
         );
       }
-    } catch {
-      writeJsonRpcError(message.id);
+    } catch (error) {
+      const errorMessage = error.message === "short-path-unavailable"
+        ? "Windows 8.3 short paths are required for BSL LS file requests whose paths contain non-ASCII characters; enable short-name creation for the volume or use a BSL LS version that accepts Unicode paths"
+        : "arguments.file must identify an existing file inside the repository root";
+      writeJsonRpcError(message.id, errorMessage);
       return;
     }
   }
@@ -320,12 +368,7 @@ function handleServerMessage(line) {
         jsonrpc: "2.0",
         id: message.id,
         result: {
-          roots: [
-            {
-              uri: repositoryUri,
-              name: path.basename(repositoryRealPath),
-            },
-          ],
+          roots: [{ uri: repositoryUri, name: path.basename(repositoryRealPath) }],
         },
       });
     }
@@ -335,7 +378,6 @@ function handleServerMessage(line) {
   if (message && Object.hasOwn(message, "id")) {
     const key = requestKey(message.id);
     const replacements = pendingPathRestorations.get(key);
-
     if (replacements) {
       if (Object.hasOwn(message, "result")) {
         message.result = restorePaths(message.result, replacements);
@@ -356,7 +398,6 @@ function consumeLines(stream, handler) {
   stream.on("data", (chunk) => {
     buffer += chunk;
     let newlineIndex;
-
     while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
       let line = buffer.slice(0, newlineIndex);
       buffer = buffer.slice(newlineIndex + 1);
@@ -386,7 +427,6 @@ function stopChild(signal) {
   if (stoppingSignal) {
     return;
   }
-
   stoppingSignal = signal;
   child.kill(signal);
   forceStopTimer = setTimeout(() => child.kill("SIGKILL"), 5_000);
@@ -395,28 +435,43 @@ function stopChild(signal) {
 
 process.on("SIGINT", () => stopChild("SIGINT"));
 process.on("SIGTERM", () => stopChild("SIGTERM"));
-process.stdin.on("end", () => child.stdin.end());
+process.stdin.on("end", () => {
+  if (!child.stdin.destroyed) {
+    child.stdin.end();
+  }
+});
 process.stdout.on("error", (error) => {
   if (error.code === "EPIPE") {
     stopChild("SIGTERM");
   }
 });
 
-child.on("error", () => {
-  process.stderr.write("bsl-ls-proxy: failed to start BSL Language Server\n");
-  process.exitCode = 1;
+let childStartFailed = false;
+child.on("error", (error) => {
+  childStartFailed = true;
+  process.stderr.write(
+    `bsl-ls-proxy: failed to start BSL Language Server: ${error.message}\n`,
+  );
 });
 
-child.on("exit", (code) => {
+child.stdin.on("error", (error) => {
+  if (error.code !== "EPIPE" && error.code !== "ERR_STREAM_DESTROYED") {
+    process.stderr.write(`bsl-ls-proxy: BSL Language Server input failed: ${error.message}\n`);
+  }
+});
+
+child.on("close", (code) => {
   if (forceStopTimer) {
     clearTimeout(forceStopTimer);
   }
-
+  process.stdin.pause();
+  process.stdin.destroy();
   if (stoppingSignal === "SIGINT") {
     process.exitCode = 130;
   } else if (stoppingSignal === "SIGTERM") {
     process.exitCode = 143;
   } else {
-    process.exitCode = code ?? 1;
+    process.exitCode = childStartFailed ? 1 : (code ?? 1);
   }
+  process.stdout.end();
 });

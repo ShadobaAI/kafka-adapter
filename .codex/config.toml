@@ -1,0 +1,67 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+[mcp_servers.sonarqube]
+url = "http://ia11:9001/mcp"
+bearer_token_env_var = "SONARQUBE_TOKEN"
+enabled = true
+required = false
+startup_timeout_sec = 10
+description = "SonarQube MCP server for kafka-adapter on ia11 over Streamable HTTP"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.kfk-edt]
+url = "http://localhost:8765/mcp"
+enabled = true
+required = false
+startup_timeout_sec = 2
+description = "1C:EDT workspace for projects: adapter, base, examples."
+default_tools_approval_mode = "approve"
+disabled_tools = ["git", "ask_workmate"]
+
+[mcp_servers.kfk-edt.tools.delete_metadata]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.delete_project]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.delete_infobase]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.update_database]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.import_configuration_from_xml]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.clean_project]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.set_infobase_credentials]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.set_variable]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.evaluate_expression]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.create_git_branch]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.switch_git_branch]
+approval_mode = "prompt"
+[mcp_servers.kfk-edt.tools.set_branch_infobase]
+approval_mode = "prompt"
+
+[mcp_servers.bsl-ls]
+command = "node"
+args = [".codex\\mcp\\bsl-ls-proxy.mjs", "--root", "."]
+cwd = "."
+enabled = true
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+description = "Focused BSL diagnostics and semantic navigation for kafka-adapter"
+default_tools_approval_mode = "approve"
+enabled_tools = [
+  "analyze_file",
+  "document_symbols",
+  "find_references",
+  "call_hierarchy",
+  "hover",
+  "definition",
+  "type_info",
+  "global_member_info",
+  "global_member_search",
+  "type_at_position",
+]

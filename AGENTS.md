@@ -8,8 +8,8 @@ This repository contains the Kafka Adapter product extension/library and its mai
 
 ## Repository-Specific Rules
 
-- `.codex/config.toml` owns `kfk-edt`, SonarQube, and `bsl-ls`. Keep the repository-specific `bsl-ls-mcp` skill under `.codex/skills/bsl-ls-mcp`; do not install it from `kafka-tools`.
-- For each changed BSL file, run focused BSL LS analysis after focused EDT diagnostics. Do not analyze the whole configuration.
-- SonarQube analysis and code export are user-operated; run them only when explicitly requested.
+- `.codex/config.toml` owns `kfk-edt`, repository-local `bsl-ls`, and the adapter-only `sonarqube`; shared code-index/v8std policy and 1C skills come from `tools/ai`.
+- Use `kfk-edt` for current source, semantic navigation, every persistent 1C mutation, and focused validation. Use the shared `code-index` only for supplementary indexed discovery/graphs and local `bsl-ls` only for focused BSL evidence according to workspace policy.
+- Use SonarQube as supplementary analysis only for this repository. Its bearer token comes exclusively from `SONARQUBE_TOKEN`; never store the token in repository files.
 - Prefix new repository-owned 1C metadata objects with `кфк`.
 - Update the relevant local document under `docs/` when a documented product contract changes.
