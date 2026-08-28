@@ -14,7 +14,7 @@ url = "http://localhost:8765/mcp"
 enabled = true
 required = false
 startup_timeout_sec = 2
-description = "1C:EDT workspace for projects: adapter, base, examples."
+description = "1C:EDT workspace on port 8765: adapter, base, examples."
 default_tools_approval_mode = "approve"
 disabled_tools = ["git", "ask_workmate"]
 

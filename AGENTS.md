@@ -8,8 +8,8 @@ This repository contains the Kafka Adapter product extension/library and its mai
 
 ## Repository-Specific Rules
 
-- `.codex/config.toml` owns `kfk-edt`, repository-local `bsl-ls`, and the adapter-only `sonarqube`; shared code-index/v8std policy and 1C skills come from `tools/ai`.
-- Use `kfk-edt` for current source, semantic navigation, every persistent 1C mutation, and focused validation. Use the shared `code-index` only for supplementary indexed discovery/graphs and local `bsl-ls` only for focused BSL evidence according to workspace policy.
+- `.codex/config.toml` owns `kfk-edt` on port `8765`, repository-local `bsl-ls`, and the adapter-only `sonarqube`; shared code-index/v8std policy and 1C skills come from `tools/ai`.
+- Use `kfk-edt` for the live `adapter`, `base`, and `examples` projects, every persistent 1C mutation, and focused validation. Use the canonical `kfk`, `kfk-base`, and `kfk-examples` aliases only for supplementary indexed discovery/graphs, and local `bsl-ls` only for focused BSL evidence according to workspace policy.
 - Use SonarQube as supplementary analysis only for this repository. Its bearer token comes exclusively from `SONARQUBE_TOKEN`; never store the token in repository files.
 - Prefix new repository-owned 1C metadata objects with `кфк`.
 - Update the relevant local document under `docs/` when a documented product contract changes.
