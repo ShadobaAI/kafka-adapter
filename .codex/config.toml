@@ -16,32 +16,7 @@ required = false
 startup_timeout_sec = 2
 description = "1C:EDT workspace on port 8765: adapter, base, examples."
 default_tools_approval_mode = "approve"
-disabled_tools = ["git", "ask_workmate"]
-
-[mcp_servers.kfk-edt.tools.delete_metadata]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.delete_project]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.delete_infobase]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.update_database]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.import_configuration_from_xml]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.clean_project]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.set_infobase_credentials]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.set_variable]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.evaluate_expression]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.create_git_branch]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.switch_git_branch]
-approval_mode = "prompt"
-[mcp_servers.kfk-edt.tools.set_branch_infobase]
-approval_mode = "prompt"
+disabled_tools = []
 
 [mcp_servers.bsl-ls]
 command = "node"
