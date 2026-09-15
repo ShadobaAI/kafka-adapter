@@ -107,7 +107,7 @@ flowchart LR
 - [Поддерживаемая модель XDTO в Адаптере Kafka](project/adapter-xdto-requirements.md) — EnterpriseData, произвольный формат и общие требования конвертации.
 - [XDTO: модель данных обмена](project/xdto.md) — пакеты, типы, свойства и значения.
 - [Требования к YAML для генерации XDTO-модели](project/yaml-requirements-for-xdto.md) — исходные схемы и правила их представления.
-- [Генерация XSD из YAML](project/xsd-generation.md) — описание целевой версии скрипта и его параметров.
+- [Генерация XSD из YAML](project/xsd-generation.md) — описание скрипта и его параметров.
 
 ## Лицензия
 

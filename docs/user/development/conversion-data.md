@@ -67,7 +67,7 @@ XDTO-пакет под **конкретный контракт** данных. �
 
 **а) Вручную в EDT или Конфигураторе** — стандартными средствами платформы.
 
-**б) Из AsyncAPI-спецификации** — с помощью скрипта `asyncapi2xsd.py` (репозиторий [Набор скриптов](https://github.com/ShadobaAI/kafka-tools)). Подробнее — [Генерация XSD из YAML](../../project/xsd-generation.md).
+**б) Из AsyncAPI-спецификации** — с помощью скрипта [`asyncapi2xsd.py`](https://github.com/ShadobaAI/kafka-tools/blob/main/xdto/generator/asyncapi2xsd.py) (репозиторий [Набор скриптов](https://github.com/ShadobaAI/kafka-tools)). Подробнее — [Генерация XSD из YAML](../../project/xsd-generation.md).
 
 ## Расширение КД 3.1
 

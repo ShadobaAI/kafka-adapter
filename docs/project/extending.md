@@ -70,7 +70,7 @@
 
 **а) Вручную** в EDT или Конфигураторе — стандартными средствами платформы.
 
-**б) Из AsyncAPI-спецификации** — с помощью скрипта `asyncapi2xsd.py` — см. [Генерация XSD из YAML](xsd-generation.md).
+**б) Из AsyncAPI-спецификации** — с помощью скрипта [`asyncapi2xsd.py`](https://github.com/ShadobaAI/kafka-tools/blob/main/xdto/generator/asyncapi2xsd.py) — см. [Генерация XSD из YAML](xsd-generation.md).
 
 ### Расширение КД
 
