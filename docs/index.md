@@ -101,6 +101,14 @@ flowchart LR
     - Алерты с уведомлениями в Telegram
     - Выгрузка журнала обмена в Elasticsearch / Logstash / Kibana
 
+## Контракт данных AsyncAPI и XDTO
+
+- [Описание AsyncAPI](project/asyncapi-yaml.md) — разделы документа, свойства схем и расширения.
+- [Поддерживаемая модель XDTO в Адаптере Kafka](project/adapter-xdto-requirements.md) — EnterpriseData, произвольный формат и общие требования конвертации.
+- [XDTO: модель данных обмена](project/xdto.md) — пакеты, типы, свойства и значения.
+- [Требования к YAML для генерации XDTO-модели](project/yaml-requirements-for-xdto.md) — исходные схемы и правила их представления.
+- [Генерация XSD из YAML](project/xsd-generation.md) — описание целевой версии скрипта и его параметров.
+
 ## Лицензия
 
 Проект распространяется под лицензией [Mozilla Public License 2.0 (MPL-2.0)](https://github.com/ShadobaAI/kafka-adapter/blob/main/LICENSE). Разрешено использование, модификация и распространение — в том числе в коммерческих проектах. Изменения в файлах под MPL-2.0 должны оставаться открытыми.

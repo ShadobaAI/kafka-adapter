@@ -70,7 +70,7 @@
 
 **а) Вручную** в EDT или Конфигураторе — стандартными средствами платформы.
 
-**б) Из AsyncAPI-спецификации** — с помощью скрипта `asyncapi2xsd.py` — см. [Генерация XSD из AsyncAPI](xsd-generation.md).
+**б) Из AsyncAPI-спецификации** — с помощью скрипта `asyncapi2xsd.py` — см. [Генерация XSD из YAML](xsd-generation.md).
 
 ### Расширение КД
 
@@ -79,5 +79,9 @@
 ## Смотрите также
 
 - [Архитектура модулей](modules.md).
-- [Генерация XSD из AsyncAPI](xsd-generation.md).
+- [XDTO: модель данных обмена](xdto.md).
+- [Поддерживаемая модель XDTO в Адаптере Kafka](adapter-xdto-requirements.md).
+- [Описание AsyncAPI](asyncapi-yaml.md).
+- [Требования к YAML для генерации XDTO-модели](yaml-requirements-for-xdto.md).
+- [Генерация XSD из YAML](xsd-generation.md).
 - [Конвертация данных 3.1 (руководство пользователя)](../user/development/conversion-data.md).
