@@ -20,8 +20,8 @@ disabled_tools = []
 
 [mcp_servers.bsl-ls]
 command = "node"
-args = [".codex\\mcp\\bsl-ls-proxy.mjs", "--root", "."]
-cwd = "."
+args = ["C:/EDT/projects/kafka/adapter/adapter/.codex/mcp/bsl-ls-proxy.mjs", "--root", "C:/EDT/projects/kafka/adapter/adapter", "--java", "C:/Program Files/Axiom/AxiomJDK-Pro-25-Full/bin/java.exe"]
+cwd = "C:/EDT/projects/kafka/adapter/adapter"
 enabled = true
 required = false
 startup_timeout_sec = 60
