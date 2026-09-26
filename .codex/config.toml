@@ -1,0 +1,42 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+[mcp_servers.sonarqube]
+url = "http://ia11:9001/mcp"
+bearer_token_env_var = "SONARQUBE_TOKEN"
+enabled = true
+required = false
+startup_timeout_sec = 10
+description = "SonarQube MCP server for kafka-adapter on ia11 over Streamable HTTP"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.kfk-edt]
+url = "http://localhost:8765/mcp"
+enabled = true
+required = false
+startup_timeout_sec = 2
+description = "1C:EDT workspace on port 8765: adapter, base, examples."
+default_tools_approval_mode = "approve"
+disabled_tools = []
+
+[mcp_servers.bsl-ls]
+command = "node"
+args = ["C:/EDT/projects/kafka/adapter/adapter/.codex/mcp/bsl-ls-proxy.mjs", "--root", "C:/EDT/projects/kafka/adapter/adapter", "--java", "C:/Program Files/Axiom/AxiomJDK-Pro-25-Full/bin/java.exe"]
+cwd = "C:/EDT/projects/kafka/adapter/adapter"
+enabled = true
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+description = "Focused BSL diagnostics and semantic navigation for kafka-adapter"
+default_tools_approval_mode = "approve"
+enabled_tools = [
+  "analyze_file",
+  "document_symbols",
+  "find_references",
+  "call_hierarchy",
+  "hover",
+  "definition",
+  "type_info",
+  "global_member_info",
+  "global_member_search",
+  "type_at_position",
+]

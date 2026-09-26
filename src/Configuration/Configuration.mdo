@@ -39,8 +39,8 @@
     </extension>
     <languageCode>ru</languageCode>
   </languages>
-  <compatibilityMode>8.3.21</compatibilityMode>
   <subsystems>Subsystem.кфкИнтеграция</subsystems>
+  <styleItems>StyleItem.кфкШрифтЗаголовкаПредупреждения</styleItems>
   <commonPictures>CommonPicture.кфкДесериализацияПриостановлена</commonPictures>
   <commonPictures>CommonPicture.кфкЗаблокироватьПотоки16</commonPictures>
   <commonPictures>CommonPicture.кфкЗапуск16</commonPictures>

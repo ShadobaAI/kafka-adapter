@@ -1847,7 +1847,7 @@
         <extInfo xsi:type="form:HtmlFieldExtInfo">
           <handlers>
             <event>DocumentComplete</event>
-            <name>СтраницаРедактораJSONДокументСформирован</name>
+            <name>СтраницаРедактораДокументСформирован</name>
           </handlers>
           <width>1</width>
           <height>1</height>

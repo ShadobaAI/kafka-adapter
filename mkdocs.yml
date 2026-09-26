@@ -206,5 +206,10 @@ nav:
     - Объекты метаданных: project/metadata.md
     - Управляющие константы: project/constants.md
     - Расширение адаптера: project/extending.md
-    - Генерация XSD из AsyncAPI: project/xsd-generation.md
+    - Контракт данных AsyncAPI и XDTO:
+      - Описание AsyncAPI: project/asyncapi-yaml.md
+      - Поддерживаемая модель XDTO в Адаптере Kafka: project/adapter-xdto-requirements.md
+      - "XDTO: модель данных обмена": project/xdto.md
+      - Требования к YAML для генерации XDTO-модели: project/yaml-requirements-for-xdto.md
+      - Генерация XSD из YAML: project/xsd-generation.md
   - Глоссарий: glossary.md

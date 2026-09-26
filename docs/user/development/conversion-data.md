@@ -67,7 +67,7 @@ XDTO-пакет под **конкретный контракт** данных. �
 
 **а) Вручную в EDT или Конфигураторе** — стандартными средствами платформы.
 
-**б) Из AsyncAPI-спецификации** — с помощью скрипта `asyncapi2xsd.py` (репозиторий [Набор скриптов](https://github.com/ShadobaAI/kafka-tools)). Подробнее — [Генерация XSD из AsyncAPI](../../project/xsd-generation.md).
+**б) Из AsyncAPI-спецификации** — с помощью скрипта [`asyncapi2xsd.py`](https://github.com/ShadobaAI/kafka-tools/blob/main/xdto/generator/asyncapi2xsd.py) (репозиторий [Набор скриптов](https://github.com/ShadobaAI/kafka-tools)). Подробнее — [Генерация XSD из YAML](../../project/xsd-generation.md).
 
 ## Расширение КД 3.1
 
@@ -79,4 +79,8 @@ XDTO-пакет под **конкретный контракт** данных. �
 
 - [Обработчик продюсера](producer-handler.md) — при типе сериализации «Произвольный обработчик».
 - [Обработчик консьюмера](consumer-handler.md) — при типе десериализации «Произвольный обработчик».
-- [Генерация XSD из AsyncAPI](../../project/xsd-generation.md).
+- [XDTO: модель данных обмена](../../project/xdto.md).
+- [Поддерживаемая модель XDTO в Адаптере Kafka](../../project/adapter-xdto-requirements.md).
+- [Описание AsyncAPI](../../project/asyncapi-yaml.md).
+- [Требования к YAML для генерации XDTO-модели](../../project/yaml-requirements-for-xdto.md).
+- [Генерация XSD из YAML](../../project/xsd-generation.md).

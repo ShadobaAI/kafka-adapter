@@ -1,3 +1,4 @@
 upload-sonar.sh
-bsl-language-server-*.jar
-config.toml
+.code-index/
+bsl-language-server-exec.jar
+bsl-language-server-*-exec.jar

@@ -77,4 +77,5 @@
   <content>CommandGroup.кфкОчередиСообщений</content>
   <content>DataProcessor.кфкПанельАдминистрирования</content>
   <content>InformationRegister.кфкХэшСуммыСообщений</content>
+  <content>StyleItem.кфкШрифтЗаголовкаПредупреждения</content>
 </mdclass:Subsystem>

@@ -1009,7 +1009,7 @@
             </dataPath>
             <handlers>
               <event>OnChange</event>
-              <name>ПараметрыКонтрольИнтеграцииВремяSLAИсходящихПриИзменении</name>
+              <name>ПараметрыКонтрольИнтеграцииВремяСЛАИсходящихПриИзменении</name>
             </handlers>
             <extendedTooltip>
               <name>ПараметрыКонтрольИнтеграцииВремяSLAИсходящихРасширеннаяПодсказка</name>
@@ -1061,7 +1061,7 @@
             </dataPath>
             <handlers>
               <event>OnChange</event>
-              <name>ПараметрыКонтрольИнтеграцииВремяSLAВходящихПриИзменении</name>
+              <name>ПараметрыКонтрольИнтеграцииВремяСЛАВходящихПриИзменении</name>
             </handlers>
             <extendedTooltip>
               <name>ПараметрыКонтрольИнтеграцииВремяSLAВходящихРасширеннаяПодсказка</name>
@@ -1115,7 +1115,7 @@
             <toolTipRepresentation>Balloon</toolTipRepresentation>
             <handlers>
               <event>OnChange</event>
-              <name>ПараметрыКонтроляИнтеграцииПериодSLAПриИзменении</name>
+              <name>ПараметрыКонтроляИнтеграцииПериодСЛАПриИзменении</name>
             </handlers>
             <extendedTooltip>
               <name>ПараметрыКонтроляИнтеграцииПериодSLAРасширеннаяПодсказка</name>
