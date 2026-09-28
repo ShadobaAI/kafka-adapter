@@ -12,7 +12,7 @@
 | [**Отчеты тестов**](https://github.com/ShadobaAI/kafka-adapter-tests-reports) | Опубликованные Allure HTML-отчеты тестов |
 | [**Набор скриптов**](https://github.com/ShadobaAI/kafka-tools) | Скрипты для развёртывания среды разработки |
 | [**Расширение КД**](https://github.com/ShadobaAI/kafka-adapter-conv) | Расширение для КД 3.1+, адаптирующее типовую конвертацию данных под произвольный XDTO |
-| [**Задачи и база знаний**](https://github.com/ShadobaAI/kfk-tasks) | Issues и [доска GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1), Memory Bank, SDD/ADR, локальный MCP-сервер и валидатор документации |
+| [**Задачи**](https://github.com/ShadobaAI/kfk-tasks) | Issues, [доска GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1), история изменений в SDD и ADR |
 
 ## Взаимосвязи
 
@@ -26,7 +26,7 @@ flowchart LR
     TESTS_UI_REPORTS["Отчеты UI-тестов<br/>(Allure + GitHub Pages)"]
     TOOLS["Набор скриптов<br/>(dev-окружение)"]
     CONV["Расширение КД<br/>(КД 3.1 + XDTO)"]
-    TASKS["Задачи и база знаний<br/>(Issues + Memory Bank + SDD/ADR)"]
+    TASKS["Задачи<br/>(Issues + Projects + SDD/ADR)"]
 
     BASE -.подключает.-> ADAPTER
     examples -.расширяет.-> BASE
@@ -64,13 +64,11 @@ Docker Compose-манифесты и скрипты: локальный клас
 
 Расширение для 1С:Конвертация данных 3.1+, адаптирующее типовую конвертацию под произвольный XDTO. Нужно только тем, кто использует [КД 3.1](../user/development/conversion-data.md) как способ сериализации.
 
-### Задачи и база знаний (kfk-tasks)
+### Задачи (kfk-tasks)
 
 Единый репозиторий сопровождения проекта. [GitHub Issues](https://github.com/ShadobaAI/kfk-tasks/issues) используются для постановки и обсуждения задач, а ход работ отображается на [доске GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1).
 
-Каталог [`memory-bank/`](https://github.com/ShadobaAI/kfk-tasks/tree/main/memory-bank) содержит поддерживаемый проектный контекст: архитектуру адаптера, карту репозиториев, компоненты, публичный API, потоки данных и правила разработки. Изменения проектируются в SDD-спецификациях, а значимые архитектурные решения фиксируются в ADR.
-
-Локальный Memory Bank MCP предоставляет ограниченное чтение, поиск и формирование контекста задачи без загрузки всей документации. В этом же репозитории находятся валидатор структуры и ссылок, автоматические тесты MCP и [инструкции по установке](https://github.com/ShadobaAI/kfk-tasks/blob/main/docs/installation.md). Markdown остаётся каноническим форматом и читается без MCP, расширений VS Code или плагинов Obsidian.
+Текущие правила и контракты проекта описаны в документации репозиториев-владельцев. Документация адаптера содержит [архитектуру](../overview/architecture.md), [публичный API](../user/development/api.md), [потоки данных](../overview/data-flow.md) и [правила разработки](contributing.md). SDD и ADR в [репозитории задач](https://github.com/ShadobaAI/kfk-tasks) сохраняют историю значимых изменений и решений; после реализации необходимо также актуализировать текущую документацию. Обсуждение и результаты проверок остаются в Issues, pull requests и Git.
 
 ## Тестирование { #тестирование }
 
