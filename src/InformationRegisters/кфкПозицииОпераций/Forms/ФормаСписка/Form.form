@@ -51,47 +51,6 @@
     <excludedCommands>Copy</excludedCommands>
     <excludedCommands>Create</excludedCommands>
     <items xsi:type="form:FormField">
-      <name>Идентификатор</name>
-      <id>16</id>
-      <title>
-        <key>ru</key>
-        <value>ИД операции</value>
-      </title>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.Идентификатор</segments>
-      </dataPath>
-      <defaultItem>true</defaultItem>
-      <extendedTooltip>
-        <name>ИдентификаторРасширеннаяПодсказка</name>
-        <id>18</id>
-        <type>Label</type>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <extInfo xsi:type="form:LabelDecorationExtInfo">
-          <horizontalAlign>Left</horizontalAlign>
-        </extInfo>
-      </extendedTooltip>
-      <contextMenu>
-        <name>ИдентификаторКонтекстноеМеню</name>
-        <id>17</id>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>LabelField</type>
-      <editMode>Enter</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:LabelFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-      </extInfo>
-    </items>
-    <items xsi:type="form:FormField">
       <name>Операция</name>
       <id>31</id>
       <title>
@@ -132,8 +91,49 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>ОперацияИдентификатор</name>
+      <id>16</id>
+      <title>
+        <key>ru</key>
+        <value>ИД операции</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.Операция.Идентификатор</segments>
+      </dataPath>
+      <defaultItem>true</defaultItem>
+      <extendedTooltip>
+        <name>ОперацияИдентификаторРасширеннаяПодсказка</name>
+        <id>18</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ОперацияИдентификаторКонтекстноеМеню</name>
+        <id>17</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>Раздел</name>
-      <id>25</id>
+      <id>43</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -144,42 +144,6 @@
       </dataPath>
       <extendedTooltip>
         <name>РазделРасширеннаяПодсказка</name>
-        <id>27</id>
-        <type>Label</type>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <extInfo xsi:type="form:LabelDecorationExtInfo">
-          <horizontalAlign>Left</horizontalAlign>
-        </extInfo>
-      </extendedTooltip>
-      <contextMenu>
-        <name>РазделКонтекстноеМеню</name>
-        <id>26</id>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>LabelField</type>
-      <editMode>Auto</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:LabelFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-      </extInfo>
-    </items>
-    <items xsi:type="form:FormField">
-      <name>ПредставлениеРаздела</name>
-      <id>43</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.ПредставлениеРаздела</segments>
-      </dataPath>
-      <extendedTooltip>
-        <name>ПредставлениеРазделаРасширеннаяПодсказка</name>
         <id>45</id>
         <type>Label</type>
         <autoMaxWidth>true</autoMaxWidth>
@@ -189,7 +153,7 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>ПредставлениеРазделаКонтекстноеМеню</name>
+        <name>РазделКонтекстноеМеню</name>
         <id>44</id>
         <autoFill>true</autoFill>
       </contextMenu>
@@ -204,23 +168,19 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>Указатель</name>
-      <id>40</id>
-      <title>
-        <key>ru</key>
-        <value>Указатель</value>
-      </title>
+      <name>РазделХешСумма</name>
+      <id>25</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>Список.Указатель</segments>
+        <segments>Список.Раздел.ХешСумма</segments>
       </dataPath>
       <extendedTooltip>
-        <name>УказательРасширеннаяПодсказка</name>
-        <id>42</id>
+        <name>РазделХешСуммаРасширеннаяПодсказка</name>
+        <id>27</id>
         <type>Label</type>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -229,8 +189,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>УказательКонтекстноеМеню</name>
-        <id>41</id>
+        <name>РазделХешСуммаКонтекстноеМеню</name>
+        <id>26</id>
         <autoFill>true</autoFill>
       </contextMenu>
       <type>LabelField</type>
@@ -243,24 +203,189 @@
         <autoMaxHeight>true</autoMaxHeight>
       </extInfo>
     </items>
-    <items xsi:type="form:FormField">
-      <name>УказательМС</name>
-      <id>34</id>
-      <title>
-        <key>ru</key>
-        <value>Указатель МС</value>
-      </title>
+    <items xsi:type="form:FormGroup">
+      <name>ГруппаКомбинированнаяМетка</name>
+      <id>58</id>
+      <items xsi:type="form:FormField">
+        <name>КомбинированнаяМетка</name>
+        <id>46</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:DataPath">
+          <segments>Список.КомбинированнаяМетка</segments>
+        </dataPath>
+        <extendedTooltip>
+          <name>КомбинированнаяМеткаРасширеннаяПодсказка</name>
+          <id>48</id>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>КомбинированнаяМеткаКонтекстноеМеню</name>
+          <id>47</id>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>LabelField</type>
+        <editMode>Auto</editMode>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <extInfo xsi:type="form:LabelFieldExtInfo">
+          <maxWidth>30</maxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+        </extInfo>
+      </items>
+      <items xsi:type="form:FormGroup">
+        <name>ГруппаРасшифровкаКомбинированнаяМетка</name>
+        <id>60</id>
+        <items xsi:type="form:FormField">
+          <name>КомбинированнаяМеткаДата</name>
+          <id>49</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Список.КомбинированнаяМетка.Дата</segments>
+          </dataPath>
+          <extendedTooltip>
+            <name>КомбинированнаяМеткаДатаРасширеннаяПодсказка</name>
+            <id>51</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>КомбинированнаяМеткаДатаКонтекстноеМеню</name>
+            <id>50</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>LabelField</type>
+          <horizontalAlign>Right</horizontalAlign>
+          <editMode>Auto</editMode>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:LabelFieldExtInfo">
+            <maxWidth>10</maxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormField">
+          <name>КомбинированнаяМеткаСеанс</name>
+          <id>55</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Список.КомбинированнаяМетка.Сеанс</segments>
+          </dataPath>
+          <extendedTooltip>
+            <name>КомбинированнаяМеткаСеансРасширеннаяПодсказка</name>
+            <id>57</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>КомбинированнаяМеткаСеансКонтекстноеМеню</name>
+            <id>56</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>LabelField</type>
+          <horizontalAlign>Right</horizontalAlign>
+          <editMode>Auto</editMode>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:LabelFieldExtInfo">
+            <maxWidth>10</maxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormField">
+          <name>КомбинированнаяМеткаНомер</name>
+          <id>52</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Список.КомбинированнаяМетка.Номер</segments>
+          </dataPath>
+          <extendedTooltip>
+            <name>КомбинированнаяМеткаНомерРасширеннаяПодсказка</name>
+            <id>54</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>КомбинированнаяМеткаНомерКонтекстноеМеню</name>
+            <id>53</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>LabelField</type>
+          <horizontalAlign>Right</horizontalAlign>
+          <editMode>Auto</editMode>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:LabelFieldExtInfo">
+            <maxWidth>10</maxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+          </extInfo>
+        </items>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <extendedTooltip>
+          <name>ГруппаРасшифровкаКомбинированнаяМеткаРасширеннаяПодсказка</name>
+          <id>61</id>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <type>ColumnGroup</type>
+        <extInfo xsi:type="form:ColumnGroupExtInfo">
+          <group>InCell</group>
+          <showTitle>auto</showTitle>
+          <showInCard>true</showInCard>
+        </extInfo>
+      </items>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.УказательМС</segments>
-      </dataPath>
+      <title>
+        <key>ru</key>
+        <value>Комбинированная метка (Дата GMT, Сеанс, Номер)</value>
+      </title>
       <extendedTooltip>
-        <name>УказательМСРасширеннаяПодсказка</name>
-        <id>36</id>
+        <name>ГруппаКомбинированнаяМеткаРасширеннаяПодсказка</name>
+        <id>59</id>
         <type>Label</type>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
@@ -268,19 +393,12 @@
           <horizontalAlign>Left</horizontalAlign>
         </extInfo>
       </extendedTooltip>
-      <contextMenu>
-        <name>УказательМСКонтекстноеМеню</name>
-        <id>35</id>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>LabelField</type>
-      <editMode>Auto</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:LabelFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
+      <type>ColumnGroup</type>
+      <extInfo xsi:type="form:ColumnGroupExtInfo">
+        <group>Vertical</group>
+        <showTitle>auto</showTitle>
+        <showInHeader>true</showInHeader>
+        <showInCard>true</showInCard>
       </extInfo>
     </items>
     <commandBarLocation>None</commandBarLocation>
@@ -450,14 +568,27 @@
     <edit>
       <common>true</common>
     </edit>
+    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
+      <segments>Список.КомбинированнаяМетка</segments>
+    </notDefaultUseAlwaysAttributes>
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
       <queryText>ВЫБРАТЬ
 	Т.Идентификатор КАК Идентификатор,
 	Т.Идентификатор КАК Операция,
 	Т.Раздел КАК Раздел,
-	Т.ВременнаяМетка КАК УказательМС,
-	Т.РазделПредставление КАК ПредставлениеРаздела
+	Т.КомбинированнаяМетка КАК КомбинированнаяМетка,
+	ЦЕЛ(Т.КомбинированнаяМетка / &amp;ОснованиеВремениКомбинированнойМетки + &amp;МоментОтсчетаКомбинированнойМетки) КАК
+		КомбинированнаяМеткаМС,
+	ДОБАВИТЬКДАТЕ(&amp;ДатаОтсчетаКомбинированнойМетки, СЕКУНДА, ЦЕЛ(Т.КомбинированнаяМетка /
+		&amp;ОснованиеВремениКомбинированнойМетки) / 1000) КАК КомбинированнаяМеткаДата,
+	ВЫРАЗИТЬ(ЦЕЛ(Т.КомбинированнаяМетка / &amp;ОснованиеСчетчикаКомбинированнойМетки) КАК ЧИСЛО(30, 0)) -
+		ВЫРАЗИТЬ(ЦЕЛ(ВЫРАЗИТЬ(ЦЕЛ(Т.КомбинированнаяМетка / &amp;ОснованиеСчетчикаКомбинированнойМетки) КАК ЧИСЛО(30, 0)) /
+		&amp;ОснованиеСеансаКомбинированнойМетки) КАК ЧИСЛО(20, 0)) * &amp;ОснованиеСеансаКомбинированнойМетки КАК
+		КомбинированнаяМеткаСеанс,
+	Т.КомбинированнаяМетка - ВЫРАЗИТЬ(ЦЕЛ(Т.КомбинированнаяМетка / &amp;ОснованиеСчетчикаКомбинированнойМетки) КАК ЧИСЛО(30,
+		0)) * &amp;ОснованиеСчетчикаКомбинированнойМетки КАК КомбинированнаяМеткаНомер,
+	Т.РазделПредставление КАК РазделПредставление
 ИЗ
 	РегистрСведений.кфкПозицииОпераций КАК Т</queryText>
       <mainTable>InformationRegister.кфкПозицииОпераций</mainTable>
@@ -467,49 +598,113 @@
       <autoSaveUserSettings>true</autoSaveUserSettings>
       <getInvisibleFieldPresentations>true</getInvisibleFieldPresentations>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>Идентификатор</dataPath>
+        <dataPath>Операция.Идентификатор</dataPath>
         <field>Идентификатор</field>
-      </fields>
-      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>Раздел</dataPath>
-        <field>Раздел</field>
-      </fields>
-      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>Операция</dataPath>
-        <field>Операция</field>
-      </fields>
-      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>УказательМС</dataPath>
-        <field>УказательМС</field>
-      </fields>
-      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>ПредставлениеРаздела</dataPath>
-        <field>ПредставлениеРаздела</field>
         <title>
           <localValue>
             <content>
               <key>ru</key>
-              <value>Представление раздела</value>
+              <value>ИД операции</value>
             </content>
           </localValue>
         </title>
       </fields>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>ВременнаяМетка</dataPath>
-        <field>ВременнаяМетка</field>
-      </fields>
-      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
-        <dataPath>РазделПредставление</dataPath>
-        <field>РазделПредставление</field>
-      </fields>
-      <calculatedFields>
-        <dataPath>Указатель</dataPath>
-        <expression>кфкОбщегоНазначенияСлужебный.ДатаИзМС(УказательМС)</expression>
+        <dataPath>Раздел.ХешСумма</dataPath>
+        <field>Раздел</field>
         <title>
           <localValue>
             <content>
               <key>ru</key>
-              <value>Указатель</value>
+              <value>ИД раздела</value>
+            </content>
+          </localValue>
+        </title>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КомбинированнаяМетка</dataPath>
+        <field>КомбинированнаяМетка</field>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>Операция</dataPath>
+        <field>Операция</field>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Операция</value>
+            </content>
+          </localValue>
+        </title>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КомбинированнаяМетка.Дата</dataPath>
+        <field>КомбинированнаяМеткаДата</field>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Комбинированная метка (Дата GMT)</value>
+            </content>
+          </localValue>
+        </title>
+        <useRestriction/>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КомбинированнаяМетка.Миллисекунды</dataPath>
+        <field>КомбинированнаяМеткаМС</field>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Комбинированная метка (Миллисекунды)</value>
+            </content>
+          </localValue>
+        </title>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>Раздел</dataPath>
+        <field>РазделПредставление</field>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Раздел</value>
+            </content>
+          </localValue>
+        </title>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КомбинированнаяМетка.Сеанс</dataPath>
+        <field>КомбинированнаяМеткаСеанс</field>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Комбинированная метка (Сеанс)</value>
+            </content>
+          </localValue>
+        </title>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>КомбинированнаяМетка.Номер</dataPath>
+        <field>КомбинированнаяМеткаНомер</field>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Комбинированная метка (Номер)</value>
+            </content>
+          </localValue>
+        </title>
+      </fields>
+      <parameters>
+        <name>ДатаОтсчетаКомбинированнойМетки</name>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Дата отсчета комбинированной метки</value>
             </content>
           </localValue>
         </title>
@@ -517,7 +712,77 @@
           <types>Date</types>
           <dateQualifiers/>
         </valueType>
-      </calculatedFields>
+        <useRestriction>true</useRestriction>
+        <expression>кфкОбщегоНазначенияСлужебный.ДатаОтсчетаКомбинированнойМетки()</expression>
+      </parameters>
+      <parameters>
+        <name>МоментОтсчетаКомбинированнойМетки</name>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Момент отсчета комбинированной метки</value>
+            </content>
+          </localValue>
+        </title>
+        <valueType>
+          <types>Number</types>
+          <numberQualifiers/>
+        </valueType>
+        <useRestriction>true</useRestriction>
+        <expression>кфкОбщегоНазначенияСлужебный.МоментОтсчетаКомбинированнойМетки()</expression>
+      </parameters>
+      <parameters>
+        <name>ОснованиеСчетчикаКомбинированнойМетки</name>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Основание счетчика комбинированной метки</value>
+            </content>
+          </localValue>
+        </title>
+        <valueType>
+          <types>Number</types>
+          <numberQualifiers/>
+        </valueType>
+        <useRestriction>true</useRestriction>
+        <expression>кфкОбщегоНазначенияСлужебный.ОснованиеСчетчикаКомбинированнойМетки()</expression>
+      </parameters>
+      <parameters>
+        <name>ОснованиеВремениКомбинированнойМетки</name>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Основание времени комбинированной метки</value>
+            </content>
+          </localValue>
+        </title>
+        <valueType>
+          <types>Number</types>
+          <numberQualifiers/>
+        </valueType>
+        <useRestriction>true</useRestriction>
+        <expression>кфкОбщегоНазначенияСлужебный.ОснованиеВремениКомбинированнойМетки()</expression>
+      </parameters>
+      <parameters>
+        <name>ОснованиеСеансаКомбинированнойМетки</name>
+        <title>
+          <localValue>
+            <content>
+              <key>ru</key>
+              <value>Основание сеанса комбинированной метки</value>
+            </content>
+          </localValue>
+        </title>
+        <valueType>
+          <types>Number</types>
+          <numberQualifiers/>
+        </valueType>
+        <useRestriction>true</useRestriction>
+        <expression>кфкОбщегоНазначенияСлужебный.ОснованиеСеансаКомбинированнойМетки()</expression>
+      </parameters>
     </extInfo>
   </attributes>
   <commandInterface>

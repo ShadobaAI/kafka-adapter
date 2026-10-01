@@ -22,6 +22,9 @@
     "module-consecutive-blank-lines": {
       "enabled": true
     },
+    "bsl-legacy-check-static-feature-access": {
+      "enabled": false
+    },
     "bsl-ql-hub": {
       "enabled": true
     },

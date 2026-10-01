@@ -5,13 +5,13 @@
     <name>ЧтениеОчереди</name>
     <table>InformationRegister.кфкВходящиеСообщения</table>
     <indexedFields>
-      <path>МеткаИзмененияМС</path>
+      <path>МеткаИзменения</path>
     </indexedFields>
     <additionalFields>
       <path>КлючЗаписи</path>
     </additionalFields>
     <additionalFields>
-      <path>ДатаЗагрузкиМС</path>
+      <path>МеткаЗагрузки</path>
     </additionalFields>
     <additionalFields>
       <path>Статус</path>
@@ -25,7 +25,7 @@
     <name>КоличествоЗагруженных</name>
     <table>InformationRegister.кфкВходящиеСообщения</table>
     <indexedFields>
-      <path>ДатаЗагрузкиМС</path>
+      <path>МеткаЗагрузки</path>
     </indexedFields>
     <additionalFields>
       <path>Консьюмер</path>

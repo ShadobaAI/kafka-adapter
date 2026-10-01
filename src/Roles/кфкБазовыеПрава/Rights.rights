@@ -301,6 +301,17 @@
 		</right>
 	</object>
 	<object>
+		<name>SessionParameter.кфкСчетчикКомбинированнойМетки</name>
+		<right>
+			<name>Get</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>Set</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.кфкБлокировкаИнтеграции</name>
 		<right>
 			<name>Read</name>

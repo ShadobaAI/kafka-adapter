@@ -6,7 +6,7 @@
 	</filter>
 	<order>
 		<item xsi:type="OrderItemField">
-			<field>ДатаЗагрузкиМС</field>
+			<field>МеткаЗагрузки</field>
 			<orderType>Desc</orderType>
 		</item>
 		<viewMode>Normal</viewMode>

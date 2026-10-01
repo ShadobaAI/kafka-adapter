@@ -5,13 +5,13 @@
     <name>ЧтениеОчереди</name>
     <table>InformationRegister.кфкИсходящиеСообщения</table>
     <indexedFields>
-      <path>МеткаИзмененияМС</path>
+      <path>МеткаИзменения</path>
     </indexedFields>
     <additionalFields>
       <path>КлючЗаписи</path>
     </additionalFields>
     <additionalFields>
-      <path>ДатаРегистрацииМС</path>
+      <path>МеткаРегистрации</path>
     </additionalFields>
     <additionalFields>
       <path>Статус</path>

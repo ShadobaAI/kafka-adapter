@@ -43,16 +43,15 @@
     <mainFilter>true</mainFilter>
   </dimensions>
   <dimensions uuid="3ceb7e45-150b-414a-aaf6-d472e49b9fc9">
-    <name>ВременнаяМетка</name>
+    <name>КомбинированнаяМетка</name>
     <synonym>
       <key>ru</key>
-      <value>Временная метка</value>
+      <value>Комбинированная метка</value>
     </synonym>
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>19</precision>
-        <scale>4</scale>
+        <precision>30</precision>
         <nonNegative>true</nonNegative>
       </numberQualifiers>
     </type>

@@ -24,15 +24,15 @@
     <value>Позиция операции</value>
   </recordPresentation>
   <resources uuid="25da2052-e7b7-45b3-b3c2-5af29fc023b7">
-    <name>ВременнаяМетка</name>
+    <name>КомбинированнаяМетка</name>
     <synonym>
       <key>ru</key>
-      <value>Временная метка</value>
+      <value>Комбинированная метка</value>
     </synonym>
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>15</precision>
+        <precision>30</precision>
         <nonNegative>true</nonNegative>
       </numberQualifiers>
     </type>
@@ -100,6 +100,11 @@
       <key>ru</key>
       <value>Форма списка</value>
     </synonym>
+    <help>
+      <pages>
+        <lang>ru</lang>
+      </pages>
+    </help>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>

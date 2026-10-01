@@ -291,15 +291,15 @@
     <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
   <attributes uuid="d7d9478d-81b5-41b6-aef7-75804ffeda2f">
-    <name>МеткаИзмененияМС</name>
+    <name>МеткаИзменения</name>
     <synonym>
       <key>ru</key>
-      <value>Метка изменения (мс)</value>
+      <value>Метка изменения</value>
     </synonym>
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>15</precision>
+        <precision>30</precision>
         <nonNegative>true</nonNegative>
       </numberQualifiers>
     </type>
@@ -333,16 +333,15 @@
     <mainFilter>true</mainFilter>
   </dimensions>
   <dimensions uuid="111ca233-437e-423e-bb9a-fac72f0cf50c">
-    <name>ДатаЗагрузкиМС</name>
+    <name>МеткаЗагрузки</name>
     <synonym>
       <key>ru</key>
-      <value>Дата загрузки МС</value>
+      <value>Метка загрузки</value>
     </synonym>
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>19</precision>
-        <scale>4</scale>
+        <precision>30</precision>
         <nonNegative>true</nonNegative>
       </numberQualifiers>
     </type>

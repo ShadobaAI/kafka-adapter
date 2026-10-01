@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:SessionParameter xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="cbc99da0-e192-4605-9b2b-092819cea454">
+  <name>кфкСчетчикКомбинированнойМетки</name>
+  <synonym>
+    <key>ru</key>
+    <value>Счетчик комбинированной метки</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>8</precision>
+    </numberQualifiers>
+  </type>
+</mdclass:SessionParameter>

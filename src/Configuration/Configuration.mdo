@@ -53,6 +53,7 @@
   <commonPictures>CommonPicture.кфкРегламентноеЗадание16</commonPictures>
   <commonPictures>CommonPicture.кфкСериализацияПриостановлена</commonPictures>
   <commonPictures>CommonPicture.кфкЧтениеПриостановлено</commonPictures>
+  <sessionParameters>SessionParameter.кфкСчетчикКомбинированнойМетки</sessionParameters>
   <roles>Role.кфкБазовыеПрава</roles>
   <roles>Role.кфкПолныеПрава</roles>
   <commonTemplates>CommonTemplate.кфкАдаптерKafka</commonTemplates>
