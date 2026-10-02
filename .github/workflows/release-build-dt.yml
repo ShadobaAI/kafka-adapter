@@ -45,10 +45,11 @@ jobs:
         run: |
           docker run --rm -v "${{ github.workspace }}:/work" -w /work \
             ghcr.io/shadobaai/ibcmd:latest bash -c "
-            vrunner init-dev --dt kfk-tmpl-demo.dt --cf base.cf --ibconnection /F/work/db --ibcmd &&
-            vrunner compileext /work/cfe-xml АдаптерKafka --ibconnection /F/work/db --updatedb --ibcmd &&
-            vrunner loadext --file examples.cfe --ibconnection /F/work/db --extension ТестированиеАдаптераKafka --updatedb --ibcmd &&
-            vrunner dump /work/${{ github.event.repository.name }}-demo.dt --ibconnection /F/work/db --ibcmd
+            vrunner infobase init --src kfk-tmpl-demo.dt --ibconnection /F/work/db --ibcmd &&
+            vrunner cf load --ibconnection /F/work/db --ibcmd base.cf &&
+            vrunner cfe load --extension-name АдаптерKafka --ibconnection /F/work/db --ibcmd /work/cfe-xml &&
+            vrunner cfe load --ibconnection /F/work/db --extension-name ТестированиеАдаптераKafka --ibcmd examples.cfe &&
+            vrunner infobase dump-dt --ibconnection /F/work/db --ibcmd /work/${{ github.event.repository.name }}-demo.dt
           "
           sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
 

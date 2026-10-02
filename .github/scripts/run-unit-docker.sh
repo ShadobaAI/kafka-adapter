@@ -218,7 +218,7 @@ start_coverage
 
 status "Запуск unit-тестов"
 vrunner_args=(
-    run
+    run enterprise
     --command "RunUnitTests=/work/YaxParams.json;workspacePath=/work"
     --exitCodePath "$exit_code_path"
     --ibsrv

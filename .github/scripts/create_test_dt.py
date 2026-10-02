@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Создание тестовой файловой ИБ из DT-шаблона и общей XML-конфигурации.
 
-Общий XML собирается соседним create_test_cf.py. Затем vrunner init-dev
-загружает DT-шаблон и XML в чистую файловую базу, а расширения грузятся
-отдельными вызовами vrunner loadext.
+Общий XML собирается соседним create_test_cf.py. Затем vrunner infobase init
+восстанавливает DT-шаблон, vrunner cf load загружает XML, а расширения грузятся
+отдельными вызовами vrunner cfe load.
 """
 from __future__ import annotations
 
@@ -68,8 +68,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = RussianArgumentParser(
         description=(
             "Создает тестовую файловую ИБ: собирает общий XML через create_test_cf.py, "
-            "загружает шаблон DT и XML через vrunner init-dev, "
-            "опционально загружает расширения YAXUNIT/VAExtension через vrunner loadext."
+            "восстанавливает шаблон DT через vrunner infobase init и загружает XML через vrunner cf load, "
+            "опционально загружает расширения YAXUNIT/VAExtension через vrunner cfe load."
         )
     )
     parser.add_argument(
@@ -163,7 +163,7 @@ def builder_script() -> Path:
 
 def config_xml_dir(options: Options) -> Path:
     # Временный каталог создается в текущем рабочем каталоге запуска.
-    # Он удаляется после init-dev независимо от результата загрузки XML.
+    # Он удаляется после попытки загрузки XML независимо от результата.
     return options.workdir / CONFIG_XML_DIR_NAME
 
 
@@ -261,18 +261,30 @@ def build_config_xml(options: Options) -> None:
 
 
 def init_infobase(options: Options) -> None:
-    # init-dev создает чистую файловую ИБ из DT-шаблона и собранного XML.
+    # Восстанавливаем DT-шаблон, затем загружаем XML с обновлением конфигурации БД.
     run_command(
         [
             "vrunner",
-            "init-dev",
+            "infobase",
+            "init",
             "--src",
-            config_xml_dir(options),
-            "--dt",
             options.template_dt,
             "--ibcmd",
             "--ibconnection",
             ib_connection(options),
+        ],
+        options,
+    )
+
+    run_command(
+        [
+            "vrunner",
+            "cf",
+            "load",
+            "--ibcmd",
+            "--ibconnection",
+            ib_connection(options),
+            config_xml_dir(options),
         ],
         options,
     )
@@ -283,15 +295,14 @@ def load_extension(options: Options, extension_file: Path, extension_name: str) 
     run_command(
         [
             "vrunner",
-            "loadext",
-            "-f",
-            extension_file,
-            "--extension",
+            "cfe",
+            "load",
+            "--extension-name",
             extension_name,
-            "--updatedb",
             "--ibcmd",
             "--ibconnection",
             ib_connection(options),
+            extension_file,
         ],
         options,
     )

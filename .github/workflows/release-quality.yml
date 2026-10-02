@@ -192,11 +192,12 @@ jobs:
         run: |
           docker run --rm -v "${{ github.workspace }}/${ASSETS_DIR}:/work" -w /work \
             ghcr.io/shadobaai/ibcmd:latest bash -c "
-            vrunner init-dev --src /work/base --dt /work/kfk-tmpl-test.dt --ibcmd --ibconnection /F/work/base-db &&
-            vrunner loadext -f /work/kafka-adapter-examples.cfe --extension 'ТестированиеАдаптераKafka' --updatedb --ibcmd --ibconnection /F/work/base-db &&
-            vrunner loadext -f /work/unit/YAXUNIT.cfe --extension 'YAXUNIT' --updatedb --ibcmd --ibconnection /F/work/base-db &&
-            vrunner loadext -f /work/unit/unit.cfe --extension 'МодульныеТесты' --updatedb --ibcmd --ibconnection /F/work/base-db &&
-            vrunner loadext -f /work/ui/VAExtension.cfe --extension 'VAExtension' --updatedb --ibcmd --ibconnection /F/work/base-db
+            vrunner infobase init --src /work/kfk-tmpl-test.dt --ibcmd --ibconnection /F/work/base-db &&
+            vrunner cf load --ibcmd --ibconnection /F/work/base-db /work/base &&
+            vrunner cfe load --extension-name 'ТестированиеАдаптераKafka' --ibcmd --ibconnection /F/work/base-db /work/kafka-adapter-examples.cfe &&
+            vrunner cfe load --extension-name 'YAXUNIT' --ibcmd --ibconnection /F/work/base-db /work/unit/YAXUNIT.cfe &&
+            vrunner cfe load --extension-name 'МодульныеТесты' --ibcmd --ibconnection /F/work/base-db /work/unit/unit.cfe &&
+            vrunner cfe load --extension-name 'VAExtension' --ibcmd --ibconnection /F/work/base-db /work/ui/VAExtension.cfe
           "
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/base-db"
 

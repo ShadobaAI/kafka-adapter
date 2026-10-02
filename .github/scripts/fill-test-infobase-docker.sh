@@ -68,7 +68,7 @@ openbox_pid=$!
 xdotool_pid=$!
 
 status "Заполнение тестовой информационной базы"
-vrunner run \
+vrunner run enterprise \
     --ibsrv \
     --ibconnection "/F${base_dir}" \
     --command "ЗавершитьРаботуСистемы"
