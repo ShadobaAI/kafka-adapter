@@ -38,6 +38,7 @@ jobs:
       contents: write
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
+      TEST_REPORT_URL: ${{ needs.quality.outputs.test_report_url }}
       ALLURE_UI_REPORT_URL: ${{ needs.quality.outputs.allure_ui_report_url }}
       ALLURE_UNIT_REPORT_URL: ${{ needs.quality.outputs.allure_unit_report_url }}
       SONAR_REPORT_URL: ${{ needs.quality.outputs.sonar_report_url }}
@@ -52,7 +53,7 @@ jobs:
           body_file="$(mktemp)"
           gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --json body --jq .body > "$body_file"
 
-          python3 - "$body_file" "$ALLURE_UI_REPORT_URL" "$ALLURE_UNIT_REPORT_URL" "$SONAR_REPORT_URL" <<'PY'
+          python3 - "$body_file" "$ALLURE_UI_REPORT_URL" "$ALLURE_UNIT_REPORT_URL" "$SONAR_REPORT_URL" "$TEST_REPORT_URL" <<'PY'
           import pathlib
           import re
           import sys
@@ -61,10 +62,12 @@ jobs:
           allure_ui_url = sys.argv[2]
           allure_unit_url = sys.argv[3]
           sonar_report_url = sys.argv[4]
+          test_report_url = sys.argv[5]
           marker = "## Отчеты релиза"
           legacy_marker_ru = "## Отчет тестирования"
           legacy_marker = "## Test report"
           links = [
+              f"- [Reports]({test_report_url})",
               f"- [Allure UI tests report]({allure_ui_url})",
               f"- [Allure Unit tests report]({allure_unit_url})",
               f"- [SonarQube static report]({sonar_report_url})",

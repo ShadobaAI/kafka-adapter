@@ -414,7 +414,7 @@ jobs:
   publish_reports:
     name: Publish release reports
     needs: [tests, sonar]
-    if: always() && needs.tests.result != 'skipped' && needs.sonar.result != 'skipped'
+    if: always() && needs.tests.result != 'skipped'
     uses: ./.github/workflows/release-publish-reports.yml
     with:
       sonar_dashboard_url: ${{ needs.sonar.outputs.sonar_dashboard_url }}
