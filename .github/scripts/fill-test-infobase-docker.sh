@@ -57,8 +57,7 @@ openbox_pid=$!
 
 (
     for _ in $(seq 1 600); do
-        xdotool search --class 1cv8c \
-            windowmap %@ \
+        xdotool search --onlyvisible --class 1cv8c \
             windowsize %@ 1920 1080 \
             windowmove %@ 0 0 \
             windowraise %@ >/dev/null 2>&1 || true

@@ -344,6 +344,19 @@ jobs:
           path: ${{ env.ASSETS_DIR }}/allure-ui-report
           if-no-files-found: warn
 
+      - name: Upload unit test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-diagnostics
+          path: |
+            ${{ env.ASSETS_DIR }}/unit/vrunner.log
+            ${{ env.ASSETS_DIR }}/unit/unit.log
+            ${{ env.ASSETS_DIR }}/unit/exit-code.txt
+            ${{ env.ASSETS_DIR }}/unit/coverage41c.log
+            ${{ env.ASSETS_DIR }}/unit/dbgs.log
+          if-no-files-found: warn
+
       - name: Upload SonarQube coverage inputs
         if: always()
         uses: actions/upload-artifact@v4

@@ -198,8 +198,7 @@ openbox_pid=$!
 
 (
     for _ in $(seq 1 600); do
-        xdotool search --class 1cv8c \
-            windowmap %@ \
+        xdotool search --onlyvisible --class 1cv8c \
             windowsize %@ 1920 1080 \
             windowmove %@ 0 0 \
             windowraise %@ >/dev/null 2>&1 || true
@@ -240,6 +239,18 @@ sleep 0.2
 kill "$tail_pid" 2>/dev/null || true
 wait "$tail_pid" 2>/dev/null || true
 tail_pid=""
+
+if [ "$test_rc" -ne 0 ] || [ ! -f "$exit_code_path" ]; then
+    echo "Код завершения Vanessa Runner: $test_rc" >&2
+    for log_path in "$vrunner_log_path" "$unit_log_path"; do
+        echo "===== $log_path =====" >&2
+        if [ -f "$log_path" ]; then
+            cat "$log_path" >&2 || true
+        else
+            echo "Лог не был создан: $log_path" >&2
+        fi
+    done
+fi
 
 if [ -f "$exit_code_path" ]; then
     status "Файл кода завершения unit-тестов: $exit_code_path"
