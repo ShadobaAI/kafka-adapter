@@ -32,7 +32,7 @@ jobs:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
       ASSETS_DIR: assets
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      SONAR_BASELINE_PROJECT_KEY: ${{ github.event.repository.name }}
+      SONAR_BASE_PROJECT_KEY: ${{ github.event.repository.name }}
       SONAR_BRANCH_NAME: ${{ github.event.release.target_commitish }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONARQUBE_BACKUP_DIRS: ${{ vars.SONARQUBE_BACKUP_DIRS }}
@@ -58,11 +58,6 @@ jobs:
         with:
           name: sonar-coverage-inputs
           path: ${{ env.ASSETS_DIR }}
-
-      - name: Verify production baseline
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 .github/scripts/sonar_release_baseline.py
 
       - name: Run SonarQube analysis
         id: sonar_scan

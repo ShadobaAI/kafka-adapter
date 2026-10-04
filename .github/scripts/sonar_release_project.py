@@ -21,7 +21,7 @@ def project_key(repository: str, branch: str) -> str:
 
 
 def main() -> None:
-    key = project_key(os.environ["SONAR_BASELINE_PROJECT_KEY"], os.environ["SONAR_BRANCH_NAME"])
+    key = project_key(os.environ["SONAR_BASE_PROJECT_KEY"], os.environ["SONAR_BRANCH_NAME"])
     query = urlencode({"id": key})
     print(f"SONAR_PROJECT_KEY={key}")
     print(f'SONAR_DASHBOARD_URL={os.environ["SONAR_HOST_URL"].rstrip("/")}/dashboard?{query}')
