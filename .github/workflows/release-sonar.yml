@@ -83,6 +83,7 @@ jobs:
             "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
             "-Dsonar.projectName=${SONAR_PROJECT_NAME}"
             "-Dsonar.projectVersion=${RELEASE_TAG}"
+            "-Dsonar.working.directory=.scannerwork"
             "-Dsonar.token=${SONAR_TOKEN}"
           )
 
@@ -117,7 +118,7 @@ jobs:
           set -e
 
           if [ -f .scannerwork/report-task.txt ]; then
-            dashboard_url="$(awk -F= '$1 == "dashboardUrl" {print $2}' .scannerwork/report-task.txt)"
+            dashboard_url="$(sed -n 's/^dashboardUrl=//p' .scannerwork/report-task.txt)"
             if [ -n "${dashboard_url}" ]; then
               echo "dashboard_url=${dashboard_url}" >> "$GITHUB_OUTPUT"
             fi
@@ -133,7 +134,7 @@ jobs:
 
       - name: Generate SonarQube static report
         id: sonar_report
-        if: always()
+        if: always() && steps.sonar_scan.outputs.status == 'success'
         run: |
           if [ -z "${SONAR_TOKEN}" ]; then
             echo "SonarQube token is not configured; static report cannot be generated."
@@ -157,30 +158,39 @@ jobs:
             sleep 2
           done
 
-          ce_task_url=""
-          if [ -f .scannerwork/report-task.txt ]; then
-            ce_task_url="$(awk -F= '$1 == "ceTaskUrl" {print $2}' .scannerwork/report-task.txt)"
+          if [ ! -s .scannerwork/report-task.txt ]; then
+            echo "SonarQube task metadata is missing; static report cannot be generated."
+            exit 1
           fi
-          if [ -n "${ce_task_url}" ]; then
-            for attempt in $(seq 1 120); do
-              ce_status="$(curl -fsS --connect-timeout 5 --max-time 15 -u "${SONAR_TOKEN}:" "${ce_task_url}" \
-                | python3 -c 'import json,sys; print(json.load(sys.stdin).get("task", {}).get("status", ""))')"
-              case "${ce_status}" in
-                SUCCESS)
-                  break
-                  ;;
-                FAILED|CANCELED)
-                  echo "SonarQube background task finished with status: ${ce_status}"
-                  exit 1
-                  ;;
-              esac
-              if [ "$attempt" -eq 120 ]; then
-                echo "Timed out waiting for SonarQube background task: ${ce_task_url}"
+          ce_task_url="$(sed -n 's/^ceTaskUrl=//p' .scannerwork/report-task.txt)"
+          if [ -z "${ce_task_url}" ]; then
+            echo "SonarQube task URL is missing; static report cannot be generated."
+            exit 1
+          fi
+          for attempt in $(seq 1 120); do
+            ce_status="$(curl -fsS --connect-timeout 5 --max-time 15 -u "${SONAR_TOKEN}:" "${ce_task_url}" \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin).get("task", {}).get("status", ""))')"
+            case "${ce_status}" in
+              SUCCESS)
+                break
+                ;;
+              FAILED|CANCELED)
+                echo "SonarQube background task finished with status: ${ce_status}"
                 exit 1
-              fi
-              sleep 2
-            done
-          fi
+                ;;
+              PENDING|IN_PROGRESS)
+                ;;
+              *)
+                echo "Unexpected SonarQube background task status: ${ce_status}"
+                exit 1
+                ;;
+            esac
+            if [ "$attempt" -eq 120 ]; then
+              echo "Timed out waiting for SonarQube background task: ${ce_task_url}"
+              exit 1
+            fi
+            sleep 2
+          done
 
           rm -rf "${ASSETS_DIR}/sonar"
           python3 .github/scripts/sonar_static_report.py \
