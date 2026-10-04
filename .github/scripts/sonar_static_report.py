@@ -142,23 +142,44 @@ def with_language(params: dict[str, Any], language: str | None, param_name: str 
     return result
 
 
+def analysis_version(analysis: dict[str, Any]) -> str | None:
+    return analysis.get("projectVersion") or next(
+        (event.get("name") for event in analysis.get("events", [])
+         if isinstance(event, dict) and event.get("category") == "VERSION"),
+        None,
+    )
+
+
+def collect_analysis_history(client: SonarClient, project: str, branch: str | None) -> list[dict[str, Any]]:
+    analyses: list[dict[str, Any]] = []
+    page = 1
+    while True:
+        data = client.get("api/project_analyses/search", with_branch({"project": project, "ps": 100, "p": page}, branch))
+        if not isinstance(data, dict) or not isinstance(data.get("analyses"), list):
+            raise SonarError("Invalid SonarQube analysis history response")
+        items = data["analyses"]
+        paging = data.get("paging")
+        total = paging.get("total") if isinstance(paging, dict) else None
+        if not isinstance(total, int) or total < 0 or any(not isinstance(item, dict) for item in items):
+            raise SonarError("Incomplete SonarQube analysis history response")
+        analyses.extend(items)
+        if len(analyses) >= total:
+            return analyses
+        if not items:
+            raise SonarError("SonarQube analysis history ended before its reported total")
+        page += 1
+
+
 def collect_current_version_analysis(
     client: SonarClient,
     project: str,
     branch: str | None,
     current_version: str | None,
     baseline_version: str | None,
+    baseline_type: str | None = None,
 ) -> dict[str, Any]:
-    data = client.get(
-        "api/project_analyses/search",
-        with_branch({"project": project, "ps": 50}, branch),
-        optional=True,
-    )
-    if not isinstance(data, dict) or "_error" in data:
-        return data
-
     result: dict[str, Any] = {}
-    analyses = data.get("analyses") or []
+    analyses = collect_analysis_history(client, project, branch)
     for analysis in analyses:
         if not isinstance(analysis, dict):
             continue
@@ -168,26 +189,32 @@ def collect_current_version_analysis(
             for event in events
             if event.get("category") == "VERSION"
         ]
-        if current_version and (analysis.get("projectVersion") == current_version or current_version in version_names):
+        if not result.get("date") and current_version and (analysis.get("projectVersion") == current_version or current_version in version_names):
             result.update({
                 "version": current_version,
                 "date": analysis.get("date"),
                 "analysisKey": analysis.get("key"),
             })
-        if baseline_version and (analysis.get("projectVersion") == baseline_version or baseline_version in version_names):
+        baseline_matches = (
+            analysis.get("key") == baseline_version if baseline_type == "SPECIFIC_ANALYSIS"
+            else analysis.get("projectVersion") == baseline_version or baseline_version in version_names
+        )
+        if not result.get("baseline") and baseline_version and baseline_matches:
             quality_gate_event = next(
                 (event for event in events if event.get("category") == "QUALITY_GATE"),
                 None,
             )
             result["baseline"] = {
-                "version": baseline_version,
+                "version": analysis_version(analysis),
                 "date": analysis.get("date"),
                 "analysisKey": analysis.get("key"),
                 "qualityGateStatus": quality_gate_event.get("name") if quality_gate_event else None,
             }
         if result.get("date") and result.get("baseline"):
-            return result
+            break
 
+    if baseline_type == "SPECIFIC_ANALYSIS" and not result.get("baseline", {}).get("version"):
+        raise SonarError("Specific analysis baseline or its version was not found in the project history")
     if analyses and isinstance(analyses[0], dict):
         latest = analyses[0]
         result.setdefault("version", latest.get("projectVersion") or current_version)
@@ -759,17 +786,27 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         if isinstance(component, dict):
             current_version = component.get("version")
     quality_gate_result = safe_collect(report, "quality_gate", lambda: client.get("api/qualitygates/project_status", with_branch({"projectKey": args.project}, args.branch), optional=True))
+    branches = safe_collect(report, "branches", lambda: client.get("api/project_branches/list", {"project": args.project}, optional=True))
+    main_branch = next((item.get("name") for item in branches.get("branches", []) if item.get("isMain")), None) if isinstance(branches, dict) else None
+    new_code_period = safe_collect(
+        report, "new_code_period",
+        lambda: client.get("api/new_code_periods/show", with_branch({"project": args.project}, args.branch or main_branch)),
+    )
     baseline_version = None
+    baseline_type = None
     if isinstance(quality_gate_result, dict):
         period = quality_gate_result.get("projectStatus", {}).get("period")
         if isinstance(period, dict):
             baseline_version = period.get("parameter")
+            baseline_type = period.get("mode")
+    if isinstance(new_code_period, dict) and new_code_period.get("type") == "SPECIFIC_ANALYSIS":
+        baseline_version = new_code_period.get("value")
+        baseline_type = new_code_period["type"]
     safe_collect(
         report,
         "current_version_analysis",
-        lambda: collect_current_version_analysis(client, args.project, args.branch, current_version, baseline_version),
+        lambda: collect_current_version_analysis(client, args.project, args.branch, current_version, baseline_version, baseline_type),
     )
-    safe_collect(report, "branches", lambda: client.get("api/project_branches/list", {"project": args.project}, optional=True))
     quality_profiles = safe_collect(
         report,
         "quality_profiles",

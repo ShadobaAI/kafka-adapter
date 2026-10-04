@@ -3,7 +3,7 @@ name: Build & Release
 on:
   # GitHub Actions не запускает release.created для draft-релизов.
   release:
-    types: [published]
+    types: [published, released]
 
 permissions:
   actions: read
@@ -14,6 +14,8 @@ permissions:
 jobs:
   build_cf_xml:
     name: Build CF-XML
+    # Stable обрабатывается по released, чтобы published не запускал вторую сборку.
+    if: github.event.action == 'released' || github.event.release.prerelease == true
     uses: ./.github/workflows/release-build-cf-xml.yml
     secrets: inherit
 
