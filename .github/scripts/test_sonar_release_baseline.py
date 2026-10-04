@@ -1,7 +1,9 @@
+import argparse
 import unittest
+from unittest.mock import Mock, patch
 
 from sonar_release_baseline import latest_stable_tag, verify_baseline
-from sonar_static_report import SonarError, collect_current_version_analysis
+from sonar_static_report import SonarError, build_report, collect_current_version_analysis
 
 
 class FakeSonar:
@@ -102,6 +104,38 @@ class BaselineTests(unittest.TestCase):
     def test_legacy_version_baseline_still_resolves(self):
         result = collect_current_version_analysis(FakeSonar(), "project", None, "next", "stable")
         self.assertEqual(result["baseline"]["analysisKey"], "base")
+
+
+class ReportBranchTests(unittest.TestCase):
+    def test_report_uses_selected_branch_version_and_history(self):
+        for branch in ("main", "pre", "develop", "feature/report"):
+            with self.subTest(branch=branch):
+                client = Mock()
+                client.errors = []
+                client.paged.return_value = {"items": []}
+
+                def get(path, params, **kwargs):
+                    if path == "api/components/show":
+                        version = "release" if params.get("branch") == branch else "other-branch-version"
+                        return {"component": {"key": "project", "qualifier": "TRK", "version": version}}
+                    if path == "api/project_branches/list":
+                        return {"branches": [{"name": "main", "isMain": True}]}
+                    if path == "api/project_analyses/search":
+                        self.assertEqual(params["branch"], branch)
+                        return {"paging": {"total": 1}, "analyses": [
+                            {"key": "release-analysis", "date": "2026-02-01", "projectVersion": "release"},
+                        ]}
+                    return {}
+
+                client.get.side_effect = get
+                args = argparse.Namespace(token="test-token", url="https://sonar.example", timeout=30,
+                                          pause=0, project="project", branch=branch, language="bsl")
+                with patch("sonar_static_report.SonarClient", return_value=client):
+                    report = build_report(args)
+                self.assertEqual(report["meta"]["branch"], branch)
+                self.assertEqual(report["raw"]["current_version_analysis"]["version"], "release")
+                self.assertEqual(report["raw"]["current_version_analysis"]["analysisKey"], "release-analysis")
+                self.assertEqual(report["collection_errors"], [])
 
 
 if __name__ == "__main__":

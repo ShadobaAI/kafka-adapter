@@ -779,7 +779,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "collection_errors": [],
     }
 
-    project_result = safe_collect(report, "project", lambda: client.get("api/components/show", {"component": args.project}, optional=True))
+    project_result = safe_collect(report, "project", lambda: client.get("api/components/show", with_branch({"component": args.project}, args.branch), optional=True))
     current_version = None
     if isinstance(project_result, dict):
         component = project_result.get("component")
