@@ -102,14 +102,13 @@ jobs:
             "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
             "-Dsonar.projectVersion=${RELEASE_TAG}"
             "-Dsonar.token=${SONAR_TOKEN}"
-            "-Dsonar.scanner.metadataFilePath=.scannerwork/report-task.txt"
           )
 
           rm -rf .scannerwork
           mkdir -p .scannerwork
           set +e
           if command -v sonar-scanner >/dev/null 2>&1; then
-            sonar-scanner "${scanner_args[@]}"
+            sonar-scanner "${scanner_args[@]}" "-Dsonar.scanner.metadataFilePath=${PWD}/.scannerwork/report-task.txt"
           else
             docker_args=(
               run --rm --init --user "$(id -u):$(id -g)"
@@ -126,12 +125,15 @@ jobs:
               esac
             fi
             if [ -f /.dockerenv ] && docker container inspect "${HOSTNAME}" >/dev/null 2>&1; then
-              docker_args+=(--volumes-from "${HOSTNAME}" -w "${GITHUB_WORKSPACE}")
+              scanner_workspace="${GITHUB_WORKSPACE}"
+              docker_args+=(--volumes-from "${HOSTNAME}" -w "${scanner_workspace}")
             else
-              docker_args+=(-v "${GITHUB_WORKSPACE}:/usr/src" -w /usr/src)
+              scanner_workspace=/usr/src
+              docker_args+=(-v "${GITHUB_WORKSPACE}:${scanner_workspace}" -w "${scanner_workspace}")
             fi
 
-            docker "${docker_args[@]}" sonarsource/sonar-scanner-cli:latest "${scanner_args[@]}"
+            docker "${docker_args[@]}" sonarsource/sonar-scanner-cli:latest "${scanner_args[@]}" \
+              "-Dsonar.scanner.metadataFilePath=${scanner_workspace}/.scannerwork/report-task.txt"
           fi
           rc=$?
           set -e
