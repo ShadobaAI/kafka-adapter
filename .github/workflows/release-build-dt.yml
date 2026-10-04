@@ -54,6 +54,6 @@ jobs:
           sudo chown $(id -u):$(id -g) ${{ github.event.repository.name }}-demo.dt
 
       - name: Upload ${{ github.event.repository.name }}-demo.dt to release
-        run: gh release upload "${RELEASE_TAG}" ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }}
+        run: gh release upload "${RELEASE_TAG}" ${{ github.event.repository.name }}-demo.dt --repo ${{ github.repository }} --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

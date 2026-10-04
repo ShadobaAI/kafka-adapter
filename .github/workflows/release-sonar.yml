@@ -32,7 +32,7 @@ jobs:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
       ASSETS_DIR: assets
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      SONAR_PROJECT_KEY: ${{ github.event.repository.name }}
+      SONAR_BASELINE_PROJECT_KEY: ${{ github.event.repository.name }}
       SONAR_BRANCH_NAME: ${{ github.event.release.target_commitish }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONARQUBE_BACKUP_DIRS: ${{ vars.SONARQUBE_BACKUP_DIRS }}
@@ -44,19 +44,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate release branch
+      - name: Resolve SonarQube project
         run: |
           if ! git show-ref --verify --quiet "refs/remotes/origin/${SONAR_BRANCH_NAME}"; then
             echo "Release target_commitish must name an existing Git branch: ${SONAR_BRANCH_NAME}"
             exit 1
           fi
-          python3 - <<'PY' >> "$GITHUB_ENV"
-          import os
-          from urllib.parse import urlencode
-
-          query = urlencode({"id": os.environ["SONAR_PROJECT_KEY"], "branch": os.environ["SONAR_BRANCH_NAME"]})
-          print(f'SONAR_DASHBOARD_URL={os.environ["SONAR_HOST_URL"].rstrip("/")}/dashboard?{query}')
-          PY
+          python3 .github/scripts/sonar_release_project.py >> "$GITHUB_ENV"
 
       - name: Download SonarQube coverage inputs
         uses: actions/download-artifact@v4
@@ -106,7 +100,6 @@ jobs:
           scanner_args=(
             "-Dsonar.host.url=${SONAR_HOST_URL}"
             "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
-            "-Dsonar.branch.name=${SONAR_BRANCH_NAME}"
             "-Dsonar.projectVersion=${RELEASE_TAG}"
             "-Dsonar.token=${SONAR_TOKEN}"
           )
@@ -222,7 +215,6 @@ jobs:
           python3 .github/scripts/sonar_static_report.py \
             --url "${SONAR_HOST_URL}" \
             --project "${SONAR_PROJECT_KEY}" \
-            --branch "${SONAR_BRANCH_NAME}" \
             --language bsl \
             --out "${ASSETS_DIR}/sonar" \
             --token "${SONAR_TOKEN}"

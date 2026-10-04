@@ -11,14 +11,18 @@ import argparse
 import shutil
 import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
+
+from create_test_cf import extract_zip
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 VA_EXTENSION_NAME = "VAExtension"
 YAXUNIT_EXTENSION_NAME = "YAXUNIT"
+EXAMPLES_EXTENSION_NAME = "ТестированиеАдаптераKafka"
 CONFIG_XML_DIR_NAME = "config-xml"
 
 
@@ -69,6 +73,7 @@ def build_parser() -> argparse.ArgumentParser:
         description=(
             "Создает тестовую файловую ИБ: собирает общий XML через create_test_cf.py, "
             "восстанавливает шаблон DT через vrunner infobase init и загружает XML через vrunner cf load, "
+            "загружает XML примеров отдельным расширением, "
             "опционально загружает расширения YAXUNIT/VAExtension через vrunner cfe load."
         )
     )
@@ -184,6 +189,28 @@ def require_command(command: str) -> None:
 
 def validate_options(options: Options) -> None:
     require_dir(options.workdir, "Текущий каталог")
+    ib_path = options.ib_path.resolve()
+    xml_dir = config_xml_dir(options).resolve()
+    if options.workdir.resolve().is_relative_to(ib_path):
+        raise ScriptError(f"Путь ИБ не должен содержать текущий каталог: {ib_path}")
+    if ib_path.is_relative_to(xml_dir) or xml_dir.is_relative_to(ib_path):
+        raise ScriptError(f"Каталоги ИБ и XML не должны пересекаться: {ib_path}, {xml_dir}")
+
+    inputs = (
+        options.base_archive,
+        options.adapter_archive,
+        options.examples_archive,
+        options.template_dt,
+        options.va_extension,
+        options.yaxunit,
+        builder_script(),
+    )
+    for path in inputs:
+        if path is not None and (
+            path.resolve().is_relative_to(ib_path) or path.resolve().is_relative_to(xml_dir)
+        ):
+            raise ScriptError(f"Входной файл находится в удаляемом каталоге: {path}")
+
     require_file(options.base_archive, "Архив XML базы")
     require_file(options.adapter_archive, "Архив XML адаптера")
     require_file(options.examples_archive, "Архив XML примеров")
@@ -251,8 +278,6 @@ def build_config_xml(options: Options) -> None:
         options.base_archive,
         "--adapter",
         options.adapter_archive,
-        "--examples",
-        options.examples_archive,
         "--output",
         config_xml_dir(options),
     ]
@@ -291,7 +316,7 @@ def init_infobase(options: Options) -> None:
 
 
 def load_extension(options: Options, extension_file: Path, extension_name: str) -> None:
-    # CFE не попадают в общий XML: каждое расширение загружается поверх ИБ.
+    # XML/CFE расширений не попадают в общий XML конфигурации.
     run_command(
         [
             "vrunner",
@@ -311,12 +336,18 @@ def load_extension(options: Options, extension_file: Path, extension_name: str) 
 def run(options: Options) -> None:
     validate_options(options)
 
-    # Итоговая ИБ пересоздается полностью, поэтому путь --ib должен указывать
-    # только на рабочий каталог тестовой базы.
-    remove_tree(options.ib_path)
-    build_config_xml(options)
     try:
-        init_infobase(options)
+        build_config_xml(options)
+        with tempfile.TemporaryDirectory(prefix="examples-xml-", dir=options.workdir) as directory:
+            examples_xml = Path(directory)
+            extract_zip(options.examples_archive, examples_xml)
+            require_file(examples_xml / "Configuration.xml", "XML расширения примеров")
+
+            # Удаляем старую ИБ только после успешной подготовки обоих XML.
+            # --ib должен указывать только на рабочий каталог тестовой базы.
+            remove_tree(options.ib_path)
+            init_infobase(options)
+            load_extension(options, examples_xml, EXAMPLES_EXTENSION_NAME)
     finally:
         remove_tree(config_xml_dir(options))
 

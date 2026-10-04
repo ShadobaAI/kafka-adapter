@@ -27,6 +27,10 @@ on:
 jobs:
   publish_reports:
     name: Publish release reports
+    concurrency:
+      group: publish-kafka-adapter-tests-reports-main
+      cancel-in-progress: false
+      queue: max
     runs-on: ubuntu-latest
     outputs:
       test_report_url: ${{ steps.test_report_publish.outputs.remote_href }}

@@ -291,7 +291,10 @@ function formatDateTime(value) {
 }
 
 function renderProjectCard(project, branch, qualityGatePeriod, versionAnalysis) {
-  const previousVersion = qualityGatePeriod?.parameter || "";
+  const previousVersion = versionAnalysis?.baseline?.version
+    || (qualityGatePeriod?.mode === "previous_version" ? qualityGatePeriod.parameter : "")
+    || "";
+  const previousDate = versionAnalysis?.baseline?.date || project.leakPeriodDate || "";
   const currentVersion = project.version || versionAnalysis?.version || "";
   const previousStatus = versionAnalysis?.baseline?.qualityGateStatus || "";
   return `
@@ -310,7 +313,7 @@ function renderProjectCard(project, branch, qualityGatePeriod, versionAnalysis) 
               <div class="release-version">${escapeHtml(previousVersion || tr("noData", "Нет данных").toLowerCase())}</div>
               ${previousStatus ? `<div class="release-status ${statusClass(previousStatus)}">${escapeHtml(translatedStatus(previousStatus))}</div>` : ""}
             </div>
-            <div class="release-date">${escapeHtml(formatDateTime(project.leakPeriodDate) || "")}</div>
+            <div class="release-date">${escapeHtml(formatDateTime(previousDate) || "")}</div>
           </div>
           <div class="release-arrow" aria-hidden="true"></div>
           <div class="release-point release-after">
@@ -369,6 +372,7 @@ function cleanMetricValue(value) {
 }
 
 function parseNumeric(value) {
+  if (value === null || value === undefined || (typeof value === "string" && value.trim() === "")) return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
 }
@@ -1025,9 +1029,7 @@ function initFilePanelHeight() {
 }
 
 function componentFilePath(component) {
-  const value = String(component || "");
-  const separator = value.indexOf(":");
-  return separator >= 0 ? value.slice(separator + 1) : value;
+  return stripProjectPrefix(component);
 }
 
 function stripProjectPrefix(value) {

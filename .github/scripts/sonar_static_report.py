@@ -665,10 +665,6 @@ def compact_report(report: dict[str, Any]) -> None:
     if isinstance(quality_gate_status, dict):
         quality_gate_status.pop("caycStatus", None)
 
-    quality_gate_period = raw.get("quality_gate", {}).get("projectStatus", {}).get("period")
-    if isinstance(quality_gate_period, dict):
-        quality_gate_period.pop("mode", None)
-
     if isinstance(raw.get("issues"), dict):
         raw["issues"].pop("first", None)
         raw["issues"]["items"] = [compact_issue(issue) for issue in filter_open_issues(raw["issues"].get("items", []))]

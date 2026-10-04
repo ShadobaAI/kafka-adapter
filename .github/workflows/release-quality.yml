@@ -266,15 +266,13 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${ASSETS_DIR}/ui"
           exit "$rc"
 
-      - name: Prepare Allure sources
-        id: allure_results
+      - name: Prepare Allure unit sources
+        id: allure_unit_results
         if: always()
         run: |
           rm -rf \
             "${ASSETS_DIR}/allure-unit" \
-            "${ASSETS_DIR}/allure-ui" \
-            "${ASSETS_DIR}/allure-unit-report" \
-            "${ASSETS_DIR}/allure-ui-report"
+            "${ASSETS_DIR}/allure-unit-report"
 
           python3 .github/scripts/prepare_allure_results.py \
             --results-dir "${ASSETS_DIR}/allure-unit" \
@@ -282,17 +280,25 @@ jobs:
             --ui-dir "${ASSETS_DIR}/ui" \
             --scope unit
 
-          python3 .github/scripts/prepare_allure_results.py \
-            --results-dir "${ASSETS_DIR}/allure-ui" \
-            --unit-dir "${ASSETS_DIR}/unit" \
-            --ui-dir "${ASSETS_DIR}/ui" \
-            --scope ui
-
           if find "${ASSETS_DIR}/allure-unit" -name '*-result.json' -print -quit | grep -q .; then
             echo "unit_available=true" >> "$GITHUB_OUTPUT"
           else
             echo "unit_available=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Prepare Allure UI sources
+        id: allure_ui_results
+        if: always()
+        run: |
+          rm -rf \
+            "${ASSETS_DIR}/allure-ui" \
+            "${ASSETS_DIR}/allure-ui-report"
+
+          python3 .github/scripts/prepare_allure_results.py \
+            --results-dir "${ASSETS_DIR}/allure-ui" \
+            --unit-dir "${ASSETS_DIR}/unit" \
+            --ui-dir "${ASSETS_DIR}/ui" \
+            --scope ui
 
           if find "${ASSETS_DIR}/allure-ui" -name '*-result.json' -print -quit | grep -q .; then
             echo "ui_available=true" >> "$GITHUB_OUTPUT"
@@ -302,7 +308,7 @@ jobs:
 
       - name: Generate Allure unit report
         id: allure_unit_report
-        if: always() && steps.allure_results.outputs.unit_available == 'true'
+        if: always() && steps.allure_unit_results.outputs.unit_available == 'true'
         run: |
           python3 .github/scripts/validate_allure_report.py \
             --results-dir "${ASSETS_DIR}/allure-unit" \
@@ -316,7 +322,7 @@ jobs:
 
       - name: Generate Allure UI report
         id: allure_ui_report
-        if: always() && steps.allure_results.outputs.ui_available == 'true'
+        if: always() && steps.allure_ui_results.outputs.ui_available == 'true'
         run: |
           python3 .github/scripts/validate_allure_report.py \
             --results-dir "${ASSETS_DIR}/allure-ui" \

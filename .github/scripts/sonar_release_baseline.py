@@ -67,8 +67,9 @@ def main() -> int:
     stable_tag = latest_stable_tag(github_releases(), os.environ["RELEASE_TAG"])
     stable_revision = subprocess.check_output(["git", "rev-parse", "--verify", f"refs/tags/{stable_tag}^{{commit}}"], text=True).strip()
     client = SonarClient(os.environ["SONAR_HOST_URL"], token=os.environ["SONAR_TOKEN"])
-    verify_baseline(client, os.environ["SONAR_PROJECT_KEY"], stable_tag, stable_revision)
-    print(f"Production baseline verified: {stable_tag}")
+    project = os.environ["SONAR_BASELINE_PROJECT_KEY"]
+    verify_baseline(client, project, stable_tag, stable_revision)
+    print(f"Production baseline verified in {project}: {stable_tag}")
     return 0
 
 
