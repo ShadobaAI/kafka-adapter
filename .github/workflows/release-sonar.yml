@@ -92,6 +92,9 @@ jobs:
           fi
           echo "Found ${bsl_count} BSL source files in src"
 
+          python3 .github/scripts/validate_coverage_report.py "${ASSETS_DIR}/unit/genericCoverage.xml"
+          python3 .github/scripts/validate_coverage_report.py "${ASSETS_DIR}/ui/genericCoverage.xml"
+
           scanner_args=(
             "-Dsonar.host.url=${SONAR_HOST_URL}"
             "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"

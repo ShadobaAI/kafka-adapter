@@ -357,10 +357,25 @@ jobs:
           name: unit-test-diagnostics
           path: |
             ${{ env.ASSETS_DIR }}/unit/vrunner.log
+            ${{ env.ASSETS_DIR }}/unit/ibsrv.log
             ${{ env.ASSETS_DIR }}/unit/unit.log
             ${{ env.ASSETS_DIR }}/unit/exit-code.txt
             ${{ env.ASSETS_DIR }}/unit/coverage41c.log
             ${{ env.ASSETS_DIR }}/unit/dbgs.log
+          if-no-files-found: warn
+
+      - name: Upload UI test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-diagnostics
+          path: |
+            ${{ env.ASSETS_DIR }}/ui/1cv8c.log
+            ${{ env.ASSETS_DIR }}/ui/1cv8c-command.log
+            ${{ env.ASSETS_DIR }}/ui/ibsrv.log
+            ${{ env.ASSETS_DIR }}/ui/exit-code.txt
+            ${{ env.ASSETS_DIR }}/ui/coverage41c.log
+            ${{ env.ASSETS_DIR }}/ui/dbgs.log
           if-no-files-found: warn
 
       - name: Upload SonarQube coverage inputs
@@ -388,6 +403,7 @@ jobs:
             echo "Unit coverage report not found: ${ASSETS_DIR}/unit/genericCoverage.xml"
             exit 1
           fi
+          python3 .github/scripts/validate_coverage_report.py "${ASSETS_DIR}/unit/genericCoverage.xml"
           python3 .github/scripts/validate_allure_report.py \
             --results-dir "${ASSETS_DIR}/allure-unit" \
             --summary "${ASSETS_DIR}/allure-unit-report/summary.json" \
@@ -405,6 +421,7 @@ jobs:
             echo "UI coverage report not found: ${ASSETS_DIR}/ui/genericCoverage.xml"
             exit 1
           fi
+          python3 .github/scripts/validate_coverage_report.py "${ASSETS_DIR}/ui/genericCoverage.xml"
           python3 .github/scripts/validate_allure_report.py \
             --results-dir "${ASSETS_DIR}/allure-ui" \
             --summary "${ASSETS_DIR}/allure-ui-report/summary.json" \

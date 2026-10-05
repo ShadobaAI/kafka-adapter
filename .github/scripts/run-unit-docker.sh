@@ -8,6 +8,7 @@ status() {
 base_dir="/work/base-unit"
 unit_log_path="/work/unit.log"
 vrunner_log_path="/work/vrunner.log"
+ibsrv_log_path="/work/ibsrv.log"
 exit_code_path="/work/exit-code.txt"
 
 xvfb_display_number="${XVFB_DISPLAY_NUMBER:-99}"
@@ -24,6 +25,7 @@ openbox_pid=""
 xdotool_pid=""
 tail_pid=""
 dbgs_pid=""
+ibsrv_pid=""
 coverage_pid=""
 coverage_started=""
 
@@ -156,6 +158,10 @@ cleanup() {
         kill "$openbox_pid" 2>/dev/null || true
     fi
 
+    if [ -n "$ibsrv_pid" ]; then
+        kill "$ibsrv_pid" 2>/dev/null || true
+    fi
+
     if [ -n "$dbgs_pid" ]; then
         kill "$dbgs_pid" 2>/dev/null || true
     fi
@@ -215,12 +221,33 @@ tail_pid=$!
 
 start_coverage
 
+onecv8_root="$(find /opt/1cv8/x86_64 -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort -V | tail -n 1 || true)"
+if [ -z "$onecv8_root" ] || [ ! -x "$onecv8_root/ibsrv" ]; then
+    echo "Не найден ibsrv в /opt/1cv8/x86_64" >&2
+    exit 1
+fi
+
+status "Запуск ibsrv для $base_dir"
+"$onecv8_root/ibsrv" \
+    --db-path="$base_dir" --name=DefAlias \
+    --debug=server --debug-server-url="$coverage_debug_url" \
+    >"$ibsrv_log_path" 2>&1 &
+ibsrv_pid=$!
+
+if ! wait_for_tcp 127.0.0.1 8314 || ! kill -0 "$ibsrv_pid" 2>/dev/null; then
+    echo "ibsrv не запустился на порту 8314" >&2
+    cat "$ibsrv_log_path" >&2 || true
+    exit 1
+fi
+
 status "Запуск unit-тестов"
 vrunner_args=(
     run enterprise
     --command "RunUnitTests=/work/YaxParams.json;workspacePath=/work"
     --exitCodePath "$exit_code_path"
     --ibsrv
+    --ibsrv-attach
+    --ibsrv-port 8314
     --ibconnection "/F${base_dir}"
     --db-user "Администратор"
     --additional "/debug -http -attach /debuggerURL $coverage_debug_url"

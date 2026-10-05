@@ -172,9 +172,12 @@ fi
 
 mkdir -p /work
 
+start_coverage
+
 status "Запуск ibsrv для $base_dir"
 "$onecv8_root/ibsrv" \
-    --db-path="$base_dir" \
+    --db-path="$base_dir" --name=DefAlias \
+    --debug=server --debug-server-url="$coverage_debug_url" \
     >"$ibsrv_log_path" 2>&1 &
 ibsrv_pid=$!
 
@@ -222,13 +225,12 @@ status "Вывод лога 1cv8c: $client_log_path"
 tail -n +1 -f "$client_log_path" &
 tail_pid=$!
 
-start_coverage
-
 status "Запуск менеджера тестирования 1cv8c"
 set +e
 DISPLAY="$xvfb_display" \
     "$onecv8_root/1cv8c" ENTERPRISE \
         /WS http://localhost:8314/ /N"Администратор" \
+        /debug -http -attach /debuggerURL "$coverage_debug_url" \
         /DisableStartupMessages /DisableStartupDialogs /UseHwLicenses- /TESTMANAGER \
         /Execute"/work/vanessa-automation-single.epf" \
         /C"WorkspaceRoot=/work;VAParams=/work/VAParams.json;StartFeaturePlayer;QuietInstallVanessaExt;exitCodePath=${exit_code_path}" \
