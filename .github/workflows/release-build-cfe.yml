@@ -2,6 +2,12 @@ name: Release / Build CFE
 
 on:
   workflow_call:
+    inputs:
+      config_version:
+        description: Version for 1C in X.X.X.X format
+        type: string
+        required: false
+        default: ${{ github.ref_name }}
 
 jobs:
   build_cfe:
@@ -10,4 +16,5 @@ jobs:
     secrets: inherit
     with:
       name_suffix: cfe
+      config_version: ${{ inputs.config_version }}
       version_files: src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl

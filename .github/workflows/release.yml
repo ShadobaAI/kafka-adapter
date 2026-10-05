@@ -98,9 +98,11 @@ jobs:
 
   build_cfe:
     name: Build CFE
-    needs: [quality]
+    needs: [quality, build_cf_xml]
     uses: ./.github/workflows/release-build-cfe.yml
     secrets: inherit
+    with:
+      config_version: ${{ needs.build_cf_xml.outputs.config_version }}
 
   build_dt:
     name: Build demo DT

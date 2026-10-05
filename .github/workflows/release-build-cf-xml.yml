@@ -2,10 +2,16 @@ name: Release / Build CF-XML
 
 on:
   workflow_call:
+    outputs:
+      config_version:
+        description: Version used in the 1C sources
+        value: ${{ jobs.build_cf_xml.outputs.config_version }}
 
 jobs:
   build_cf_xml:
     name: Build CF-XML
+    outputs:
+      config_version: ${{ steps.meta.outputs.config_version }}
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -27,9 +33,11 @@ jobs:
       - name: Set version in sources
         id: meta
         run: |
+          CONFIG_VERSION="${RELEASE_TAG%%-*}"
           python3 .ci/.github/scripts/set_version.py \
-            "${RELEASE_TAG}" \
+            "${CONFIG_VERSION}" \
             src/CommonModules/кфкОбщегоНазначенияСлужебный/Module.bsl
+          echo "config_version=${CONFIG_VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Remove SSL objects
         run: python3 .github/scripts/remove_ssl_objects.py
