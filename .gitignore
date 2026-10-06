@@ -2,3 +2,4 @@ upload-sonar.sh
 .code-index/
 bsl-language-server-exec.jar
 bsl-language-server-*-exec.jar
+site/

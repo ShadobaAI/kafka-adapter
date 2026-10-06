@@ -9,7 +9,9 @@ strict: true
 
 theme:
   name: material
+  custom_dir: docs_theme
   language: ru
+  font: false
   logo: assets/images/logo.svg
   favicon: assets/images/logo.svg
   palette:
@@ -28,13 +30,9 @@ theme:
         icon: material/brightness-4
         name: Светлая тема
   features:
-    - navigation.instant
-    - navigation.instant.progress
     - navigation.tracking
-    - navigation.tabs
-    - navigation.tabs.sticky
     - navigation.indexes
-    - navigation.prune
+    - navigation.path
     - navigation.top
     - navigation.footer
     - toc.follow
@@ -52,16 +50,20 @@ theme:
 
 extra_css:
   - assets/stylesheets/extra.css
+  - assets/stylesheets/portal.css
 
 extra_javascript:
   - assets/javascripts/mermaid-config.js
+  - assets/javascripts/portal.js
 
 plugins:
   - search:
-      lang: ru
+      lang:
+        - ru
+        - en
       separator: '[\s\-\.\_]+'
+  - tags
   - awesome-pages
-  - section-index
   - glightbox:
       touchNavigation: true
       loop: false
@@ -106,7 +108,7 @@ markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
-          class: mermaid
+          class: portal-mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
@@ -141,13 +143,18 @@ extra:
 
 nav:
   - Главная: index.md
+  - Начало работы:
+    - start/index.md
+    - "Выгрузка: 1С → Kafka": start/outgoing.md
+    - "Загрузка: Kafka → 1С": start/incoming.md
   - Обзор:
     - overview/index.md
     - О проекте: overview/about.md
+    - Возможности и быстрый старт: overview/capabilities.md
     - Архитектура: overview/architecture.md
     - Потоки данных: overview/data-flow.md
     - Принципы и ограничения: overview/principles.md
-  - Пользователю:
+  - Руководства:
     - user/index.md
     - Установка и подключение:
       - user/installation/index.md
@@ -160,34 +167,37 @@ nav:
     - Настройка подсистемы:
       - user/configuration/index.md
       - Брокеры: user/configuration/brokers.md
-      - Продюсеры: user/configuration/producers.md
-      - Консьюмеры: user/configuration/consumers.md
+      - "Продюсеры — выгрузка": user/configuration/producers.md
+      - "Консьюмеры — загрузка": user/configuration/consumers.md
       - Фоновые и регламентные задания: user/configuration/jobs.md
       - Алерты и контроль: user/configuration/alerts.md
       - Логирование: user/configuration/logging.md
-    - Разработка с адаптером:
+    - Разработка интеграции:
       - user/development/index.md
       - Программный API: user/development/api.md
       - Обработчик продюсера: user/development/producer-handler.md
       - Обработчик консьюмера: user/development/consumer-handler.md
-      - Прямой API: user/development/direct-api.md
+      - Прямой API — справочник: user/development/direct-api.md
       - Конвертация данных 3.1: user/development/conversion-data.md
     - Примеры:
       - user/examples/index.md
-      - Исходящие — справочник: user/examples/outgoing-catalog.md
-      - Исходящие — документ с табчастью: user/examples/outgoing-document.md
-      - Исходящие — строки отдельными сообщениями: user/examples/outgoing-split-rows.md
-      - Исходящие — независимый регистр: user/examples/outgoing-register.md
-      - Исходящие — регистр по регистратору: user/examples/outgoing-recorder.md
-      - Подавление регистрации: user/examples/suppress.md
-      - Идемпотентность: user/examples/idempotency.md
-      - Входящие — upsert справочника: user/examples/incoming-catalog.md
-      - Входящие — регистр сведений: user/examples/incoming-register.md
-      - Входящие — отмена обработки: user/examples/incoming-cancel.md
-      - Принудительная регистрация: user/examples/force-registration.md
-      - Произвольные события: user/examples/custom-events.md
-      - Защищённое подключение: user/examples/secure-connection.md
-      - Прямой API: user/examples/direct-api.md
+      - "Выгрузка: 1С → Kafka":
+        - Справочник: user/examples/outgoing-catalog.md
+        - Документ с табличной частью: user/examples/outgoing-document.md
+        - Строки отдельными сообщениями: user/examples/outgoing-split-rows.md
+        - Независимый регистр: user/examples/outgoing-register.md
+        - Регистр по регистратору: user/examples/outgoing-recorder.md
+        - Подавление регистрации: user/examples/suppress.md
+        - Принудительная регистрация: user/examples/force-registration.md
+        - Произвольные события: user/examples/custom-events.md
+      - "Загрузка: Kafka → 1С":
+        - Upsert справочника: user/examples/incoming-catalog.md
+        - Регистр сведений: user/examples/incoming-register.md
+        - Отмена обработки: user/examples/incoming-cancel.md
+      - Общие сценарии:
+        - Идемпотентность: user/examples/idempotency.md
+        - Защищённое подключение: user/examples/secure-connection.md
+        - Прямой API — примеры: user/examples/direct-api.md
     - Эксплуатация:
       - user/operations/index.md
       - Мониторинг очередей: user/operations/monitoring.md
@@ -196,16 +206,19 @@ nav:
       - Диагностика: user/operations/diagnostics.md
       - Типовые проблемы: user/operations/troubleshooting.md
       - Производительность: user/operations/performance.md
-  - Разработка проекта:
+  - Разработка адаптера:
     - project/index.md
-    - Участие в разработке: project/contributing.md
-    - Окружение: project/environment.md
-    - Репозитории: project/repositories.md
-    - Форматы поставки: project/delivery-formats.md
-    - Архитектура модулей: project/modules.md
-    - Объекты метаданных: project/metadata.md
-    - Управляющие константы: project/constants.md
-    - Расширение адаптера: project/extending.md
+    - Окружение и участие:
+      - Участие в разработке: project/contributing.md
+      - Окружение: project/environment.md
+      - Репозитории: project/repositories.md
+    - Устройство подсистемы:
+      - Архитектура модулей: project/modules.md
+      - Объекты метаданных: project/metadata.md
+      - Управляющие константы: project/constants.md
+    - Расширение и поставка:
+      - Расширение адаптера: project/extending.md
+      - Форматы поставки: project/delivery-formats.md
     - Контракт данных AsyncAPI и XDTO:
       - Описание AsyncAPI: project/asyncapi-yaml.md
       - Поддерживаемая модель XDTO в Адаптере Kafka: project/adapter-xdto-requirements.md
@@ -213,3 +226,4 @@ nav:
       - Требования к YAML для генерации XDTO-модели: project/yaml-requirements-for-xdto.md
       - Генерация XSD из YAML: project/xsd-generation.md
   - Глоссарий: glossary.md
+  - FAQ: faq/index.md
