@@ -7,7 +7,7 @@
 - Все задачи проекта создаются в репозитории [**kfk-tasks**](https://github.com/ShadobaAI/kfk-tasks/issues).
 - Ход работ виден на доске [**GitHub Projects**](https://github.com/users/ShadobaAI/projects/3/views/1).
 
-Сообщения об ошибках и предложения от пользователей можно оставлять в [issues репозитория адаптера](https://github.com/ShadobaAI/kafka-adapter/issues) — мейнтейнер перенесёт их в трекер задач.
+Вопросы, идеи, предложения и сообщения об ошибках от пользователей оставляйте в [issues репозитория адаптера](https://github.com/ShadobaAI/kafka-adapter/issues) — мейнтейнер перенесёт задачи в трекер. Перед обращением можно посмотреть текущие задачи и ход работ на доске GitHub Projects.
 
 ## Сообщить об ошибке
 

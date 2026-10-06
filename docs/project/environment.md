@@ -11,7 +11,7 @@
 | **glibc** | 2.28+ | Обязательная зависимость на Linux; на старых дистрибутивах возможны проблемы с запуском внешней компоненты |
 | **1C:Enterprise Development Tools (EDT)** | 2025.2+ | IDE для разработки |
 | **Apache Kafka** | 3.7+ | Брокер сообщений для тестовой среды |
-| **[Simple Kafka Connector 1C](https://github.com/NuclearAPK/Simple-Kafka_Adapter)** | 1.9.2+ | Внешняя компонента (DLL); уже встроена в подсистему — отдельная установка нужна только при её обновлении |
+| **[Simple Kafka Connector 1C](https://github.com/NuclearAPK/Simple-Kafka_Adapter)** | 1.9.2+ | Внешняя компонента для работы с Kafka; встроена в подсистему и обновляется вместе с ней. Отдельная установка и регистрация не требуются |
 
 ## Опциональные компоненты
 
@@ -50,7 +50,7 @@ Release workflows и `.github/scripts/create_test_dt.py` используют Va
 
 Unit- и UI-тесты используют `ibsrv` на порту `8314` с именем ИБ `DefAlias`. Клиент и сервер подключаются к общему серверу отладки `http://127.0.0.1:1550`; `dbgs` и Coverage41C запускаются до `ibsrv`. Исходники для замера передаются через `COVERAGE_PROJECT_DIR` или `COVERAGE_SOURCE_DIR`.
 
-Quality и SonarQube принимают отчёты Generic Coverage XML версии 1 с корректными строками и хотя бы одной покрытой строкой адаптера. Пустой, повреждённый или полностью нулевой отчёт завершает соответствующий job ошибкой. Порог процента покрытия не установлен.
+Coverage41C получает исходники адаптера для замера покрытия. Quality и SonarQube принимают отчёты Generic Coverage XML версии 1 с непустыми путями файлов, положительными уникальными номерами строк и хотя бы одной строкой с `covered=true`. Проверка XML не сверяет принадлежность пути адаптеру и номера строк с исходниками. Пустой, повреждённый или полностью нулевой отчёт завершает соответствующий job ошибкой. Порог процента покрытия не установлен.
 
 Логи и `exit-code.txt` сохраняются при любом исходе запуска в артефактах `unit-test-diagnostics` и `ui-test-diagnostics`. Они включают вывод клиента или Runner, `ibsrv.log`, `coverage41c.log` и `dbgs.log`. Отсутствие `exit-code.txt` означает, что статус тестов не получен.
 
@@ -63,6 +63,8 @@ Quality и SonarQube принимают отчёты Generic Coverage XML вер
 Для проверки работы API и отладки интеграции используйте [демонстрационное расширение](https://github.com/ShadobaAI/kafka-adapter-examples).
 
 ## Публикация отчётов CI
+
+Последний опубликованный запуск: [все отчёты](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/), [Allure Unit](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/allure-unit/), [Allure UI](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/allure-ui/) и [SonarQube](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/sonar/).
 
 Release workflow публикует страницу Reports для запуска даже при аварийном завершении тестов. Ссылка появляется в Summary job публикации и в описании релиза. Доступные отчёты Allure и SonarQube публикуются независимо; для отсутствующих отчётов отображается сообщение со ссылкой на логи и артефакты CI. Отсутствие отчёта не означает успешное выполнение тестов.
 

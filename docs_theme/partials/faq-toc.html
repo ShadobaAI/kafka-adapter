@@ -1,0 +1,23 @@
+<nav class="portal-faq-tree" aria-label="Содержание FAQ">
+  <div class="portal-faq-tree-title">Содержание</div>
+  {% set sections = page.toc | list %}
+  {% if sections | length == 1 and sections[0].children %}
+    {% set sections = sections[0].children %}
+  {% endif %}
+  {% for section in sections %}
+    <details class="portal-tree-branch">
+      <summary>
+        <span class="portal-tree-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        {{ section.title }}
+      </summary>
+      <ul class="portal-tree-children portal-faq-tree-links">
+        <li><a href="{{ section.url }}">Все вопросы раздела</a></li>
+        {% for question in section.children %}
+          <li><a href="{{ question.url }}">{{ question.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </details>
+  {% endfor %}
+</nav>

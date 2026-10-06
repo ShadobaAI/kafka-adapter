@@ -1,0 +1,75 @@
+{% set source_uri = page.file.src_uri if page and page.file else '' %}
+{% macro links(items) %}
+  <ul class="portal-menu-links">
+    {% for item in items %}
+      {% if item.children %}
+        <li class="portal-tree-node">
+          <details class="portal-tree-branch"{% if item.active %} open{% endif %}>
+            <summary{% if item.active %} class="portal-tree-current"{% endif %}><span class="portal-tree-arrow md-icon" aria-hidden="true">{% include ".icons/material/chevron-right.svg" %}</span><span>{{ item.title }}</span></summary>
+            <div class="portal-tree-children">{{ links(item.children) }}</div>
+          </details>
+        </li>
+      {% else %}
+        <li><a href="{{ item.url | url }}"{% if item.active %} aria-current="page"{% endif %}>{% if loop.first and item.file and item.file.src_uri.endswith('/index.md') %}Обзор раздела{% else %}{{ item.title }}{% endif %}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
+<header class="md-header portal-header" data-md-component="header">
+  <div class="md-header__inner md-grid portal-header-inner">
+    <a class="portal-brand" href="{{ nav.homepage.url | url }}" aria-label="1С: Адаптер Kafka — главная" data-md-component="logo">
+      {% include "partials/logo.html" %}
+      <span>Kafka Adapter<small>для 1С:Предприятие</small></span>
+    </a>
+    <div class="md-header__title" data-md-component="header-title" hidden>
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic"><span class="md-ellipsis">{{ config.site_name }}</span></div>
+        <div class="md-header__topic" data-md-component="header-topic"><span class="md-ellipsis">{{ page.title }}</span></div>
+      </div>
+    </div>
+    <nav class="portal-top-nav" aria-label="Разделы документации">
+      <a href="{{ 'user/configuration/' | url }}" data-portal-prefix="user/configuration/"{% if source_uri.startswith('user/configuration/') %} aria-current="location"{% endif %}>Настройка</a>
+      <a href="{{ 'user/operations/' | url }}" data-portal-prefix="user/operations/"{% if source_uri.startswith('user/operations/') %} aria-current="location"{% endif %}>Эксплуатация</a>
+      <details class="portal-menu" data-portal-section="guides">
+        <summary{% if source_uri.startswith('user/') or source_uri.startswith('overview/') or source_uri.startswith('start/') %} class="portal-menu-active"{% endif %}>Документация <span class="md-icon" aria-hidden="true">{% include ".icons/material/chevron-down.svg" %}</span></summary>
+        <div class="portal-menu-panel">
+          <a class="portal-menu-overview" href="{{ 'user/' | url }}">Все разделы руководства</a>
+          <div class="portal-menu-tree">
+          {% for section in nav %}
+            {% if section.title == 'Руководства' %}
+              {{ links(section.children | selectattr('children') | list) }}
+            {% elif section.title in ['Обзор', 'Начало работы'] %}
+              {{ links([section]) }}
+            {% endif %}
+          {% endfor %}
+          </div>
+          <a class="portal-menu-glossary" href="{{ 'glossary/' | url }}">Глоссарий Kafka →</a>
+        </div>
+      </details>
+      <a href="{{ 'user/development/api/' | url }}"{% if source_uri == 'user/development/api.md' %} aria-current="page"{% endif %}>API</a>
+      <details class="portal-menu" data-portal-section="project">
+        <summary{% if source_uri.startswith('project/') %} class="portal-menu-active"{% endif %}>Разработка адаптера <span class="md-icon" aria-hidden="true">{% include ".icons/material/chevron-down.svg" %}</span></summary>
+        <div class="portal-menu-panel portal-menu-panel-project">
+          <a class="portal-menu-overview" href="{{ 'project/' | url }}">С чего начать разработку адаптера</a>
+          {% for section in nav %}
+            {% if section.title == 'Разработка адаптера' %}
+              <div class="portal-menu-tree">{{ links(section.children | selectattr('children') | list) }}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </details>
+      <a href="{{ 'faq/' | url }}"{% if source_uri.startswith('faq/') %} aria-current="page"{% endif %}>FAQ</a>
+    </nav>
+    <div class="portal-header-tools">
+      <button class="portal-tool md-icon" type="button" data-portal-search aria-label="Поиск по документации">{% include ".icons/material/magnify.svg" %}</button>
+      {% if config.theme.palette and config.theme.palette is not mapping %}
+        {% include "partials/palette.html" %}
+        {% include "partials/javascripts/palette.html" %}
+      {% endif %}
+    </div>
+    {% if 'material/search' in config.plugins %}
+      {% include "partials/search.html" %}
+    {% endif %}
+  </div>
+</header>

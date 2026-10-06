@@ -4,111 +4,142 @@ hide:
   - toc
 ---
 
-# 1С: Адаптер Kafka
+<div class="portal-hero" markdown="1">
 
-[![OpenYellow](https://openyellow.openintegrations.dev/data/badges/1183456860.svg)](https://openyellow.org/grid?filter=top&repo=1183456860)
-![Платформа](https://badgen.net/badge/Платформа/8.3.26+/blue)
-![Лицензия](https://badgen.net/badge/Лицензия/MPL-2.0/green)
-![БСП](https://badgen.net/badge/БСП/3.1.10+/blue)
+<div class="portal-hero-copy" markdown="1">
 
-**Встраиваемая подсистема для организации двустороннего событийного обмена сообщениями между 1С:Предприятие и [Apache Kafka](https://ru.wikipedia.org/wiki/Apache_Kafka).** Построена на базе внешнего компонента [Simple Kafka Connector 1C](https://github.com/NuclearAPK/Simple-Kafka_Adapter).
+<p class="portal-eyebrow">1С: Адаптер Kafka</p>
 
-```mermaid
-flowchart LR
-    OneC["1С:Предприятие"]
-    Adapter["Адаптер Kafka"]
-    Kafka["Apache Kafka"]
+# Соедините 1С и Kafka.
 
-    OneC -->|"исходящие (публикация)"| Adapter -->|"публикация"| Kafka
-    Kafka -->|"опрос (pull)"| Adapter -->|"входящие (обработка)"| OneC
-```
+<p class="portal-lead">Двусторонний событийный обмен: отправляйте данные из 1С в Kafka и обрабатывайте входящие сообщения в прикладном решении.</p>
 
-## С чего начать
+<div class="portal-actions" markdown="1">
 
-<div class="grid cards" markdown>
-
--   :material-book-open-variant:{ .lg } **Обзор**
-
-    ---
-
-    Понять идею, архитектуру и поток данных — если вы впервые слышите об адаптере.
-
-    [:octicons-arrow-right-24: Читать обзор](overview/index.md)
-
--   :material-account-cog:{ .lg } **Пользователю**
-
-    ---
-
-    Установка, настройка, программный API, примеры, мониторинг и эксплуатация.
-
-    [:octicons-arrow-right-24: Руководство пользователя](user/index.md)
-
--   :material-code-braces:{ .lg } **Разработка проекта**
-
-    ---
-
-    Для тех, кто развивает саму подсистему: окружение, модули, метаданные, расширение.
-
-    [:octicons-arrow-right-24: Руководство разработчика](project/index.md)
-
--   :material-book-alphabet:{ .lg } **Глоссарий**
-
-    ---
-
-    Термины Apache Kafka для 1С-специалистов.
-
-    [:octicons-arrow-right-24: К глоссарию](glossary.md)
+[Настроить первый обмен](start/index.md){ .portal-button }
+[Открыть настройки](user/configuration/index.md){ .portal-button .portal-button-secondary }
 
 </div>
 
-## Быстрый старт
+</div>
 
-!!! tip "Предварительное условие"
-    Доступный кластер Apache Kafka (`host:port`).
+<div class="portal-flow" aria-label="Двусторонний обмен между 1С, адаптером и Kafka">
+<div class="portal-flow-node"><strong>1С</strong><span>Объекты и события</span></div>
+<div class="portal-flow-links"><span aria-hidden="true">↔</span><small>Регистрация · обработка</small></div>
+<div class="portal-flow-node"><strong>Адаптер</strong><span>Очереди и обработчики</span></div>
+<div class="portal-flow-links"><span aria-hidden="true">↔</span><small>Публикация · чтение</small></div>
+<div class="portal-flow-node"><strong>Kafka</strong><span>Топики и сообщения</span></div>
+</div>
 
-1. **[Подключите адаптер](user/installation/index.md)** к прикладной конфигурации — как расширение или как часть основной конфигурации.
-2. **Включите интеграцию** — откройте **Kafka / Администрирование** и нажмите **Включить подсистему**.
-3. **[Настройте брокер](user/configuration/brokers.md)** — создайте элемент и укажите адрес bootstrap-сервера.
-4. **Создайте [продюсер](user/configuration/producers.md) и/или [консьюмер](user/configuration/consumers.md)** — задайте топик и способ обработки сообщений.
-5. **[Активируйте регламентное задание](user/configuration/jobs.md)** — откройте **Kafka / Администрирование / Регламентное задание** и включите его.
-6. **Проверьте обмен** — отправьте или получите сообщение и убедитесь, что обмен прошёл успешно.
+<button type="button" class="portal-search-trigger" data-portal-search aria-label="Открыть поиск по документации">Поиск по документации <span aria-hidden="true">↗</span></button>
 
-## Что умеет адаптер
+</div>
 
-=== "Регистрация и отправка"
+## Уже используете адаптер? { .portal-section-title }
 
-    - Автоматическая постановка объектов и наборов записей в очередь при записи
-    - Ручная регистрация через UI или программный API
-    - Формирование сообщений произвольными обработчиками или через [1С:Конвертация данных 3.1](http://its.1c.ru/db/metod8dev#content:5846:hdoc)
-    - Сериализация и валидация исходящих сообщений на основе [XDTO](https://v8.1c.ru/platforma/xdto/)
-    - Параллельная отправка через фоновые задания 1С
+<div class="portal-quick-links" markdown="1">
 
-=== "Получение и обработка"
+[Брокеры](user/configuration/brokers.md)
+[Выгрузка — продюсеры](user/configuration/producers.md)
+[Загрузка — консьюмеры](user/configuration/consumers.md)
+[Статусы сообщений](user/operations/statuses.md)
+[Диагностика](user/operations/diagnostics.md)
+[Готовые примеры](user/examples/index.md)
 
-    - Автоматическая загрузка сообщений из Kafka
-    - Обработка произвольными обработчиками или через 1С:Конвертация данных 3.1
-    - Десериализация и валидация входящих сообщений на основе XDTO
-    - Параллельная обработка через фоновые задания 1С
+</div>
 
-=== "API"
+## Что вы хотите сделать? { .portal-section-title }
 
-    - Высокоуровневый API, абстрагирующий работу с Kafka и внешним компонентом
-    - Прямой (синхронный) API для нестандартных сценариев
+<div class="portal-routes" markdown="1">
 
-=== "Мониторинг"
+<div class="portal-route" markdown="1">
 
-    - Хранение истории обмена и диагностической информации
-    - Алерты с уведомлениями в Telegram
-    - Выгрузка журнала обмена через совместимый HTTP-приёмник во внешнее хранилище
+<span class="portal-route-icon" aria-hidden="true">:material-power-plug-outline:</span>
 
-## Контракт данных AsyncAPI и XDTO
+### Подключить адаптер
 
-- [Описание AsyncAPI](project/asyncapi-yaml.md) — разделы документа, свойства схем и расширения.
-- [Поддерживаемая модель XDTO в Адаптере Kafka](project/adapter-xdto-requirements.md) — EnterpriseData, произвольный формат и общие требования конвертации.
-- [XDTO: модель данных обмена](project/xdto.md) — пакеты, типы, свойства и значения.
-- [Требования к YAML для генерации XDTO-модели](project/yaml-requirements-for-xdto.md) — исходные схемы и правила их представления.
-- [Генерация XSD из YAML](project/xsd-generation.md) — описание скрипта и его параметров.
+Проверьте окружение, выберите способ установки и настройте первый обмен.
 
-## Лицензия
+[Начать подключение](start/index.md){ .portal-route-link }
 
-Проект распространяется под лицензией [Mozilla Public License 2.0 (MPL-2.0)](https://github.com/ShadobaAI/kafka-adapter/blob/main/LICENSE). Разрешено использование, модификация и распространение — в том числе в коммерческих проектах. Изменения в файлах под MPL-2.0 должны оставаться открытыми.
+</div>
+
+<div class="portal-route" markdown="1">
+
+<span class="portal-route-icon" aria-hidden="true">:material-code-braces:</span>
+
+### Разработать интеграцию
+
+Подключите прикладной код: API, обработчики продюсера и консьюмера, примеры.
+
+[Руководство по интеграции](user/development/index.md){ .portal-route-link }
+
+</div>
+
+<div class="portal-route" markdown="1">
+
+<span class="portal-route-icon" aria-hidden="true">:material-lifebuoy:</span>
+
+### Решить проблему
+
+Найдите причину ошибок, проверьте очереди и фоновые задания.
+
+[Диагностика и эксплуатация](user/operations/index.md){ .portal-route-link }
+
+</div>
+
+<div class="portal-route" markdown="1">
+
+<span class="portal-route-icon" aria-hidden="true">:material-source-branch:</span>
+
+### Развивать адаптер
+
+Подготовьте окружение, изучите устройство подсистемы и правила участия.
+
+[Руководство разработчика адаптера](project/index.md){ .portal-route-link }
+
+</div>
+
+</div>
+
+## Два направления обмена { .portal-section-title }
+
+<div class="portal-directions" markdown="1">
+
+<div class="portal-route" markdown="1">
+
+### 1С → Kafka
+
+Настройте продюсер, зарегистрируйте данные и проверьте публикацию сообщения в топике.
+
+[Маршрут отправки](start/outgoing.md){ .portal-route-link }
+
+</div>
+
+<div class="portal-route" markdown="1">
+
+### Kafka → 1С
+
+Настройте консьюмер и обработчик, получите сообщение и проверьте результат в 1С.
+
+[Маршрут получения](start/incoming.md){ .portal-route-link }
+
+</div>
+
+</div>
+
+## Частые вопросы { .portal-section-title }
+
+<div class="portal-faq-preview" markdown="1">
+
+- [Какие платформа и БСП нужны?](faq/index.md#installation)
+- [Как настроить защищённое подключение?](faq/index.md#configuration)
+- [Какие API использовать в прикладном коде?](faq/index.md#integration)
+- [Что проверить, если сообщения остались в очереди?](faq/index.md#operations)
+- [С чего начать разработку самого адаптера?](faq/index.md#contributors)
+
+[Все вопросы и ответы](faq/index.md){ .portal-route-link }
+
+</div>
+
+[Возможности и быстрый старт](overview/capabilities.md) · [Глоссарий Kafka](glossary.md)

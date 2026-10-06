@@ -1,0 +1,20 @@
+<footer class="md-footer portal-footer">
+  {% if not page.is_homepage and (page.previous_page or page.next_page) %}
+    <nav class="portal-pagination md-grid" aria-label="Соседние страницы">
+      {% if page.previous_page %}<a href="{{ page.previous_page.url | url }}"><small>Предыдущая страница</small><span>← {{ page.previous_page.title }}</span></a>{% endif %}
+      {% if page.next_page %}<a href="{{ page.next_page.url | url }}" class="portal-pagination-next"><small>Следующая страница</small><span>{{ page.next_page.title }} →</span></a>{% endif %}
+    </nav>
+  {% endif %}
+  <div class="portal-footer-inner md-grid">
+    <span>Kafka Adapter · Документация</span>
+    <nav aria-label="Дополнительные ссылки">
+      <a href="{{ 'overview/about/' | url }}">О проекте</a>
+      <a href="{{ 'glossary/' | url }}">Глоссарий</a>
+      <a href="{{ 'project/' | url }}">Разработка адаптера</a>
+      <a href="{{ config.repo_url }}">GitHub</a>
+      <a href="https://github.com/users/ShadobaAI/projects/3/views/1">Текущие задачи</a>
+      <a href="https://github.com/ShadobaAI/kafka-adapter/issues">Вопросы и предложения</a>
+      <a href="{{ config.repo_url }}/blob/main/LICENSE">MPL-2.0</a>
+    </nav>
+  </div>
+</footer>

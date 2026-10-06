@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% set api_page = page and page.file and page.file.src_uri in ['user/development/api.md', 'user/development/direct-api.md'] %}
+{% set faq_page = page and page.file and page.file.src_uri == 'faq/index.md' %}
+
+{# The portal has no persistent navigation sidebar. Every document is reachable
+   from the header menus; the local table of contents remains on wide screens. #}
+{% block site_nav %}
+  {% if faq_page and page.toc %}
+    <details class="portal-faq-toc">
+      <summary aria-label="Содержание FAQ" title="Содержание FAQ">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2v2H4zm4 0h12v2H8zM4 11h2v2H4zm4 0h12v2H8zM4 17h2v2H4zm4 0h12v2H8z" fill="currentColor"/></svg>
+      </summary>
+      <div class="portal-faq-toc-panel">
+        {% include "partials/faq-toc.html" %}
+      </div>
+    </details>
+  {% elif "toc.integrate" not in features %}
+    {% set hidden = "hidden" if page.meta and page.meta.hide and "toc" in page.meta.hide %}
+    <div class="md-sidebar md-sidebar--secondary{% if api_page %} portal-sidebar-api{% endif %}" data-md-component="sidebar" data-md-type="toc" {{ hidden }}>
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner">
+          {% include "partials/toc.html" %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block container %}
+  {% if api_page or faq_page %}
+    <div class="md-content {% if api_page %}portal-content-api{% else %}portal-content-faq{% endif %}" data-md-component="content">
+      {% if "navigation.path" in features %}{% include "partials/path.html" %}{% endif %}
+      <article class="md-content__inner md-typeset">{{ self.content() }}</article>
+    </div>
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if not page.is_homepage and page.toc and not faq_page %}
+    <details class="portal-mobile-toc{% if api_page %} portal-toc-api{% endif %}">
+      <summary>На этой странице</summary>
+      {% include "partials/toc.html" %}
+    </details>
+  {% endif %}
+  {{ super() }}
+{% endblock %}

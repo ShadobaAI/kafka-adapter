@@ -77,12 +77,23 @@ Docker Compose-манифесты и скрипты: локальный клас
 | Контур | Репозиторий | Инструмент | Что покрывает |
 |--------|-------------|------------|---------------|
 | Юнит-тесты | [kafka-adapter-tests-unit](https://github.com/ShadobaAI/kafka-adapter-tests-unit) | [YAxUnit](https://github.com/bia-technologies/yaxunit) | Логика общих модулей: регистрация, маршрутизация, сериализация |
-| UI-тесты | [kafka-adapter-tests-ui](https://github.com/ShadobaAI/kafka-adapter-tests-ui) | [Vanessa Automation](https://github.com/Pr-Mex/vanessa-automation) | Пользовательские сценарии: формы настройки, панель администрирования, очереди |
+| UI-тесты | [kafka-adapter-tests-ui](https://github.com/ShadobaAI/kafka-adapter-tests-ui) | [Vanessa Automation](https://github.com/Pr-Mex/vanessa-automation) | Открытие форм списков и объектов, запись элементов и групп справочников. Набор сценариев находится в процессе расширения |
 | Отчёты | [kafka-adapter-tests-reports](https://github.com/ShadobaAI/kafka-adapter-tests-reports) | Allure + GitHub Pages | Публикация HTML-отчётов о прогонах (со скриншотами UI-тестов) |
 
-**В CI** тесты встроены в конвейер выпуска: юнит- и UI-тесты выполняются последовательными шагами одного job `tests` в Docker-образе с полноценной 1С (виртуальный дисплей Xvfb для GUI-тестов). UI-тесты запускаются только после успешных юнит-тестов; файлы релиза публикуются **только после успешного прохождения** обоих контуров. [Coverage41C](https://github.com/1c-syntax/Coverage41C) собирает покрытие во время каждого прогона тестов. Отдельный job `sonar` анализирует результаты тестов и покрытия.
+**В CI** тесты встроены в конвейер выпуска: юнит- и UI-тесты выполняются последовательными шагами одного job `tests` в Docker-образе с полноценной 1С (виртуальный дисплей Xvfb для GUI-тестов). UI-тесты запускаются только после успешных юнит-тестов; файлы релиза публикуются **только после успешного прохождения** обоих контуров. [Coverage41C](https://github.com/1c-syntax/Coverage41C) собирает покрытие во время каждого прогона тестов. Отдельный job `sonar` выполняет статический анализ исходников и импортирует покрытие; результаты выполнения тестов представлены в Allure.
 
-**Локально** тесты запускаются из EDT на базовом проекте с подключёнными адаптером и тестовыми расширениями — инструкции запуска смотрите в README соответствующего тест-репозитория.
+Для отбора юнит-тестов используется [YaxParams.json](https://github.com/ShadobaAI/kafka-adapter-tests-unit/blob/main/YaxParams.json) с фильтром `tags: ["CI"]`. Конвейер скачивает этот файл из ветки `main` репозитория тестов, а расширение `unit.cfe` — из пакета `ghcr.io/shadobaai/unit:latest`. Поэтому наличие сценария в локальных исходниках не подтверждает его участие в конкретном CI-прогоне. Регистрация и теги определяют отбор, а факт выполнения и результат проверяются по отчёту и логам этого запуска.
+
+**Локально** юнит-тесты запускаются из EDT на базовом проекте с подключёнными адаптером и тестовыми расширениями — подготовка и запуск описаны в [README юнит-тестов](https://github.com/ShadobaAI/kafka-adapter-tests-unit#readme). UI-сценарии и инструкции их локального запуска дополняются; текущий запуск в CI описан в [release-quality.yml](https://github.com/ShadobaAI/kafka-adapter/blob/main/.github/workflows/release-quality.yml).
+
+### Последние отчёты
+
+- [Все отчёты последнего опубликованного запуска](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/).
+- [Allure Unit — модульные тесты](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/allure-unit/).
+- [Allure UI — интерфейсные тесты](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/allure-ui/).
+- [SonarQube — статический анализ и покрытие](https://shadobaai.github.io/kafka-adapter-tests-reports/latest/sonar/).
+
+Если отчёт не сформирован, вместо него отображается сообщение со ссылкой на логи и артефакты CI. Это не означает успешного прохождения тестов. Подробнее — [публикация отчётов CI](environment.md#публикация-отчётов-ci).
 
 ## Связанные проекты (внешние)
 

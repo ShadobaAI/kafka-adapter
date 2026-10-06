@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="1С: Адаптер Kafka">
   <title>1С: Адаптер Kafka</title>
-  <rect width="64" height="64" rx="14" fill="#3f51b5"/>
+  <rect width="64" height="64" rx="14" fill="#4f46e5"/>
   <g fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M 18 14 L 18 50"/>
     <path d="M 18 32 L 40 14"/>
