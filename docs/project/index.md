@@ -52,7 +52,7 @@
 
     ---
 
-    CFE / CF / ZIP / XLIB / CLIB / DT — что когда использовать.
+    CFE / CF, архивы EDT/XML и демо DT — что когда использовать.
 
 -   :material-code-json:{ .lg } **[Архитектура модулей](modules.md)**
 
