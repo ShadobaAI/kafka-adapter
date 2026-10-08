@@ -283,6 +283,20 @@
     <use>ForFolder</use>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="104da45c-bbc9-4959-94c2-586bcb620181">
+    <name>ОтключитьДедупликацию</name>
+    <synonym>
+      <key>ru</key>
+      <value>Отключить дедупликацию</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Обрабатывать все регистрации, а не только последнюю.</value>
+    </toolTip>
+  </attributes>
   <tabularSections uuid="39fc1700-47ec-456f-913f-211eb6af2d45">
     <producedTypes>
       <objectType typeId="23097c13-ce2c-4492-981f-7fe9161ac884" valueTypeId="21d49a54-569e-4919-be50-e834c506ceea"/>
