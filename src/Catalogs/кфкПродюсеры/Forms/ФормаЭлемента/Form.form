@@ -659,61 +659,6 @@
               <textSize>Normal</textSize>
             </extInfo>
           </items>
-          <items xsi:type="form:FormField">
-            <name>ОбъектыМетаданныхИмяМетодаСериализации</name>
-            <id>152</id>
-            <title>
-              <key>ru</key>
-              <value>Имя метода</value>
-            </title>
-            <visible>true</visible>
-            <enabled>true</enabled>
-            <userVisible>
-              <common>true</common>
-            </userVisible>
-            <dataPath xsi:type="form:DataPath">
-              <segments>Объект.ОбъектыМетаданных.ИмяМетодаСериализации</segments>
-            </dataPath>
-            <extendedTooltip>
-              <name>ОбъектыМетаданныхИмяМетодаСериализацииРасширеннаяПодсказка</name>
-              <id>154</id>
-              <type>Label</type>
-              <autoMaxWidth>true</autoMaxWidth>
-              <autoMaxHeight>true</autoMaxHeight>
-              <extInfo xsi:type="form:LabelDecorationExtInfo">
-                <horizontalAlign>Left</horizontalAlign>
-              </extInfo>
-            </extendedTooltip>
-            <contextMenu>
-              <name>ОбъектыМетаданныхИмяМетодаСериализацииКонтекстноеМеню</name>
-              <id>153</id>
-              <autoFill>true</autoFill>
-            </contextMenu>
-            <type>InputField</type>
-            <markRequiredComplete>true</markRequiredComplete>
-            <editMode>Enter</editMode>
-            <showInHeader>true</showInHeader>
-            <headerHorizontalAlign>Left</headerHorizontalAlign>
-            <showInFooter>true</showInFooter>
-            <extInfo xsi:type="form:InputFieldExtInfo">
-              <handlers>
-                <event>StartChoice</event>
-                <name>ОбъектыМетаданныхИмяМетодаСериализацииНачалоВыбора</name>
-              </handlers>
-              <maxWidth>20</maxWidth>
-              <autoMaxHeight>true</autoMaxHeight>
-              <wrap>true</wrap>
-              <choiceButton>true</choiceButton>
-              <choiceButtonPicture xsi:type="core:PictureRef">
-                <picture>StdPicture.Change</picture>
-              </choiceButtonPicture>
-              <autoMarkIncomplete>true</autoMarkIncomplete>
-              <chooseType>true</chooseType>
-              <typeDomainEnabled>true</typeDomainEnabled>
-              <textEdit>true</textEdit>
-              <textSize>Normal</textSize>
-            </extInfo>
-          </items>
           <items xsi:type="form:FormGroup">
             <name>ОбъектыМетаданныхГруппаСериализацияКД</name>
             <id>155</id>
@@ -732,6 +677,10 @@
               <dataPath xsi:type="form:DataPath">
                 <segments>Объект.ОбъектыМетаданных.ФорматСериализации</segments>
               </dataPath>
+              <handlers>
+                <event>OnChange</event>
+                <name>ОбъектыМетаданныхФорматСериализацииПриИзменении</name>
+              </handlers>
               <extendedTooltip>
                 <name>ОбъектыМетаданныхФорматСериализацииРасширеннаяПодсказка</name>
                 <id>159</id>
@@ -896,6 +845,65 @@
             <extInfo xsi:type="form:ColumnGroupExtInfo">
               <showTitle>auto</showTitle>
               <showInCard>true</showInCard>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormField">
+            <name>ОбъектыМетаданныхИмяМетодаСериализации</name>
+            <id>152</id>
+            <title>
+              <key>ru</key>
+              <value>Имя метода</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ОбъектыМетаданных.ИмяМетодаСериализации</segments>
+            </dataPath>
+            <handlers>
+              <event>OnChange</event>
+              <name>ОбъектыМетаданныхИмяМетодаСериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ОбъектыМетаданныхИмяМетодаСериализацииРасширеннаяПодсказка</name>
+              <id>154</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ОбъектыМетаданныхИмяМетодаСериализацииКонтекстноеМеню</name>
+              <id>153</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>StartChoice</event>
+                <name>ОбъектыМетаданныхИмяМетодаСериализацииНачалоВыбора</name>
+              </handlers>
+              <maxWidth>20</maxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <choiceButton>true</choiceButton>
+              <choiceButtonPicture xsi:type="core:PictureRef">
+                <picture>StdPicture.Change</picture>
+              </choiceButtonPicture>
+              <autoMarkIncomplete>true</autoMarkIncomplete>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -1498,25 +1506,100 @@
         <showInFooter>true</showInFooter>
         <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
       </items>
-      <items xsi:type="form:FormField">
-        <name>ИдемпотентнаяОтправка</name>
-        <id>179</id>
+      <items xsi:type="form:FormGroup">
+        <name>ГруппаКонтрольДублирования</name>
+        <id>210</id>
+        <items xsi:type="form:FormField">
+          <name>ИдемпотентнаяОтправка</name>
+          <id>179</id>
+          <title>
+            <key>ru</key>
+            <value>Идемп. отправка</value>
+          </title>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Объект.ИдемпотентнаяОтправка</segments>
+          </dataPath>
+          <toolTipRepresentation>Button</toolTipRepresentation>
+          <extendedTooltip>
+            <name>ИдемпотентнаяОтправкаРасширеннаяПодсказка</name>
+            <id>181</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>ИдемпотентнаяОтправкаКонтекстноеМеню</name>
+            <id>180</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>CheckBoxField</type>
+          <editMode>Enter</editMode>
+          <showInHeader>true</showInHeader>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+        </items>
+        <items xsi:type="form:FormField">
+          <name>ОтключитьДедупликациюРегистраций</name>
+          <id>182</id>
+          <title>
+            <key>ru</key>
+            <value>Откл. дедупликацию</value>
+          </title>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Объект.ОтключитьДедупликацию</segments>
+          </dataPath>
+          <toolTipRepresentation>Button</toolTipRepresentation>
+          <extendedTooltip>
+            <name>ОтключитьДедупликациюРегистрацийРасширеннаяПодсказка</name>
+            <id>184</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>ОтключитьДедупликациюРегистрацийКонтекстноеМеню</name>
+            <id>183</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>CheckBoxField</type>
+          <editMode>Enter</editMode>
+          <showInHeader>true</showInHeader>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+        </items>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
         <title>
           <key>ru</key>
-          <value>Идемп. отправка</value>
+          <value>Контроль дублирования</value>
         </title>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <dataPath xsi:type="form:DataPath">
-          <segments>Объект.ИдемпотентнаяОтправка</segments>
-        </dataPath>
-        <toolTipRepresentation>ShowAuto</toolTipRepresentation>
+        <titleFont xsi:type="core:FontRef">
+          <font>Style.NormalTextFont</font>
+        </titleFont>
         <extendedTooltip>
-          <name>ИдемпотентнаяОтправкаРасширеннаяПодсказка</name>
-          <id>181</id>
+          <name>ГруппаКонтрольДублированияРасширеннаяПодсказка</name>
+          <id>211</id>
           <type>Label</type>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -1524,33 +1607,353 @@
             <horizontalAlign>Left</horizontalAlign>
           </extInfo>
         </extendedTooltip>
-        <contextMenu>
-          <name>ИдемпотентнаяОтправкаКонтекстноеМеню</name>
-          <id>180</id>
-          <autoFill>true</autoFill>
-        </contextMenu>
-        <type>CheckBoxField</type>
-        <editMode>Enter</editMode>
-        <showInHeader>true</showInHeader>
-        <headerHorizontalAlign>Left</headerHorizontalAlign>
-        <showInFooter>true</showInFooter>
-        <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+        <type>UsualGroup</type>
+        <extInfo xsi:type="form:UsualGroupExtInfo">
+          <group>Vertical</group>
+          <behavior>Collapsible</behavior>
+          <controlRepresentation>Button</controlRepresentation>
+          <representation>StrongSeparation</representation>
+          <showLeftMargin>true</showLeftMargin>
+          <united>true</united>
+          <showTitle>true</showTitle>
+          <throughAlign>Auto</throughAlign>
+          <currentRowUse>Auto</currentRowUse>
+        </extInfo>
       </items>
-      <items xsi:type="form:FormField">
-        <name>ОтключитьДедупликациюРегистраций</name>
-        <id>182</id>
+      <items xsi:type="form:FormGroup">
+        <name>ГруппаНастройкиСериализацииПоУмолчанию</name>
+        <id>206</id>
+        <items xsi:type="form:FormField">
+          <name>ТипСериализации</name>
+          <id>187</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Объект.ТипСериализации</segments>
+          </dataPath>
+          <toolTip>
+            <key>ru</key>
+            <value>Способ преобразования данных в сообщение Kafka. Используется, если тип сериализации не задан в строке таблицы «Объекты метаданных».</value>
+          </toolTip>
+          <toolTipRepresentation>Button</toolTipRepresentation>
+          <handlers>
+            <event>OnChange</event>
+            <name>ТипСериализацииПриИзменении</name>
+          </handlers>
+          <extendedTooltip>
+            <name>ТипСериализацииРасширеннаяПодсказка</name>
+            <id>189</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>ТипСериализацииКонтекстноеМеню</name>
+            <id>188</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>InputField</type>
+          <editMode>Enter</editMode>
+          <showInHeader>true</showInHeader>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:InputFieldExtInfo">
+            <maxWidth>25</maxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <wrap>true</wrap>
+            <chooseType>true</chooseType>
+            <typeDomainEnabled>true</typeDomainEnabled>
+            <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormGroup">
+          <name>ГруппаНастройкиСериализацииПоУмолчаниюПО</name>
+          <id>199</id>
+          <items xsi:type="form:FormField">
+            <name>ИмяМетодаСериализации</name>
+            <id>190</id>
+            <title>
+              <key>ru</key>
+              <value>Имя метода</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ИмяМетодаСериализации</segments>
+            </dataPath>
+            <toolTip>
+              <key>ru</key>
+              <value>Полное имя экспортной функции в формате «ИмяМодуля.ИмяФункции». Используется, если метод не задан в строке.</value>
+            </toolTip>
+            <toolTipRepresentation>Button</toolTipRepresentation>
+            <handlers>
+              <event>OnChange</event>
+              <name>ИмяМетодаСериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ИмяМетодаСериализацииРасширеннаяПодсказка</name>
+              <id>192</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ИмяМетодаСериализацииКонтекстноеМеню</name>
+              <id>191</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>StartChoice</event>
+                <name>ИмяМетодаСериализацииНачалоВыбора</name>
+              </handlers>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <choiceButton>true</choiceButton>
+              <choiceButtonPicture xsi:type="core:PictureRef">
+                <picture>StdPicture.Change</picture>
+              </choiceButtonPicture>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+              <inputHint>
+                <key>ru</key>
+                <value>ИмяМодуля.ИмяФункции</value>
+              </inputHint>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Произвольный обработчик</value>
+          </title>
+          <titleFont xsi:type="core:FontRef">
+            <font>Style.SmallTextFont</font>
+          </titleFont>
+          <extendedTooltip>
+            <name>ГруппаНастройкиСериализацииПоУмолчаниюПОРасширеннаяПодсказка</name>
+            <id>200</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>UsualGroup</type>
+          <extInfo xsi:type="form:UsualGroupExtInfo">
+            <group>Auto</group>
+            <behavior>Auto</behavior>
+            <representation>Auto</representation>
+            <showLeftMargin>true</showLeftMargin>
+            <united>true</united>
+            <showTitle>true</showTitle>
+            <throughAlign>Auto</throughAlign>
+            <currentRowUse>Auto</currentRowUse>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormGroup">
+          <name>ГруппаНастройкиСериализацииПоУмолчаниюКД</name>
+          <id>201</id>
+          <items xsi:type="form:FormField">
+            <name>ФорматСериализации</name>
+            <id>203</id>
+            <title>
+              <key>ru</key>
+              <value>Формат</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ФорматСериализации</segments>
+            </dataPath>
+            <toolTip>
+              <key>ru</key>
+              <value>URI пространства имён XDTO. Для подбора: `*` — символы до `/`, `**` — любая вложенность. Используется, если формат в строке не задан.</value>
+            </toolTip>
+            <toolTipRepresentation>Button</toolTipRepresentation>
+            <handlers>
+              <event>OnChange</event>
+              <name>ФорматСериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ФорматСериализацииРасширеннаяПодсказка</name>
+              <id>205</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ФорматСериализацииКонтекстноеМеню</name>
+              <id>204</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>AutoComplete</event>
+                <name>ФорматСериализацииАвтоПодбор</name>
+              </handlers>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <dropListButton>true</dropListButton>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+              <inputHint>
+                <key>ru</key>
+                <value>http://v8.fsk.ru/kafka/**/*</value>
+              </inputHint>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormField">
+            <name>ИмяМодуляСериализации</name>
+            <id>193</id>
+            <title>
+              <key>ru</key>
+              <value>Имя модуля</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ИмяМодуляСериализации</segments>
+            </dataPath>
+            <toolTip>
+              <key>ru</key>
+              <value>Имя общего модуля менеджера обмена КД 3.1. Используется, если модуль не задан в строке.</value>
+            </toolTip>
+            <toolTipRepresentation>Button</toolTipRepresentation>
+            <handlers>
+              <event>OnChange</event>
+              <name>ИмяМодуляСериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ИмяМодуляСериализацииРасширеннаяПодсказка</name>
+              <id>195</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ИмяМодуляСериализацииКонтекстноеМеню</name>
+              <id>194</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>AutoComplete</event>
+                <name>ИмяМодуляСериализацииАвтоПодбор</name>
+              </handlers>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <dropListButton>true</dropListButton>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+              <inputHint>
+                <key>ru</key>
+                <value>МенеджерОбменаКафка</value>
+              </inputHint>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Конвертация данных</value>
+          </title>
+          <titleFont xsi:type="core:FontRef">
+            <font>Style.SmallTextFont</font>
+          </titleFont>
+          <extendedTooltip>
+            <name>ГруппаНастройкиСериализацииПоУмолчаниюКДРасширеннаяПодсказка</name>
+            <id>202</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>UsualGroup</type>
+          <extInfo xsi:type="form:UsualGroupExtInfo">
+            <group>Vertical</group>
+            <behavior>Auto</behavior>
+            <representation>Auto</representation>
+            <showLeftMargin>true</showLeftMargin>
+            <united>true</united>
+            <showTitle>true</showTitle>
+            <throughAlign>Auto</throughAlign>
+            <currentRowUse>Auto</currentRowUse>
+          </extInfo>
+        </items>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
           <common>true</common>
         </userVisible>
-        <dataPath xsi:type="form:DataPath">
-          <segments>Объект.ОтключитьДедупликацию</segments>
-        </dataPath>
-        <toolTipRepresentation>ShowBottom</toolTipRepresentation>
+        <title>
+          <key>ru</key>
+          <value>Настройки сериализации по умолчанию</value>
+        </title>
+        <titleFont xsi:type="core:FontRef">
+          <font>Style.NormalTextFont</font>
+        </titleFont>
         <extendedTooltip>
-          <name>ОтключитьДедупликациюРегистрацийРасширеннаяПодсказка</name>
-          <id>184</id>
+          <name>ГруппаНастройкиСериализацииПоУмолчаниюРасширеннаяПодсказка</name>
+          <id>207</id>
           <type>Label</type>
           <autoMaxWidth>true</autoMaxWidth>
           <autoMaxHeight>true</autoMaxHeight>
@@ -1558,17 +1961,18 @@
             <horizontalAlign>Left</horizontalAlign>
           </extInfo>
         </extendedTooltip>
-        <contextMenu>
-          <name>ОтключитьДедупликациюРегистрацийКонтекстноеМеню</name>
-          <id>183</id>
-          <autoFill>true</autoFill>
-        </contextMenu>
-        <type>CheckBoxField</type>
-        <editMode>Enter</editMode>
-        <showInHeader>true</showInHeader>
-        <headerHorizontalAlign>Left</headerHorizontalAlign>
-        <showInFooter>true</showInFooter>
-        <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+        <type>UsualGroup</type>
+        <extInfo xsi:type="form:UsualGroupExtInfo">
+          <group>Vertical</group>
+          <behavior>Collapsible</behavior>
+          <controlRepresentation>Button</controlRepresentation>
+          <representation>StrongSeparation</representation>
+          <showLeftMargin>true</showLeftMargin>
+          <united>true</united>
+          <showTitle>auto</showTitle>
+          <throughAlign>Auto</throughAlign>
+          <currentRowUse>Auto</currentRowUse>
+        </extInfo>
       </items>
       <visible>true</visible>
       <enabled>true</enabled>

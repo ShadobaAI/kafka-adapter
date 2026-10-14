@@ -297,6 +297,66 @@
       <value>Обрабатывать все регистрации, а не только последнюю.</value>
     </toolTip>
   </attributes>
+  <attributes uuid="bc97f858-aec6-422a-98a9-94838e3e9aa0">
+    <name>ТипСериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Тип сериализации</value>
+    </synonym>
+    <type>
+      <types>EnumRef.кфкТипыОбработчиков</types>
+    </type>
+  </attributes>
+  <attributes uuid="e1e5a831-676a-4372-9994-742b015eda76">
+    <name>ИмяМетодаСериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Имя метода сериализации</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>150</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="01a1a30a-d456-4a55-83d7-b028a608c394">
+    <name>ИмяМодуляСериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Имя модуля сериализации</value>
+    </synonym>
+    <comment>Менеджер обмена (КД 3.1)</comment>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>120</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="0ad46a76-c214-4711-a96f-6f8fda7b6743">
+    <name>ФорматСериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Формат сериализации</value>
+    </synonym>
+    <comment>Формат (КД 3.1)</comment>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>120</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
   <tabularSections uuid="39fc1700-47ec-456f-913f-211eb6af2d45">
     <producedTypes>
       <objectType typeId="23097c13-ce2c-4492-981f-7fe9161ac884" valueTypeId="21d49a54-569e-4919-be50-e834c506ceea"/>
