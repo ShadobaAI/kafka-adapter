@@ -308,6 +308,66 @@
     <use>ForFolder</use>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="51627bca-9fb2-4193-ad9b-f8890faa5382">
+    <name>ТипДесериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Тип десериализации</value>
+    </synonym>
+    <type>
+      <types>EnumRef.кфкТипыОбработчиков</types>
+    </type>
+  </attributes>
+  <attributes uuid="5293c4fb-0e03-484c-99c8-f49758f9b6fa">
+    <name>ИмяМетодаДесериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Имя метода десериализации</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>150</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="bf8eb18a-4957-420e-aaa1-c57c072d485b">
+    <name>ИмяМодуляДесериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Имя модуля десериализации</value>
+    </synonym>
+    <comment>Менеджер обмена (КД 3.1)</comment>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>120</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="9c749510-2ab8-475d-bf0a-b29a1832b2c8">
+    <name>ФорматДесериализации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Формат десериализации</value>
+    </synonym>
+    <comment>Формат (КД 3.1)</comment>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>120</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
   <tabularSections uuid="ad60df75-5b78-4bdf-99e6-a68b5a08a683">
     <producedTypes>
       <objectType typeId="455bd6d2-f995-42ee-9d30-519112e6df31" valueTypeId="6ce25c6f-6653-42ba-978f-273e9d75f03d"/>
@@ -356,7 +416,6 @@
       </type>
       <minValue xsi:type="core:UndefinedValue"/>
       <maxValue xsi:type="core:UndefinedValue"/>
-      <fillChecking>ShowError</fillChecking>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -374,7 +433,6 @@
       </type>
       <minValue xsi:type="core:UndefinedValue"/>
       <maxValue xsi:type="core:UndefinedValue"/>
-      <fillChecking>ShowError</fillChecking>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>

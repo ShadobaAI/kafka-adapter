@@ -169,20 +169,130 @@
             <fileDragMode>AsFileRef</fileDragMode>
           </extInfo>
         </items>
+        <items xsi:type="form:FormGroup">
+          <name>ОбъектыМетаданныхТипОбъекта</name>
+          <id>239</id>
+          <items xsi:type="form:FormField">
+            <name>ОбъектыМетаданныхИмя</name>
+            <id>79</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>ОбъектыМетаданных.Имя</segments>
+            </dataPath>
+            <extendedTooltip>
+              <name>ОбъектыМетаданныхИмяРасширеннаяПодсказка</name>
+              <id>81</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ОбъектыМетаданныхИмяКонтекстноеМеню</name>
+              <id>80</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <maxWidth>15</maxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormField">
+            <name>ОбъектыМетаданныхСиноним</name>
+            <id>82</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>ОбъектыМетаданных.Синоним</segments>
+            </dataPath>
+            <extendedTooltip>
+              <name>ОбъектыМетаданныхСинонимРасширеннаяПодсказка</name>
+              <id>84</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ОбъектыМетаданныхСинонимКонтекстноеМеню</name>
+              <id>83</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <maxWidth>15</maxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Тип объекта</value>
+          </title>
+          <extendedTooltip>
+            <name>ОбъектыМетаданныхТипОбъектаРасширеннаяПодсказка</name>
+            <id>240</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>ColumnGroup</type>
+          <extInfo xsi:type="form:ColumnGroupExtInfo">
+            <group>InCell</group>
+            <showTitle>auto</showTitle>
+            <showInHeader>true</showInHeader>
+            <showInCard>true</showInCard>
+          </extInfo>
+        </items>
         <items xsi:type="form:FormField">
-          <name>ОбъектыМетаданныхИмя</name>
-          <id>79</id>
+          <name>ОбъектыМетаданныхИмяТопика</name>
+          <id>227</id>
           <visible>true</visible>
           <enabled>true</enabled>
           <userVisible>
             <common>true</common>
           </userVisible>
           <dataPath xsi:type="form:DataPath">
-            <segments>ОбъектыМетаданных.Имя</segments>
+            <segments>ОбъектыМетаданных.ИмяТопика</segments>
           </dataPath>
           <extendedTooltip>
-            <name>ОбъектыМетаданныхИмяРасширеннаяПодсказка</name>
-            <id>81</id>
+            <name>ОбъектыМетаданныхИмяТопикаРасширеннаяПодсказка</name>
+            <id>229</id>
             <type>Label</type>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
@@ -191,12 +301,12 @@
             </extInfo>
           </extendedTooltip>
           <contextMenu>
-            <name>ОбъектыМетаданныхИмяКонтекстноеМеню</name>
-            <id>80</id>
+            <name>ОбъектыМетаданныхИмяТопикаКонтекстноеМеню</name>
+            <id>228</id>
             <autoFill>true</autoFill>
           </contextMenu>
           <type>InputField</type>
-          <editMode>Enter</editMode>
+          <editMode>Auto</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
@@ -211,19 +321,19 @@
           </extInfo>
         </items>
         <items xsi:type="form:FormField">
-          <name>ОбъектыМетаданныхСиноним</name>
-          <id>82</id>
+          <name>ОбъектыМетаданныхПолноеИмяПоиск</name>
+          <id>244</id>
           <visible>true</visible>
           <enabled>true</enabled>
           <userVisible>
             <common>true</common>
           </userVisible>
           <dataPath xsi:type="form:DataPath">
-            <segments>ОбъектыМетаданных.Синоним</segments>
+            <segments>ОбъектыМетаданных.ПолноеИмяПоиск</segments>
           </dataPath>
           <extendedTooltip>
-            <name>ОбъектыМетаданныхСинонимРасширеннаяПодсказка</name>
-            <id>84</id>
+            <name>ОбъектыМетаданныхПолноеИмяПоискРасширеннаяПодсказка</name>
+            <id>246</id>
             <type>Label</type>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
@@ -232,18 +342,20 @@
             </extInfo>
           </extendedTooltip>
           <contextMenu>
-            <name>ОбъектыМетаданныхСинонимКонтекстноеМеню</name>
-            <id>83</id>
+            <name>ОбъектыМетаданныхПолноеИмяПоискКонтекстноеМеню</name>
+            <id>245</id>
             <autoFill>true</autoFill>
           </contextMenu>
           <type>InputField</type>
-          <editMode>Enter</editMode>
-          <showInHeader>true</showInHeader>
+          <editMode>Auto</editMode>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
-          <showInFooter>true</showInFooter>
           <extInfo xsi:type="form:InputFieldExtInfo">
-            <maxWidth>15</maxWidth>
-            <autoMaxHeight>true</autoMaxHeight>
+            <width>1</width>
+            <maxWidth>1</maxWidth>
+            <height>1</height>
+            <maxHeight>1</maxHeight>
+            <horizontalStretch>false</horizontalStretch>
+            <verticalStretch>false</verticalStretch>
             <wrap>true</wrap>
             <chooseType>true</chooseType>
             <typeDomainEnabled>true</typeDomainEnabled>
@@ -414,6 +526,32 @@
         <autoCommandBar>
           <name>СписокОтборКоманднаяПанель</name>
           <id>204</id>
+          <items xsi:type="form:Button">
+            <name>СписокОтборИзменитьФорму</name>
+            <id>237</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <extendedTooltip>
+              <name>СписокОтборИзменитьФормуРасширеннаяПодсказка</name>
+              <id>238</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <commandName>Form.StandardCommand.CustomizeForm</commandName>
+            <buttonImportance>Normal</buttonImportance>
+            <representation>Auto</representation>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <placementArea>UserCmds</placementArea>
+            <representationInContextMenu>Auto</representationInContextMenu>
+          </items>
           <horizontalAlign>Left</horizontalAlign>
           <autoFill>true</autoFill>
         </autoCommandBar>
@@ -937,6 +1075,46 @@
       <id>5</id>
       <valueType>
         <types>Picture</types>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>ИмяТопика</name>
+      <title>
+        <key>ru</key>
+        <value>Имя топика</value>
+      </title>
+      <id>10</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers>
+          <length>128</length>
+        </stringQualifiers>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>ПолноеИмяПоиск</name>
+      <title>
+        <key>ru</key>
+        <value>Полное имя</value>
+      </title>
+      <id>11</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers>
+          <length>430</length>
+        </stringQualifiers>
       </valueType>
       <view>
         <common>true</common>

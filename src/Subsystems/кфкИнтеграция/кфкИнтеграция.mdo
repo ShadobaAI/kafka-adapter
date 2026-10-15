@@ -78,4 +78,5 @@
   <content>DataProcessor.кфкПанельАдминистрирования</content>
   <content>InformationRegister.кфкХэшСуммыСообщений</content>
   <content>StyleItem.кфкШрифтЗаголовкаПредупреждения</content>
+  <content>SessionParameter.кфкСчетчикКомбинированнойМетки</content>
 </mdclass:Subsystem>

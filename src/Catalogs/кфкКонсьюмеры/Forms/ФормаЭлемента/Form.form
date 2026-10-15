@@ -547,70 +547,16 @@
               <autoFill>true</autoFill>
             </contextMenu>
             <type>InputField</type>
-            <editMode>Enter</editMode>
+            <editMode>Auto</editMode>
             <showInHeader>true</showInHeader>
             <headerHorizontalAlign>Left</headerHorizontalAlign>
             <showInFooter>true</showInFooter>
             <extInfo xsi:type="form:InputFieldExtInfo">
               <autoMaxWidth>true</autoMaxWidth>
+              <maxWidth>15</maxWidth>
               <autoMaxHeight>true</autoMaxHeight>
               <horizontalStretch>false</horizontalStretch>
               <wrap>true</wrap>
-              <chooseType>true</chooseType>
-              <typeDomainEnabled>true</typeDomainEnabled>
-              <textEdit>true</textEdit>
-              <textSize>Normal</textSize>
-            </extInfo>
-          </items>
-          <items xsi:type="form:FormField">
-            <name>ТопикиИмяМетодаДесериализации</name>
-            <id>119</id>
-            <title>
-              <key>ru</key>
-              <value>Имя метода</value>
-            </title>
-            <visible>true</visible>
-            <enabled>true</enabled>
-            <userVisible>
-              <common>true</common>
-            </userVisible>
-            <dataPath xsi:type="form:DataPath">
-              <segments>Объект.Топики.ИмяМетодаДесериализации</segments>
-            </dataPath>
-            <extendedTooltip>
-              <name>ТопикиИмяМетодаДесериализацииРасширеннаяПодсказка</name>
-              <id>121</id>
-              <type>Label</type>
-              <autoMaxWidth>true</autoMaxWidth>
-              <autoMaxHeight>true</autoMaxHeight>
-              <extInfo xsi:type="form:LabelDecorationExtInfo">
-                <horizontalAlign>Left</horizontalAlign>
-              </extInfo>
-            </extendedTooltip>
-            <contextMenu>
-              <name>ТопикиИмяМетодаДесериализацииКонтекстноеМеню</name>
-              <id>120</id>
-              <autoFill>true</autoFill>
-            </contextMenu>
-            <type>InputField</type>
-            <markRequiredComplete>true</markRequiredComplete>
-            <editMode>Enter</editMode>
-            <showInHeader>true</showInHeader>
-            <headerHorizontalAlign>Left</headerHorizontalAlign>
-            <showInFooter>true</showInFooter>
-            <extInfo xsi:type="form:InputFieldExtInfo">
-              <handlers>
-                <event>StartChoice</event>
-                <name>ТопикиИмяМетодаДесериализацииНачалоВыбора</name>
-              </handlers>
-              <maxWidth>20</maxWidth>
-              <autoMaxHeight>true</autoMaxHeight>
-              <wrap>true</wrap>
-              <choiceButton>true</choiceButton>
-              <choiceButtonPicture xsi:type="core:PictureRef">
-                <picture>StdPicture.Change</picture>
-              </choiceButtonPicture>
-              <autoMarkIncomplete>true</autoMarkIncomplete>
               <chooseType>true</chooseType>
               <typeDomainEnabled>true</typeDomainEnabled>
               <textEdit>true</textEdit>
@@ -623,6 +569,10 @@
             <items xsi:type="form:FormField">
               <name>ТопикиФорматДесериализации</name>
               <id>130</id>
+              <title>
+                <key>ru</key>
+                <value>Формат</value>
+              </title>
               <visible>true</visible>
               <enabled>true</enabled>
               <userVisible>
@@ -708,7 +658,7 @@
               </contextMenu>
               <type>InputField</type>
               <markRequiredComplete>true</markRequiredComplete>
-              <editMode>Enter</editMode>
+              <editMode>Auto</editMode>
               <showInHeader>true</showInHeader>
               <headerHorizontalAlign>Left</headerHorizontalAlign>
               <showInFooter>true</showInFooter>
@@ -799,6 +749,65 @@
             <extInfo xsi:type="form:ColumnGroupExtInfo">
               <showTitle>auto</showTitle>
               <showInCard>true</showInCard>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormField">
+            <name>ТопикиИмяМетодаДесериализации</name>
+            <id>119</id>
+            <title>
+              <key>ru</key>
+              <value>Имя метода</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.Топики.ИмяМетодаДесериализации</segments>
+            </dataPath>
+            <handlers>
+              <event>OnChange</event>
+              <name>ТопикиИмяМетодаДесериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ТопикиИмяМетодаДесериализацииРасширеннаяПодсказка</name>
+              <id>121</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ТопикиИмяМетодаДесериализацииКонтекстноеМеню</name>
+              <id>120</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <markRequiredComplete>true</markRequiredComplete>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>StartChoice</event>
+                <name>ТопикиИмяМетодаДесериализацииНачалоВыбора</name>
+              </handlers>
+              <maxWidth>20</maxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <choiceButton>true</choiceButton>
+              <choiceButtonPicture xsi:type="core:PictureRef">
+                <picture>StdPicture.Change</picture>
+              </choiceButtonPicture>
+              <autoMarkIncomplete>true</autoMarkIncomplete>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
             </extInfo>
           </items>
           <visible>true</visible>
@@ -1425,7 +1434,7 @@
         <dataPath xsi:type="form:DataPath">
           <segments>Объект.ИдемпотентнаяОбработка</segments>
         </dataPath>
-        <toolTipRepresentation>ShowAuto</toolTipRepresentation>
+        <toolTipRepresentation>Button</toolTipRepresentation>
         <extendedTooltip>
           <name>ИдемпотентнаяОбработкаРасширеннаяПодсказка</name>
           <id>154</id>
@@ -1488,6 +1497,360 @@
         <showInFooter>true</showInFooter>
         <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
       </items>
+      <items xsi:type="form:FormGroup">
+        <name>ГруппаНастройкиДесериализацииПоУмолчанию</name>
+        <id>155</id>
+        <items xsi:type="form:FormField">
+          <name>ТипДесериализации</name>
+          <id>157</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Объект.ТипДесериализации</segments>
+          </dataPath>
+          <toolTip>
+            <key>ru</key>
+            <value>Способ обработки сообщения Kafka. Используется, если тип десериализации не задан в строке таблицы «Топики».</value>
+          </toolTip>
+          <toolTipRepresentation>Button</toolTipRepresentation>
+          <handlers>
+            <event>OnChange</event>
+            <name>ТипДесериализацииПриИзменении</name>
+          </handlers>
+          <extendedTooltip>
+            <name>ТипДесериализацииРасширеннаяПодсказка</name>
+            <id>159</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>ТипДесериализацииКонтекстноеМеню</name>
+            <id>158</id>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>InputField</type>
+          <editMode>Enter</editMode>
+          <showInHeader>true</showInHeader>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:InputFieldExtInfo">
+            <maxWidth>25</maxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <wrap>true</wrap>
+            <chooseType>true</chooseType>
+            <typeDomainEnabled>true</typeDomainEnabled>
+            <textEdit>true</textEdit>
+            <textSize>Normal</textSize>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormGroup">
+          <name>ГруппаНастройкиДесериализацииПоУмолчаниюПО</name>
+          <id>160</id>
+          <items xsi:type="form:FormField">
+            <name>ИмяМетодаДесериализации</name>
+            <id>162</id>
+            <title>
+              <key>ru</key>
+              <value>Имя метода</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ИмяМетодаДесериализации</segments>
+            </dataPath>
+            <toolTip>
+              <key>ru</key>
+              <value>Полное имя экспортной процедуры в формате «ИмяМодуля.ИмяПроцедуры». Используется, если метод не задан в строке.</value>
+            </toolTip>
+            <toolTipRepresentation>Button</toolTipRepresentation>
+            <handlers>
+              <event>OnChange</event>
+              <name>ИмяМетодаДесериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ИмяМетодаДесериализацииРасширеннаяПодсказка</name>
+              <id>164</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ИмяМетодаДесериализацииКонтекстноеМеню</name>
+              <id>163</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>StartChoice</event>
+                <name>ИмяМетодаДесериализацииНачалоВыбора</name>
+              </handlers>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <choiceButton>true</choiceButton>
+              <choiceButtonPicture xsi:type="core:PictureRef">
+                <picture>StdPicture.Change</picture>
+              </choiceButtonPicture>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+              <inputHint>
+                <key>ru</key>
+                <value>ИмяМодуля.ИмяПроцедуры</value>
+              </inputHint>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Произвольный обработчик</value>
+          </title>
+          <titleFont xsi:type="core:FontRef">
+            <font>Style.SmallTextFont</font>
+          </titleFont>
+          <extendedTooltip>
+            <name>ГруппаНастройкиДесериализацииПоУмолчаниюПОРасширеннаяПодсказка</name>
+            <id>161</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>UsualGroup</type>
+          <extInfo xsi:type="form:UsualGroupExtInfo">
+            <group>Auto</group>
+            <behavior>Auto</behavior>
+            <representation>Auto</representation>
+            <showLeftMargin>true</showLeftMargin>
+            <united>true</united>
+            <showTitle>true</showTitle>
+            <throughAlign>Auto</throughAlign>
+            <currentRowUse>Auto</currentRowUse>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormGroup">
+          <name>ГруппаНастройкиДесериализацииПоУмолчаниюКД</name>
+          <id>165</id>
+          <items xsi:type="form:FormField">
+            <name>ФорматДесериализации</name>
+            <id>167</id>
+            <title>
+              <key>ru</key>
+              <value>Формат</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ФорматДесериализации</segments>
+            </dataPath>
+            <toolTip>
+              <key>ru</key>
+              <value>URI пространства имён XDTO. Для подбора: `*` — символы до `/`, `**` — любая вложенность. Используется, если формат в строке не задан.</value>
+            </toolTip>
+            <toolTipRepresentation>Button</toolTipRepresentation>
+            <handlers>
+              <event>OnChange</event>
+              <name>ФорматДесериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ФорматДесериализацииРасширеннаяПодсказка</name>
+              <id>169</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ФорматДесериализацииКонтекстноеМеню</name>
+              <id>168</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>AutoComplete</event>
+                <name>ФорматДесериализацииАвтоПодбор</name>
+              </handlers>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <dropListButton>true</dropListButton>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+              <inputHint>
+                <key>ru</key>
+                <value>http://v8.fsk.ru/kafka/**/*</value>
+              </inputHint>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormField">
+            <name>ИмяМодуляДесериализации</name>
+            <id>170</id>
+            <title>
+              <key>ru</key>
+              <value>Имя модуля</value>
+            </title>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:DataPath">
+              <segments>Объект.ИмяМодуляДесериализации</segments>
+            </dataPath>
+            <toolTip>
+              <key>ru</key>
+              <value>Имя общего модуля менеджера обмена КД 3.1. Используется, если модуль не задан в строке.</value>
+            </toolTip>
+            <toolTipRepresentation>Button</toolTipRepresentation>
+            <handlers>
+              <event>OnChange</event>
+              <name>ИмяМодуляДесериализацииПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>ИмяМодуляДесериализацииРасширеннаяПодсказка</name>
+              <id>172</id>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>ИмяМодуляДесериализацииКонтекстноеМеню</name>
+              <id>171</id>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>InputField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:InputFieldExtInfo">
+              <handlers>
+                <event>AutoComplete</event>
+                <name>ИмяМодуляДесериализацииАвтоПодбор</name>
+              </handlers>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <wrap>true</wrap>
+              <dropListButton>true</dropListButton>
+              <chooseType>true</chooseType>
+              <typeDomainEnabled>true</typeDomainEnabled>
+              <textEdit>true</textEdit>
+              <textSize>Normal</textSize>
+              <inputHint>
+                <key>ru</key>
+                <value>МенеджерОбменаКафка</value>
+              </inputHint>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Конвертация данных</value>
+          </title>
+          <titleFont xsi:type="core:FontRef">
+            <font>Style.SmallTextFont</font>
+          </titleFont>
+          <extendedTooltip>
+            <name>ГруппаНастройкиДесериализацииПоУмолчаниюКДРасширеннаяПодсказка</name>
+            <id>166</id>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>UsualGroup</type>
+          <extInfo xsi:type="form:UsualGroupExtInfo">
+            <group>Vertical</group>
+            <behavior>Auto</behavior>
+            <representation>Auto</representation>
+            <showLeftMargin>true</showLeftMargin>
+            <united>true</united>
+            <showTitle>true</showTitle>
+            <throughAlign>Auto</throughAlign>
+            <currentRowUse>Auto</currentRowUse>
+          </extInfo>
+        </items>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <title>
+          <key>ru</key>
+          <value>Настройки десериализации по умолчанию</value>
+        </title>
+        <titleFont xsi:type="core:FontRef">
+          <font>Style.NormalTextFont</font>
+        </titleFont>
+        <extendedTooltip>
+          <name>ГруппаНастройкиДесериализацииПоУмолчаниюРасширеннаяПодсказка</name>
+          <id>156</id>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <type>UsualGroup</type>
+        <extInfo xsi:type="form:UsualGroupExtInfo">
+          <group>Vertical</group>
+          <behavior>Collapsible</behavior>
+          <controlRepresentation>Button</controlRepresentation>
+          <representation>StrongSeparation</representation>
+          <showLeftMargin>true</showLeftMargin>
+          <united>true</united>
+          <showTitle>auto</showTitle>
+          <throughAlign>Auto</throughAlign>
+          <currentRowUse>Auto</currentRowUse>
+        </extInfo>
+      </items>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -1509,7 +1872,7 @@
       </extendedTooltip>
       <type>Page</type>
       <extInfo xsi:type="form:PageGroupExtInfo">
-        <group>Auto</group>
+        <group>Vertical</group>
         <showTitle>auto</showTitle>
       </extInfo>
     </items>
