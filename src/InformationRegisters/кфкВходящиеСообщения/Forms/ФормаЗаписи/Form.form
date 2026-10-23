@@ -612,6 +612,14 @@
                   <autoMaxWidth>true</autoMaxWidth>
                   <autoMaxHeight>true</autoMaxHeight>
                   <wrap>true</wrap>
+                  <format>
+                    <key>ru</key>
+                    <value>ДФ='dd.MM.yyyy HH:mm:ss'</value>
+                  </format>
+                  <editFormat>
+                    <key>ru</key>
+                    <value>ДФ='dd.MM.yyyy HH:mm:ss'</value>
+                  </editFormat>
                   <chooseType>true</chooseType>
                   <textEdit>true</textEdit>
                   <textSize>Normal</textSize>
@@ -717,6 +725,7 @@
               <titleFont xsi:type="core:FontRef">
                 <font>Style.NormalTextFont</font>
               </titleFont>
+              <readOnly>true</readOnly>
               <extendedTooltip>
                 <name>ГруппаРасшифровкаМеткаЗагрузкиРасширеннаяПодсказка</name>
                 <id>159</id>
@@ -1099,6 +1108,14 @@
                 <autoMaxWidth>true</autoMaxWidth>
                 <autoMaxHeight>true</autoMaxHeight>
                 <wrap>true</wrap>
+                <format>
+                  <key>ru</key>
+                  <value>ДФ='dd.MM.yyyy HH:mm:ss'</value>
+                </format>
+                <editFormat>
+                  <key>ru</key>
+                  <value>ДФ='dd.MM.yyyy HH:mm:ss'</value>
+                </editFormat>
                 <chooseType>true</chooseType>
                 <textEdit>true</textEdit>
                 <textSize>Normal</textSize>
@@ -1204,6 +1221,7 @@
             <titleFont xsi:type="core:FontRef">
               <font>Style.NormalTextFont</font>
             </titleFont>
+            <readOnly>true</readOnly>
             <extendedTooltip>
               <name>ГруппаРасшифровкаМеткаИзмененияРасширеннаяПодсказка</name>
               <id>140</id>

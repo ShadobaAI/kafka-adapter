@@ -296,6 +296,9 @@
       <key>ru</key>
       <value>Обрабатывать все регистрации, а не только последнюю.</value>
     </toolTip>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
   <attributes uuid="bc97f858-aec6-422a-98a9-94838e3e9aa0">
     <name>ТипСериализации</name>
@@ -306,6 +309,9 @@
     <type>
       <types>EnumRef.кфкТипыОбработчиков</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
   <attributes uuid="e1e5a831-676a-4372-9994-742b015eda76">
     <name>ИмяМетодаСериализации</name>

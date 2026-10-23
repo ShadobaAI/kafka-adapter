@@ -317,6 +317,9 @@
     <type>
       <types>EnumRef.кфкТипыОбработчиков</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
   <attributes uuid="5293c4fb-0e03-484c-99c8-f49758f9b6fa">
     <name>ИмяМетодаДесериализации</name>
