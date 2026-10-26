@@ -11,6 +11,7 @@
     <dataPath xsi:type="form:DataPath">
       <segments>ОбъектыМетаданных</segments>
     </dataPath>
+    <defaultItem>true</defaultItem>
     <titleLocation>None</titleLocation>
     <items xsi:type="form:FormField">
       <name>ОбъектыМетаданныхКартинка</name>
