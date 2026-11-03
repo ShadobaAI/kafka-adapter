@@ -21,7 +21,7 @@
 Маршрут «с нуля до первого PR»:
 
 1. **Найдите или заведите задачу.** Задачи проекта живут в репозитории [kfk-tasks](https://github.com/ShadobaAI/kfk-tasks/issues), ход работ — на [доске GitHub Projects](https://github.com/users/ShadobaAI/projects/3/views/1). Для значимого изменения сначала обсудите его в issue — см. [Участие в разработке](contributing.md).
-2. **Клонируйте репозитории**: [адаптер](https://github.com/ShadobaAI/kafka-adapter) (исходники в `src/`, формат EDT) и [базовый проект](https://github.com/ShadobaAI/kafka-adapter-base) (информационная база для разработки). Полная карта репозиториев — [Репозитории](repositories.md).
+2. **Подготовьте рабочее пространство**: начните с [kafka-adapter-workspace](https://github.com/ShadobaAI/kafka-adapter-workspace), затем отдельно получите адаптер и базовый проект в указанные каталоги. Схема и карта проектов — [Репозитории](repositories.md).
 3. **Разверните окружение** — платформа, EDT, Kafka в Docker: [Окружение](environment.md). Скрипты развёртывания — в [kafka-tools](https://github.com/ShadobaAI/kafka-tools).
 4. **Откройте оба проекта в EDT** и разверните базовый проект на информационной базе; адаптер подключается к нему как библиотека.
 5. **Разберитесь, где что лежит**: публичный API и внутренние модули — [Архитектура модулей](modules.md); справочники, регистры, перечисления — [Объекты метаданных](metadata.md); управляющие константы — [Константы](constants.md).
