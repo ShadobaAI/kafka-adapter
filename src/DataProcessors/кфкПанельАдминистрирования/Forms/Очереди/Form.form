@@ -838,6 +838,10 @@
           <dataPath xsi:type="form:DataPath">
             <segments>ПараметрыОчисткиХранилища.СрокХраненияХэшСуммыСообщений</segments>
           </dataPath>
+          <handlers>
+            <event>OnChange</event>
+            <name>ПараметрыОчисткиХранилищаСрокХраненияХэшСуммыСообщенийПриИзменении</name>
+          </handlers>
           <extendedTooltip>
             <name>ПараметрыОчисткиХранилищаСрокХраненияХэшСуммыСообщенийРасширеннаяПодсказка</name>
             <id>100</id>
