@@ -603,8 +603,8 @@
       <autoFill>true</autoFill>
     </autoCommandBar>
     <handlers>
-      <event>OnActivateRow</event>
-      <name>СписокПриАктивизацииСтроки</name>
+      <event>OnSelectedRowsSetChange</event>
+      <name>СписокПриИзмененииСоставаВыделенныхСтрок</name>
     </handlers>
     <searchStringAddition>
       <name>СписокСтрокаПоиска</name>
