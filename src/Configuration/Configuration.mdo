@@ -82,6 +82,7 @@
   <definedTypes>DefinedType.кфкПользователь</definedTypes>
   <commandGroups>CommandGroup.кфкНастройкиПодключения</commandGroups>
   <commandGroups>CommandGroup.кфкОчередиСообщений</commandGroups>
+  <commandGroups>CommandGroup.кфкСлужебныеРегистры</commandGroups>
   <constants>Constant.кфкБлокировкаИнтеграции</constants>
   <constants>Constant.кфкИспользоватьИнтеграцию</constants>
   <constants>Constant.кфкИспользоватьКонтрольИнтеграции</constants>
