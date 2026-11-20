@@ -5,7 +5,11 @@ import json
 import os
 import re
 import shutil
+import sys
+import uuid
 from pathlib import Path
+
+from validate_allure_report import has_allure_results
 
 
 UNIT_TEST_ENGINE = "YAxUnit"
@@ -156,27 +160,59 @@ def copy_directory_contents(source_dir, target_dir):
             shutil.copy2(source, target)
 
 
-def prepare_results_dir(results_dir, unit_dir, ui_dir, scopes):
-    source_dirs = []
-    if UNIT_SCOPE in scopes:
-        source_dirs.append((unit_dir / "allure").resolve())
-    if UI_SCOPE in scopes:
-        source_dirs.append((ui_dir / "allure").resolve())
+def group_attachments(item):
+    yield from item.get("attachments", [])
+    for key in ("steps", "befores", "afters"):
+        for step in item.get(key, []):
+            yield from group_attachments(step)
 
-    if results_dir.resolve() in source_dirs:
+
+def prepare_results_dir(results_dir, unit_dir, ui_dirs, scopes, grouped, versions, ui_groups=()):
+    sources_by_target = {}
+    if UNIT_SCOPE in scopes:
+        sources_by_target[results_dir] = [unit_dir / "allure"]
+    if UI_SCOPE in scopes:
+        for ui_dir in ui_dirs:
+            target = results_dir / ui_dir.name if grouped else results_dir
+            sources_by_target.setdefault(target, []).append(ui_dir / "allure")
+
+    sources = [source for paths in sources_by_target.values() for source in paths]
+    if any(results_dir.resolve() == source.resolve() for source in sources):
         raise ValueError("--results-dir must differ from unit/ui source allure directories")
 
     if results_dir.exists():
         shutil.rmtree(results_dir)
-    results_dir.mkdir(parents=True, exist_ok=True)
+    results_dir.mkdir(parents=True)
+    groups_by_index = {str(index): group for index, group in enumerate(ui_groups)}
+    valid = True
+    for target, paths in sources_by_target.items():
+        target.mkdir(exist_ok=True)
+        for source in paths:
+            copy_directory_contents(source, target)
+        for file_name in ALLURE_METADATA_FILES:
+            for metadata in target.rglob(file_name):
+                if metadata.is_file():
+                    metadata.unlink()
+        is_ui_worker = target != results_dir
+        ui_group = None
+        if is_ui_worker and groups_by_index:
+            group = groups_by_index.get(target.name.rpartition("-ui-")[2])
+            if group is None:
+                print(f"::error::{target.name}: no matching group in the UI matrix", file=sys.stderr)
+                valid = False
+            else:
+                ui_group = group.split("/")
+        if not normalize_results(target, versions, grouped=is_ui_worker, ui_group=ui_group):
+            valid = False
 
-    if UNIT_SCOPE in scopes:
-        copy_directory_contents(unit_dir / "allure", results_dir)
-    if UI_SCOPE in scopes:
-        copy_directory_contents(ui_dir / "allure", results_dir)
-
-    for file_name in ALLURE_METADATA_FILES:
-        (results_dir / file_name).unlink(missing_ok=True)
+    if grouped and UI_SCOPE in scopes:
+        workers = {worker.name.rpartition("-ui-")[2]: worker for worker in ui_dirs}
+        for index, group in groups_by_index.items():
+            worker = workers.get(index)
+            if worker is None or not has_allure_results(results_dir / worker.name):
+                write_missing_ui_group(results_dir, group, worker)
+                valid = False
+    return valid
 
 
 def get_label(labels, name):
@@ -224,7 +260,17 @@ def result_scope(labels):
     return None
 
 
-def normalize_parent_suite(labels):
+def normalize_suites(labels, ui_group):
+    if ui_group is not None:
+        section, object_name = ui_group
+        remove_labels(labels, {"parentSuite", "suite", "subSuite"})
+        labels.extend([
+            {"name": "parentSuite", "value": UI_PARENT_SUITE},
+            {"name": "suite", "value": section},
+            {"name": "subSuite", "value": object_name},
+        ])
+        return
+
     if get_label(labels, "parentSuite") == "Unit tests":
         set_label(labels, "parentSuite", UNIT_PARENT_SUITE)
     elif get_label(labels, "framework") == "YAxUnit" and not get_label(labels, "parentSuite"):
@@ -236,6 +282,30 @@ def normalize_parent_suite(labels):
             set_label(labels, "suite", "Сценарии")
 
 
+def write_missing_ui_group(results_dir, group, worker):
+    message = f"Для UI-группы {group} отсутствуют читаемые результаты Allure."
+    print(f"::error::{message}", file=sys.stderr)
+    labels = []
+    normalize_suites(labels, group.split("/"))
+    record_id = str(uuid.uuid4())
+    record = {
+        "uuid": record_id,
+        "name": f"Сбор результатов группы {group}",
+        "fullName": f"release-ci/ui-results/{group}",
+        "status": "broken",
+        "statusDetails": {"message": message},
+        "labels": labels,
+    }
+    url = os.environ.get("REPORT_RUN_URL")
+    if url:
+        if worker is not None and (worker / "check-run-id").is_file():
+            job_id = (worker / "check-run-id").read_text(encoding="utf-8").strip()
+            if job_id.isdecimal():
+                url = f"{url}/job/{job_id}"
+        record["links"] = [{"name": "Диагностика в GitHub Actions", "url": url, "type": "custom"}]
+    (results_dir / f"{record_id}-result.json").write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
+
+
 def set_engine_labels(labels, scope, versions):
     remove_labels(labels, {LABEL_TEST_ENGINE, LABEL_TEST_ENGINE_VERSION})
     engine, engine_version = test_engine_info(scope, versions)
@@ -245,18 +315,46 @@ def set_engine_labels(labels, scope, versions):
         set_label(labels, LABEL_TEST_ENGINE_VERSION, engine_version)
 
 
-def normalize_result_groups(results_dir, versions):
-    for path in results_dir.glob("*-result.json"):
-        data = json.loads(path.read_text(encoding="utf-8"))
-        labels = data.setdefault("labels", [])
-
-        normalize_parent_suite(labels)
-        remove_labels(labels, {LABEL_CONFIGURATION, LABEL_CONFIGURATION_VERSION})
-        set_engine_labels(labels, result_scope(labels), versions)
+def normalize_results(directory, versions, *, grouped, ui_group=None):
+    # Allure resolves attachment names across inputs, even for separate directories.
+    directory = directory.resolve()
+    files = {path for path in directory.rglob("*") if path.is_file()}
+    namespace_attachments = grouped or any(path.parent != directory for path in files)
+    names = {}
+    valid = True
+    for path in sorted(files):
+        if not path.name.endswith(("-result.json", "-container.json")):
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
+            if path.name.endswith("-result.json"):
+                labels = data.setdefault("labels", [])
+                normalize_suites(labels, ui_group)
+                remove_labels(labels, {LABEL_CONFIGURATION, LABEL_CONFIGURATION_VERSION})
+                set_engine_labels(labels, result_scope(labels), versions)
+            if namespace_attachments:
+                for attachment in group_attachments(data):
+                    source = attachment["source"]
+                    attachment_path = (path.parent / source).resolve()
+                    if attachment_path not in files:
+                        attachment_path = (directory / source).resolve()
+                    if attachment_path not in files:
+                        print(f"::warning::{path}: missing attachment {source}", file=sys.stderr)
+                        continue
+                    if attachment_path not in names:
+                        names[attachment_path] = f"{uuid.uuid4()}-attachment{attachment_path.suffix}"
+                        attachment_path.rename(directory / names[attachment_path])
+                    attachment["source"] = names[attachment_path]
+        except (ValueError, KeyError, TypeError, AttributeError) as error:
+            print(f"::error::{path}: invalid Allure record: {error}", file=sys.stderr)
+            path.unlink()  # The test job retains the original raw artifact.
+            valid = False
+            continue
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return valid
 
 
-def write_environment_properties(results_dir, unit_dir, ui_dir):
+def write_environment_properties(results_dir, unit_dir, ui_dirs):
     release_version = os.environ.get("RELEASE_NAME", "").strip() or os.environ.get("RELEASE_TAG", "").strip()
     run_started_at = os.environ.get("REPORT_RUN_STARTED_AT", "").strip()
     if not run_started_at:
@@ -265,8 +363,11 @@ def write_environment_properties(results_dir, unit_dir, ui_dir):
     platform_version = (
         environment_property(unit_dir / "allure" / "environment.properties", "ВерсияПлатформы")
         or dbgs_platform_version(unit_dir / "dbgs.log")
-        or dbgs_platform_version(ui_dir / "dbgs.log")
     )
+    for ui_dir in ui_dirs:
+        if platform_version:
+            break
+        platform_version = dbgs_platform_version(ui_dir / "dbgs.log")
 
     properties = {
         "1С": platform_version,
@@ -285,20 +386,28 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--results-dir", required=True)
     parser.add_argument("--unit-dir", required=True)
-    parser.add_argument("--ui-dir", required=True)
+    ui = parser.add_mutually_exclusive_group(required=True)
+    ui.add_argument("--ui-dir", type=Path)
+    ui.add_argument("--ui-groups-dir", type=Path)
+    parser.add_argument("--ui-groups-json", type=json.loads, default=[], help="Matrix groups in job-index order")
     parser.add_argument("--scope", choices=("all", UNIT_SCOPE, UI_SCOPE), default="all")
     args = parser.parse_args()
+    if not isinstance(args.ui_groups_json, list) or not all(
+        isinstance(path, str) and re.fullmatch(r"[^/]+/[^/]+", path) for path in args.ui_groups_json
+    ):
+        parser.error("--ui-groups-json must be a JSON array of section/object paths")
 
     results_dir = Path(args.results_dir)
     unit_dir = Path(args.unit_dir)
-    ui_dir = Path(args.ui_dir)
+    grouped = args.ui_groups_dir is not None
+    ui_dirs = sorted(args.ui_groups_dir.glob("test-results-*-ui-*")) if grouped else [args.ui_dir]
     versions = test_engine_versions()
     scopes = (UNIT_SCOPE, UI_SCOPE) if args.scope == "all" else (args.scope,)
 
-    prepare_results_dir(results_dir, unit_dir, ui_dir, scopes)
-    write_environment_properties(results_dir, unit_dir, ui_dir)
-    normalize_result_groups(results_dir, versions)
+    valid = prepare_results_dir(results_dir, unit_dir, ui_dirs, scopes, grouped, versions, args.ui_groups_json)
+    write_environment_properties(results_dir, unit_dir, ui_dirs)
+    return 0 if valid else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

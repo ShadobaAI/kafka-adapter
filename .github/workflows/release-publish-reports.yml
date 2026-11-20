@@ -3,6 +3,18 @@ name: Release / Publish Reports
 on:
   workflow_call:
     inputs:
+      unit_report_id:
+        description: Validated Allure Unit artifact ID
+        required: true
+        type: string
+      ui_report_id:
+        description: Validated Allure UI artifact ID
+        required: true
+        type: string
+      sonar_report_id:
+        description: Generated SonarQube static report artifact ID
+        required: true
+        type: string
       sonar_dashboard_url:
         description: SonarQube dashboard URL
         required: false
@@ -51,28 +63,41 @@ jobs:
       TEST_REPORTS_KEEP_RUNS: 30
     steps:
       - name: Download Allure unit report
+        id: download_unit
+        if: inputs.unit_report_id != ''
         uses: actions/download-artifact@v4
         continue-on-error: true
         with:
-          name: allure-unit-report
-          path: ${{ env.ASSETS_DIR }}/allure-unit-report
+          artifact-ids: ${{ inputs.unit_report_id }}
+          merge-multiple: true
+          path: ${{ env.ASSETS_DIR }}/downloads/allure-unit-report
 
       - name: Download Allure UI report
+        id: download_ui
+        if: inputs.ui_report_id != ''
         uses: actions/download-artifact@v4
         continue-on-error: true
         with:
-          name: allure-ui-report
-          path: ${{ env.ASSETS_DIR }}/allure-ui-report
+          artifact-ids: ${{ inputs.ui_report_id }}
+          merge-multiple: true
+          path: ${{ env.ASSETS_DIR }}/downloads/allure-ui-report
 
       - name: Download SonarQube static report
+        id: download_sonar
+        if: inputs.sonar_report_id != ''
         uses: actions/download-artifact@v4
         continue-on-error: true
         with:
-          name: sonar-static-report
-          path: ${{ env.ASSETS_DIR }}/sonar
+          artifact-ids: ${{ inputs.sonar_report_id }}
+          merge-multiple: true
+          path: ${{ env.ASSETS_DIR }}/downloads/sonar
 
       - name: Prepare test report publishing
         id: test_report_publish
+        env:
+          UNIT_DOWNLOAD: ${{ steps.download_unit.outcome }}
+          UI_DOWNLOAD: ${{ steps.download_ui.outcome }}
+          SONAR_DOWNLOAD: ${{ steps.download_sonar.outcome }}
         run: |
           python3 - <<'PY'
           import html
@@ -82,19 +107,22 @@ jobs:
           assets = Path(os.environ["ASSETS_DIR"])
           run_url = f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
           reports = [
-              ("allure-unit-report", "allure-unit", "Allure Unit", "summary.json", "unit_available"),
-              ("allure-ui-report", "allure-ui", "Allure UI", "summary.json", "ui_available"),
-              ("sonar", "sonar", "SonarQube", "index.html", "sonar_available"),
+              ("allure-unit-report", "allure-unit", "Allure Unit", "summary.json", "unit_available", "UNIT_DOWNLOAD"),
+              ("allure-ui-report", "allure-ui", "Allure UI", "summary.json", "ui_available", "UI_DOWNLOAD"),
+              ("sonar", "sonar", "SonarQube", "index.html", "sonar_available", "SONAR_DOWNLOAD"),
           ]
           links = []
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              for directory, destination, title, marker, flag in reports:
+              for directory, destination, title, marker, flag, download in reports:
                   source = assets / directory
-                  available = (source / marker).is_file()
+                  downloaded = assets / "downloads" / directory
+                  available = os.environ[download] == "success" and (downloaded / marker).is_file()
                   output.write(f'{flag}={str(available).lower()}\n')
                   status = "Доступен" if available else "Не сформирован; см. логи запуска CI"
                   links.append(f'<li><a href="{destination}/">{title}</a> — {status}</li>')
-                  if not available:
+                  if available:
+                      downloaded.rename(source)
+                  else:
                       source.mkdir(parents=True, exist_ok=True)
                       (source / "index.html").write_text(
                           f'<!doctype html><html lang="ru"><meta charset="utf-8"><title>{title}</title>'
@@ -209,3 +237,13 @@ jobs:
           report-directory: ${{ env.ASSETS_DIR }}/allure-ui-report
           remote-href: ${{ steps.test_report_publish.outputs.allure_ui_href }}
           github-token: ${{ github.token }}
+
+      - name: Check that every generated report was published
+        if: >-
+          always() && (
+            (inputs.unit_report_id != '' && steps.test_report_publish.outputs.unit_available != 'true') ||
+            (inputs.ui_report_id != '' && steps.test_report_publish.outputs.ui_available != 'true') ||
+            (inputs.sonar_report_id != '' && steps.test_report_publish.outputs.sonar_available != 'true'))
+        run: |
+          echo "::error::A generated report could not be published. See the artifact download steps."
+          exit 1

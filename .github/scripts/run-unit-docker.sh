@@ -287,4 +287,11 @@ else
     exit 2
 fi
 
-exit "$test_rc"
+if [ "$test_rc" -ne 0 ]; then
+    exit "$test_rc"
+fi
+unit_rc="$(tr -d '[:space:]' <"$exit_code_path")"
+if [ "${unit_rc#$'\xef\xbb\xbf'}" != "0" ]; then
+    echo "YAxUnit сообщил об ошибке: $unit_rc" >&2
+    exit 1
+fi
