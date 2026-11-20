@@ -14,6 +14,7 @@ import sys
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+from xml.dom import XMLNS_NAMESPACE, minidom
 from xml.etree import ElementTree
 
 
@@ -300,6 +301,33 @@ def merge_configuration_child_objects(
     return added_count
 
 
+def restore_bsp_user_type(output_dir: Path) -> None:
+    type_file = output_dir / "DefinedTypes" / "кфкПользователь.xml"
+    users_catalog = output_dir / "Catalogs" / "Пользователи.xml"
+    if not type_file.is_file() or not users_catalog.is_file():
+        return
+
+    # В релизном CF тип заменён на UUID для работы без БСП. В тестовой базе есть справочник БСП.
+    with minidom.parse(str(type_file)) as document:
+        type_nodes = document.getElementsByTagNameNS("http://v8.1c.ru/8.1/data/core", "Type")
+        if len(type_nodes) != 1 or not isinstance(type_nodes[0].firstChild, minidom.Text):
+            raise ValueError(f"Ожидалось одно значение типа в {type_file}")
+
+        type_value = type_nodes[0].firstChild
+        catalog_type = "cfg:CatalogRef.Пользователи"
+        configuration_namespace = "http://v8.1c.ru/8.1/data/enterprise/current-config"
+        if (
+            type_value.data.strip() == catalog_type
+            and document.documentElement.getAttributeNS(XMLNS_NAMESPACE, "cfg") == configuration_namespace
+        ):
+            return
+
+        type_value.data = catalog_type
+        document.documentElement.setAttributeNS(XMLNS_NAMESPACE, "xmlns:cfg", configuration_namespace)
+        type_file.write_bytes(document.toxml(encoding="UTF-8"))
+    print("В тестовой конфигурации восстановлен тип кфкПользователь CatalogRef.Пользователи")
+
+
 def build_test_database(options: BuildOptions) -> BuildStats:
     # Порядок важен: base создает каталог результата, adapter добавляет
     # подсистему Kafka.
@@ -309,6 +337,7 @@ def build_test_database(options: BuildOptions) -> BuildStats:
         options.adapter_archive,
         options.output_dir,
     )
+    restore_bsp_user_type(options.output_dir)
 
     return BuildStats(
         base_files=base_files,
