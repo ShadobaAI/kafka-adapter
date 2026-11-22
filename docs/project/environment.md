@@ -78,7 +78,9 @@ Release workflow публикует страницу Reports для запуск
 
 `target_commitish` должен содержать имя существующей Git-ветки; SHA commit или отсутствующая ветка блокируют Sonar job. Исходники берутся из commit тега релиза, `sonar.projectVersion` — из `github.event.release.tag_name`. Scanner, отчёт и dashboard используют один выбранный projectKey. `sonar.branch.name` и `--branch` генератора не передаются: анализируется основная Sonar-ветка выбранного проекта, что поддерживается Community Build. `sonar.projectName` и `sonar.working.directory` не задаются; путь metadata задаётся отдельно от рабочего каталога scanner.
 
-Prerelease запускает pipeline по событию `published`, stable — по `released`, включая перевод опубликованного prerelease в stable. Stable-событие `published` пропускается, чтобы избежать второй сборки. Sonar jobs одной Git-ветки выполняются последовательно без автоматической отмены текущего job; разные ветки имеют независимые очереди, кроме имён, различающихся только регистром: GitHub сравнивает concurrency group без учёта регистра.
+Workflow `Build & Release` запускается один раз по событию `published` при публикации релиза или предрелиза, в том числе из черновика. При переводе опубликованного предрелиза в стабильный используются артефакты, собранные при публикации.
+
+Sonar jobs одной Git-ветки выполняются последовательно без автоматической отмены текущего job; разные ветки имеют независимые очереди, кроме имён, различающихся только регистром: GitHub сравнивает concurrency group без учёта регистра.
 
 Каждый проект Git-ветки имеет собственные настройки New Code, Quality Gate, Quality Profiles и историю. Для последовательного анализа версий используется `Previous version`: Sonar рассчитывает период New Code по истории выбранного проекта и версиям, переданным в `sonar.projectVersion`. CI не требует `Specific analysis`, не меняет настройки New Code и не проверяет baseline другого проекта. Признак stable/prerelease GitHub не участвует в выборе периода New Code; при смене release tag база рассчитывается Sonar заново и не закрепляется на последнем stable.
 
