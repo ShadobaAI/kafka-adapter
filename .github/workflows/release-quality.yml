@@ -314,8 +314,21 @@ jobs:
           if (( GITHUB_RUN_ATTEMPT > 1 )); then
             gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs?filter=all&per_page=100" \
               > "$RUNNER_TEMP/job-pages.json"
-            jq -r '[.[].jobs[]] | group_by(.name)[] | max_by([.run_attempt, .id]) | .id' \
-              "$RUNNER_TEMP/job-pages.json" > "$RUNNER_TEMP/current-jobs"
+            # Reused jobs can get a new ID while keeping their original execution timestamps.
+            jq -r '
+              [.[].jobs[]] | group_by(.name)[]
+              | max_by([.run_attempt, .id]) as $latest
+              | if $latest.started_at != null and $latest.completed_at != null then
+                  map(select(
+                    .started_at == $latest.started_at and
+                    .completed_at == $latest.completed_at and
+                    .conclusion == $latest.conclusion
+                  )) | min_by([.run_attempt, .id])
+                else
+                  $latest
+                end
+              | .id
+            ' "$RUNNER_TEMP/job-pages.json" > "$RUNNER_TEMP/current-jobs"
           fi
           shopt -s nullglob
           for bundle in "${ASSETS_DIR}"/downloads/test-results-*; do
