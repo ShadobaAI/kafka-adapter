@@ -126,7 +126,8 @@ start_coverage() {
         coverage_start_args+=(-e "$COVERAGE_EXTENSION_NAME")
     fi
 
-    for target in ${COVERAGE_AUTOCONNECT_TARGETS:-Client ManagedClient Server ServerEmulation}; do
+    # Без -a Coverage41C подключает все поддерживаемые типы предметов отладки.
+    for target in ${COVERAGE_AUTOCONNECT_TARGETS:-}; do
         coverage_start_args+=(-a "$target")
     done
 
