@@ -164,6 +164,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
+if [ ! -d /work/libraries ] || [ -z "$(find /work/libraries -type f -name '*.feature' -print -quit)" ]; then
+    echo "Не найдены библиотеки шагов Vanessa в /work/libraries" >&2
+    exit 1
+fi
+
 onecv8_root="$(find /opt/1cv8/x86_64 -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort -V | tail -n 1 || true)"
 if [ -z "$onecv8_root" ] || [ ! -x "$onecv8_root/ibsrv" ] || [ ! -x "$onecv8_root/1cv8c" ]; then
     echo "Не найден каталог платформы 1С в /opt/1cv8/x86_64" >&2
@@ -171,6 +176,17 @@ if [ -z "$onecv8_root" ] || [ ! -x "$onecv8_root/ibsrv" ] || [ ! -x "$onecv8_roo
 fi
 
 mkdir -p /work
+
+python3 - <<'PY'
+import json
+from pathlib import Path
+
+work = Path("/work")
+params = json.loads((work / "VAParams.json").read_text(encoding="utf-8-sig"))
+params["ЗавершитьРаботуСистемы"] = True
+params.setdefault("КлиентТестирования", {})["ЗакрытьTestClientПослеЗапускаСценариев"] = True
+(work / "VAParams-ci.json").write_text(json.dumps(params, ensure_ascii=False, indent=2), encoding="utf-8")
+PY
 
 start_coverage
 
@@ -233,9 +249,10 @@ DISPLAY="$xvfb_display" \
         /debug -http -attach /debuggerURL "$coverage_debug_url" \
         /DisableStartupMessages /DisableStartupDialogs /UseHwLicenses- /TESTMANAGER \
         /Execute"/work/vanessa-automation-single.epf" \
-        /C"WorkspaceRoot=/work;VAParams=/work/VAParams.json;StartFeaturePlayer;QuietInstallVanessaExt;exitCodePath=${exit_code_path}" \
+        /C"WorkspaceRoot=/work;VAParams=/work/VAParams-ci.json;StartFeaturePlayer;QuietInstallVanessaExt;exitCodePath=${exit_code_path}" \
         /out"$client_log_path" \
         >"$client_command_log_path" 2>&1
+client_rc=$?
 set -e
 
 stop_coverage
@@ -256,6 +273,10 @@ test_rc="${test_rc#$'\xef\xbb\xbf'}"
 
 case "$test_rc" in
     0)
+        if [ "$client_rc" -ne 0 ]; then
+            echo "1cv8c завершился с кодом $client_rc" >&2
+            exit "$client_rc"
+        fi
         echo "Код завершения тестов 0: ошибок при выполнении сценариев не было."
         exit 0
         ;;

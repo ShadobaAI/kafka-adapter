@@ -785,8 +785,8 @@
       <horizontalAlign>Left</horizontalAlign>
     </autoCommandBar>
     <handlers>
-      <event>OnActivateRow</event>
-      <name>СписокПриАктивизацииСтроки</name>
+      <event>OnSelectedRowsSetChange</event>
+      <name>СписокПриИзмененииСоставаВыделенныхСтрок</name>
     </handlers>
     <searchStringAddition>
       <name>СписокСтрокаПоиска</name>
@@ -1888,7 +1888,6 @@
       <dynamicDataRead>true</dynamicDataRead>
       <autoFillAvailableFields>true</autoFillAvailableFields>
       <customQuery>true</customQuery>
-      <autoSaveUserSettings>true</autoSaveUserSettings>
       <getInvisibleFieldPresentations>true</getInvisibleFieldPresentations>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
         <dataPath>КлючЗаписи</dataPath>

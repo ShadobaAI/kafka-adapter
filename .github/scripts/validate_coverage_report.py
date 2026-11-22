@@ -6,7 +6,10 @@ from pathlib import Path
 from xml.etree import ElementTree
 
 
-def validate_report(path: Path) -> tuple[int, int, int]:
+NO_COVERAGE = "Нет покрытых строк адаптера; проверь подключение ibsrv к dbgs и сопоставление исходников"
+
+
+def validate_report(path: Path, *, allow_uncovered: bool = False) -> tuple[int, int, int]:
     root = ElementTree.parse(path).getroot()
     if root.tag != "coverage" or root.get("version") != "1":
         raise ValueError("Ожидался Generic Coverage XML версии 1")
@@ -30,21 +33,28 @@ def validate_report(path: Path) -> tuple[int, int, int]:
 
     if total == 0:
         raise ValueError("В отчёте нет строк для покрытия")
-    if covered == 0:
-        raise ValueError("Нет покрытых строк адаптера; проверь подключение ibsrv к dbgs и сопоставление исходников")
+    if covered == 0 and not allow_uncovered:
+        raise ValueError(NO_COVERAGE)
     return len(files), total, covered
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("report", type=Path)
+    parser.add_argument("reports", type=Path, nargs="+")
+    parser.add_argument("--allow-uncovered", action="store_true", help="Проверить XML отдельной UI-группы")
     args = parser.parse_args()
-    try:
-        files, total, covered = validate_report(args.report)
-    except (OSError, ElementTree.ParseError, ValueError) as error:
-        print(f"::error::{args.report}: {error}")
+    covered_lines = 0
+    for report in args.reports:
+        try:
+            files, total, covered = validate_report(report, allow_uncovered=True)
+        except (OSError, ElementTree.ParseError, ValueError) as error:
+            print(f"::error::{report}: {error}")
+            return 1
+        print(f"{report}: файлов {files}, покрыто {covered}/{total} строк ({covered / total:.1%})")
+        covered_lines += covered
+    if not args.allow_uncovered and covered_lines == 0:
+        print(f"::error::{NO_COVERAGE}")
         return 1
-    print(f"{args.report}: файлов {files}, покрыто {covered}/{total} строк ({covered / total:.1%})")
     return 0
 
 

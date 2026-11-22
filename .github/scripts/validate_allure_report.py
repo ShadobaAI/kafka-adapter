@@ -5,6 +5,10 @@ import sys
 from pathlib import Path
 
 
+def has_allure_results(directory: Path) -> bool:
+    return any(path.is_file() for path in directory.rglob("*-result.json"))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results-dir", required=True)
@@ -14,8 +18,7 @@ def main() -> int:
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
-    result_files = list(results_dir.rglob("*-result.json"))
-    if not result_files:
+    if not has_allure_results(results_dir):
         print(f"{args.name} result files not found: {results_dir}", file=sys.stderr)
         if results_dir.exists():
             for path in sorted(results_dir.rglob("*"))[:100]:

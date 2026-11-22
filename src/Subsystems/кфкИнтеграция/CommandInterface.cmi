@@ -5,18 +5,8 @@
       <command>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</command>
       <visible/>
     </visibilityFragments>
-    <visibilityFragments>
-      <command>InformationRegister.кфкИсходящиеСообщения.Command.ИсторияВыгрузки</command>
-      <visible/>
-    </visibilityFragments>
   </commandsVisibility>
   <commandsPlacement>
-    <placementFragments>
-      <group>NavigationPanelSeeAlso</group>
-      <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
-      <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
-      <commands>InformationRegister.кфкХэшСуммыСообщений.StandardCommand.OpenList</commands>
-    </placementFragments>
     <placementFragments>
       <group>CommandGroup.кфкНастройкиПодключения</group>
       <commands>Catalog.кфкБрокеры.StandardCommand.OpenList</commands>
@@ -27,6 +17,12 @@
       <group>CommandGroup.кфкОчередиСообщений</group>
       <commands>InformationRegister.кфкИсходящиеСообщения.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкВходящиеСообщения.StandardCommand.OpenList</commands>
+    </placementFragments>
+    <placementFragments>
+      <group>CommandGroup.кфкСлужебныеРегистры</group>
+      <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
+      <commands>InformationRegister.кфкХэшСуммыСообщений.StandardCommand.OpenList</commands>
     </placementFragments>
   </commandsPlacement>
   <commandsOrder>
@@ -50,6 +46,9 @@
     <orderFragments>
       <group>NavigationPanelSeeAlso</group>
       <commands>DataProcessor.кфкПанельАдминистрирования.Command.ФоновыеЗадания</commands>
+    </orderFragments>
+    <orderFragments>
+      <group>CommandGroup.кфкСлужебныеРегистры</group>
       <commands>InformationRegister.кфкОчередьПотоков.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкПозицииОпераций.StandardCommand.OpenList</commands>
       <commands>InformationRegister.кфкХэшСуммыСообщений.StandardCommand.OpenList</commands>

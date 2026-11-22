@@ -2,7 +2,15 @@ name: Release / SonarQube
 
 on:
   workflow_call:
+    inputs:
+      coverage_id:
+        description: Artifact ID of this run's collected coverage
+        required: true
+        type: string
     outputs:
+      sonar_report_id:
+        description: Uploaded SonarQube static report artifact ID
+        value: ${{ jobs.sonar.outputs.sonar_report_id }}
       sonar_dashboard_url:
         description: SonarQube dashboard URL
         value: ${{ jobs.sonar.outputs.sonar_dashboard_url }}
@@ -25,6 +33,7 @@ jobs:
         shell: bash
     outputs:
       sonar_dashboard_url: ${{ steps.sonar_report.outputs.dashboard_url }}
+      sonar_report_id: ${{ steps.upload.outputs.artifact-id }}
     permissions:
       contents: read
       actions: read
@@ -53,11 +62,12 @@ jobs:
           python3 .github/scripts/sonar_release_project.py >> "$GITHUB_ENV"
 
       - name: Download SonarQube coverage inputs
+        if: inputs.coverage_id != ''
         uses: actions/download-artifact@v4
-        continue-on-error: true
         with:
-          name: sonar-coverage-inputs
-          path: ${{ env.ASSETS_DIR }}
+          artifact-ids: ${{ inputs.coverage_id }}
+          merge-multiple: true
+          path: ${{ env.ASSETS_DIR }}/coverage
 
       - name: Run SonarQube analysis
         id: sonar_scan
@@ -72,9 +82,11 @@ jobs:
             echo "skip_reason=SONAR_TOKEN is not configured" >> "$GITHUB_OUTPUT"
             exit 1
           fi
-          if [ ! -f "${ASSETS_DIR}/unit/genericCoverage.xml" ] || [ ! -f "${ASSETS_DIR}/ui/genericCoverage.xml" ]; then
+          shopt -s nullglob
+          coverage_reports=("${ASSETS_DIR}"/coverage/*.xml)
+          if (( ${#coverage_reports[@]} == 0 )); then
             echo "status=skipped" >> "$GITHUB_OUTPUT"
-            echo "skip_reason=Unit or UI coverage XML is missing" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=No test job produced coverage XML" >> "$GITHUB_OUTPUT"
             echo "dashboard_url=${SONAR_DASHBOARD_URL}" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -92,10 +104,9 @@ jobs:
           fi
           echo "Found ${bsl_count} BSL source files in src"
 
-          python3 .github/scripts/validate_coverage_report.py "${ASSETS_DIR}/unit/genericCoverage.xml"
-          python3 .github/scripts/validate_coverage_report.py "${ASSETS_DIR}/ui/genericCoverage.xml"
-
+          coverage_paths="$(IFS=,; echo "${coverage_reports[*]}")"
           scanner_args=(
+            "-Dsonar.coverageReportPaths=${coverage_paths}"
             "-Dsonar.host.url=${SONAR_HOST_URL}"
             "-Dsonar.projectKey=${SONAR_PROJECT_KEY}"
             "-Dsonar.projectVersion=${RELEASE_TAG}"
@@ -230,10 +241,12 @@ jobs:
           echo "generated=true" >> "$GITHUB_OUTPUT"
 
       - name: Upload SonarQube static report
+        id: upload
         if: always() && steps.sonar_report.outputs.generated == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: sonar-static-report
           path: ${{ env.ASSETS_DIR }}/sonar
-          if-no-files-found: warn
+          if-no-files-found: error
+          overwrite: true
 

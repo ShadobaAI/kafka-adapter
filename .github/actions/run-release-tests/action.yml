@@ -1,0 +1,99 @@
+name: Run release tests
+description: Run one test suite against its own copy of the prepared infobase.
+inputs:
+  suite:
+    description: unit or ui
+    required: true
+  group:
+    description: UI feature directory relative to features/
+    default: ''
+  result-id:
+    description: Unique artifact suffix for this test job
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Identify this run in diagnostics
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+        FEATURE_GROUP: ${{ inputs.group }}
+        CHECK_RUN_ID: ${{ job.check_run_id }}
+      run: |
+        mkdir -p "${ASSETS_DIR}/${SUITE}"
+        echo "$CHECK_RUN_ID" > "${ASSETS_DIR}/${SUITE}/check-run-id"
+        printf '%s %s (attempt %s)\n' "$SUITE" "$FEATURE_GROUP" "$GITHUB_RUN_ATTEMPT" > "${ASSETS_DIR}/${SUITE}/runner.log"
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: release-test-inputs
+        path: ${{ env.ASSETS_DIR }}/inputs
+
+    - uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - name: Run tests
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+        FEATURE_GROUP: ${{ inputs.group }}
+      run: |
+        work="${ASSETS_DIR}/${SUITE}"
+        mkdir -p "$work/base-${SUITE}"
+        mv "${ASSETS_DIR}/inputs/1Cv8.1CD" "$work/base-${SUITE}/"
+        if [[ "$SUITE" == ui ]]; then
+          tar -xf "${ASSETS_DIR}/inputs/ui.tar" -C "$work" -- \
+            VAParams.json vanessa-automation-single.epf libraries "features/${FEATURE_GROUP}"
+          (cd "$work" && sha256sum --quiet -c ../inputs/libraries.sha256)
+        else
+          cp "${ASSETS_DIR}/inputs/YaxParams.json" "$work/"
+        fi
+
+        trap 'sudo chown -R "$(id -u):$(id -g)" "$work"' EXIT
+        runner="run-${SUITE}-docker.sh"
+        docker run --rm --init \
+          -e COVERAGE_PROJECT_DIR=/coverage-project \
+          -v "${GITHUB_WORKSPACE}/${work}:/work" \
+          -v "${GITHUB_WORKSPACE}:/coverage-project:ro" \
+          -v "${GITHUB_WORKSPACE}/.github/scripts/${runner}:/${runner}:ro" \
+          -w /work ghcr.io/shadobaai/client:latest bash "/${runner}" 2>&1 | tee -a "$work/runner.log"
+
+    - name: Validate Allure results
+      if: always()
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+      run: python3 .github/scripts/validate_allure_report.py --results-dir "${ASSETS_DIR}/${SUITE}/allure"
+
+    - name: Validate coverage for SonarQube
+      if: always()
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+      run: |
+        work="${ASSETS_DIR}/${SUITE}"
+        options=()
+        if [[ "$SUITE" == ui ]]; then options+=(--allow-uncovered); fi
+        python3 .github/scripts/validate_coverage_report.py "${options[@]}" "$work/genericCoverage.xml"
+        mkdir -p "$work/coverage"
+        mv "$work/genericCoverage.xml" "$work/coverage/"
+
+    - name: Upload raw results and diagnostics
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ inputs.result-id }}
+        path: |
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/allure
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/screen
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/*.log
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/exit-code.txt
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/check-run-id
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/genericCoverage.xml
+          ${{ env.ASSETS_DIR }}/${{ inputs.suite }}/coverage/genericCoverage.xml
+        include-hidden-files: true
+        if-no-files-found: error
+        overwrite: true

@@ -484,6 +484,42 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>ВремяОжидания</name>
+      <id>201</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:DataPath">
+        <segments>Список.ВремяОжидания</segments>
+      </dataPath>
+      <extendedTooltip>
+        <name>ВремяОжиданияРасширеннаяПодсказка</name>
+        <id>203</id>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ВремяОжиданияКонтекстноеМеню</name>
+        <id>202</id>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>Auto</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>КоличествоОбработок</name>
       <id>178</id>
       <title>
@@ -603,8 +639,8 @@
       <autoFill>true</autoFill>
     </autoCommandBar>
     <handlers>
-      <event>OnActivateRow</event>
-      <name>СписокПриАктивизацииСтроки</name>
+      <event>OnSelectedRowsSetChange</event>
+      <name>СписокПриИзмененииСоставаВыделенныхСтрок</name>
     </handlers>
     <searchStringAddition>
       <name>СписокСтрокаПоиска</name>
@@ -1684,6 +1720,7 @@
 	Т.ДатаЗагрузки КАК ДатаЗагрузки,
 	Т.ДатаОбработки КАК ДатаОбработки,
 	Т.ДлОбработкиМС КАК ДлОбработкиМС,
+	Т.ВремяОжидания КАК ВремяОжидания,
 	Т.ТекстЖурнала КАК ТекстЖурнала,
 	Т.КоличествоОбработок КАК КоличествоОбработок,
 	Т.МеткаИзменения КАК МеткаИзменения,
@@ -1702,7 +1739,6 @@
       <dynamicDataRead>true</dynamicDataRead>
       <autoFillAvailableFields>true</autoFillAvailableFields>
       <customQuery>true</customQuery>
-      <autoSaveUserSettings>true</autoSaveUserSettings>
       <getInvisibleFieldPresentations>true</getInvisibleFieldPresentations>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
         <dataPath>КлючЗаписи</dataPath>
@@ -1878,6 +1914,10 @@
             </content>
           </localValue>
         </title>
+      </fields>
+      <fields xsi:type="schema:DataCompositionSchemaDataSetField">
+        <dataPath>ВремяОжидания</dataPath>
+        <field>ВремяОжидания</field>
       </fields>
       <fields xsi:type="schema:DataCompositionSchemaDataSetField">
         <dataPath>Заголовки</dataPath>

@@ -79,4 +79,5 @@
   <content>InformationRegister.кфкХэшСуммыСообщений</content>
   <content>StyleItem.кфкШрифтЗаголовкаПредупреждения</content>
   <content>SessionParameter.кфкСчетчикКомбинированнойМетки</content>
+  <content>CommandGroup.кфкСлужебныеРегистры</content>
 </mdclass:Subsystem>

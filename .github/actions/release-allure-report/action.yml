@@ -1,0 +1,53 @@
+name: Build release Allure report
+description: Prepare available test results and upload one validated report.
+inputs:
+  suite:
+    description: unit or ui
+    required: true
+  ui-groups:
+    description: UI feature directories in matrix order, as a JSON array
+    default: '[]'
+outputs:
+  artifact-id:
+    description: ID of the validated report uploaded by this invocation
+    value: ${{ steps.upload.outputs.artifact-id }}
+runs:
+  using: composite
+  steps:
+    - name: Prepare Allure sources
+      if: always()
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+        UI_GROUPS: ${{ inputs.ui-groups }}
+        REPORT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        python3 .github/scripts/prepare_allure_results.py \
+          --results-dir "${ASSETS_DIR}/allure-${SUITE}" --scope "$SUITE" \
+          --unit-dir "$UNIT_DIR" --ui-groups-dir "${ASSETS_DIR}/results" \
+          --ui-groups-json "${UI_GROUPS:-[]}"
+
+    - name: Generate Allure report
+      id: generate
+      if: always()
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+      run: |
+        results="${ASSETS_DIR}/allure-${SUITE}"
+        python3 .github/scripts/validate_allure_report.py --results-dir "$results" --name "$SUITE Allure"
+        mapfile -d '' -t input_dirs < <(find "$results" -type d -print0)
+        npx --yes allure@3 generate "${input_dirs[@]}" -o "${results}-report"
+        python3 .github/scripts/validate_allure_report.py \
+          --results-dir "$results" --summary "${results}-report/summary.json" --name "$SUITE Allure"
+        echo "generated=true" >> "$GITHUB_OUTPUT"
+
+    - name: Upload validated report
+      id: upload
+      if: always() && steps.generate.outputs.generated == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-${{ inputs.suite }}-report
+        path: ${{ env.ASSETS_DIR }}/allure-${{ inputs.suite }}-report
+        if-no-files-found: error
+        overwrite: true

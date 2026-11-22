@@ -405,13 +405,17 @@
     <name>ИсторияВыгрузки</name>
     <synonym>
       <key>ru</key>
-      <value>История выгрузки (Kafka)</value>
+      <value>История выгрузки (Ctrl+H)</value>
     </synonym>
-    <group>ActionsPanelTools</group>
+    <group>NavigationPanelSeeAlso</group>
     <representation>Auto</representation>
+    <toolTip>
+      <key>ru</key>
+      <value>Открыть историю выгрузки объекта из активной формы или списка</value>
+    </toolTip>
     <picture xsi:type="core:PictureRef">
       <picture>StdPicture.History</picture>
     </picture>
-    <shortcut>Ctrl+Alt+H</shortcut>
+    <shortcut>Ctrl+H</shortcut>
   </commands>
 </mdclass:InformationRegister>
