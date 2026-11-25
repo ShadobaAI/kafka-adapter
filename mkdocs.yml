@@ -6,6 +6,12 @@ repo_name: ShadobaAI/kafka-adapter
 docs_dir: docs
 edit_uri: edit/main/docs/
 strict: true
+validation:
+  links:
+    anchors: warn
+
+hooks:
+  - docs_theme/anchors.py
 
 theme:
   name: material
@@ -80,6 +86,7 @@ plugins:
       type: date
       enable_creation_date: false
       fallback_to_build_date: true
+      strict: false  # У новых страниц ещё нет истории Git
   - redirects:
       redirect_maps:
         'user/installation/edt-setup.md': 'user/installation/adaptation.md'
@@ -101,9 +108,6 @@ markdown_extensions:
   - toc:
       permalink: true
       permalink_title: Постоянная ссылка
-      slugify: !!python/object/apply:pymdownx.slugs.slugify
-        kwds:
-          case: lower
   - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
@@ -112,9 +116,6 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
-      slugify: !!python/object/apply:pymdownx.slugs.slugify
-        kwds:
-          case: lower
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -150,7 +151,7 @@ nav:
   - Обзор:
     - overview/index.md
     - О проекте: overview/about.md
-    - Возможности и быстрый старт: overview/capabilities.md
+    - Возможности адаптера: overview/capabilities.md
     - Архитектура: overview/architecture.md
     - Потоки данных: overview/data-flow.md
     - Принципы и ограничения: overview/principles.md
@@ -170,7 +171,7 @@ nav:
       - "Продюсеры — выгрузка": user/configuration/producers.md
       - "Консьюмеры — загрузка": user/configuration/consumers.md
       - Фоновые и регламентные задания: user/configuration/jobs.md
-      - Алерты и контроль: user/configuration/alerts.md
+      - Очереди и уведомления: user/configuration/alerts.md
       - Логирование: user/configuration/logging.md
     - Разработка интеграции:
       - user/development/index.md
@@ -179,6 +180,12 @@ nav:
       - Обработчик консьюмера: user/development/consumer-handler.md
       - Прямой API — справочник: user/development/direct-api.md
       - Конвертация данных 3.1: user/development/conversion-data.md
+      - Контракты сообщений:
+        - Контракт AsyncAPI 3.1: project/asyncapi-yaml.md
+        - Модель XDTO в адаптере: project/adapter-xdto-requirements.md
+        - "XDTO: модель данных обмена": project/xdto.md
+        - Требования к YAML для генерации XDTO-модели: project/yaml-requirements-for-xdto.md
+        - Генерация XSD из YAML: project/xsd-generation.md
     - Примеры:
       - user/examples/index.md
       - "Выгрузка: 1С → Kafka":
@@ -188,12 +195,13 @@ nav:
         - Независимый регистр: user/examples/outgoing-register.md
         - Регистр по регистратору: user/examples/outgoing-recorder.md
         - Подавление регистрации: user/examples/suppress.md
-        - Принудительная регистрация: user/examples/force-registration.md
+        - Регистрация из кода: user/examples/force-registration.md
         - Произвольные события: user/examples/custom-events.md
       - "Загрузка: Kafka → 1С":
-        - Upsert справочника: user/examples/incoming-catalog.md
+        - Создание или обновление справочника: user/examples/incoming-catalog.md
         - Регистр сведений: user/examples/incoming-register.md
         - Отмена обработки: user/examples/incoming-cancel.md
+        - Отложенная обработка заказа: user/examples/incoming-deferred-retry.md
       - Общие сценарии:
         - Идемпотентность: user/examples/idempotency.md
         - Защищённое подключение: user/examples/secure-connection.md
@@ -216,14 +224,9 @@ nav:
       - Архитектура модулей: project/modules.md
       - Объекты метаданных: project/metadata.md
       - Управляющие константы: project/constants.md
-    - Расширение и поставка:
       - Расширение адаптера: project/extending.md
+    - Поставка и CI:
       - Форматы поставки: project/delivery-formats.md
-    - Контракт данных AsyncAPI и XDTO:
-      - Описание AsyncAPI: project/asyncapi-yaml.md
-      - Поддерживаемая модель XDTO в Адаптере Kafka: project/adapter-xdto-requirements.md
-      - "XDTO: модель данных обмена": project/xdto.md
-      - Требования к YAML для генерации XDTO-модели: project/yaml-requirements-for-xdto.md
-      - Генерация XSD из YAML: project/xsd-generation.md
+      - Сборка и проверка релиза: project/release-ci.md
   - Глоссарий: glossary.md
   - FAQ: faq/index.md
