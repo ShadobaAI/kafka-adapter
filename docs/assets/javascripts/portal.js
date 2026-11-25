@@ -1,5 +1,5 @@
 (function () {
-  const overlaySelector = ".portal-menu[open], .portal-faq-toc[open]";
+  const overlaySelector = ".portal-menu[open]";
   const initFaqSearch = () => {
     const article = document.querySelector(".portal-content-faq article");
     if (!article || article.querySelector(".portal-faq-search")) return;
@@ -44,10 +44,11 @@
     input.addEventListener("input", filter);
     form.addEventListener("submit", (event) => { event.preventDefault(); filter(); });
     form.addEventListener("reset", () => { input.value = ""; filter(); input.focus(); });
-    // A table-of-contents link must also reach questions hidden by the filter.
-    document.querySelector(".portal-faq-toc")?.addEventListener("click", (event) => {
-      if (event.target.closest('a[href*="#"]')) { input.value = ""; filter(); }
-    });
+    const tocLinks = document.querySelectorAll('.md-sidebar--secondary a[href^="#"], .portal-mobile-toc a[href^="#"]');
+    tocLinks.forEach((link) => link.addEventListener("click", () => {
+      input.value = "";
+      filter();
+    }));
   };
   const openSearch = () => {
     const toggle = document.getElementById("__search");
@@ -60,6 +61,8 @@
 
   document.addEventListener("click", (event) => {
     if (event.target.closest("[data-portal-search]")) openSearch();
+    const tocLink = event.target.closest('.portal-mobile-toc a[href^="#"]');
+    if (tocLink) tocLink.closest(".portal-mobile-toc").open = false;
     document.querySelectorAll(overlaySelector).forEach((menu) => {
       if (!menu.contains(event.target) || event.target.closest("a")) menu.open = false;
     });
@@ -67,7 +70,7 @@
 
   document.addEventListener("toggle", (event) => {
     const menu = event.target;
-    if (!menu.matches?.(".portal-menu, .portal-faq-toc") || !menu.open) return;
+    if (!menu.matches?.(".portal-menu") || !menu.open) return;
     document.querySelectorAll(overlaySelector).forEach((other) => {
       if (other !== menu) other.open = false;
     });
@@ -86,42 +89,18 @@
     }
   });
 
-  const onPage = () => {
+  const initialize = () => {
     initFaqSearch();
-    // Resolve navigation links against the deployment prefix and keep the
-    // current page/section explicit for keyboard and screen-reader users.
     const header = document.querySelector(".portal-header");
-    header?.querySelectorAll("a[href]").forEach((link) => {
-      link.href = new URL(link.getAttribute("href"), document.baseURI).href;
-    });
-    const home = header?.querySelector(".portal-brand");
-    const rootPath = home ? new URL(home.href).pathname : "/";
-    const currentPath = window.location.pathname;
-    const relativePath = currentPath.startsWith(rootPath) ? currentPath.slice(rootPath.length) : currentPath;
-    header?.querySelectorAll(".portal-top-nav a").forEach((link) => {
-      const destination = new URL(link.href).pathname;
-      const current = currentPath === destination;
-      const currentSection = link.dataset.portalPrefix && relativePath.startsWith(link.dataset.portalPrefix);
-      if (current) link.setAttribute("aria-current", "page");
-      else if (currentSection) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
-    });
-    header?.querySelectorAll(".portal-menu").forEach((menu) => {
-      const current = menu.dataset.portalSection === "guides"
-        ? relativePath.startsWith("user/") || relativePath.startsWith("overview/") || relativePath.startsWith("start/")
-        : relativePath.startsWith("project/");
-      menu.querySelector("summary")?.classList.toggle("portal-menu-active", current);
-    });
-    document.querySelectorAll(overlaySelector).forEach((menu) => { menu.open = false; });
-    document.querySelectorAll(".md-typeset .portal-mermaid").forEach((diagram) => {
-      if (diagram.nextElementSibling?.classList.contains("portal-diagram-hint")) return;
-      const hint = document.createElement("p");
-      hint.className = "portal-diagram-hint";
-      hint.textContent = "Нажмите на схему, чтобы открыть её целиком и изменить масштаб.";
-      diagram.after(hint);
-    });
+    const setHeaderHeight = () => document.documentElement.style.setProperty(
+      "--portal-header-height", header.offsetHeight + "px",
+    );
+    setHeaderHeight();
+    new ResizeObserver(setHeaderHeight).observe(header);
   };
-  if (typeof document$ !== "undefined") document$.subscribe(onPage);
-  else if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onPage);
-  else onPage();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize, { once: true });
+  } else {
+    initialize();
+  }
 })();

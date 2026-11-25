@@ -1,2 +1,4 @@
 .code-index/
 /.gitkeep
+/site/
+/docs_theme/__pycache__/

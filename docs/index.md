@@ -8,47 +8,30 @@ hide:
 
 <div class="portal-hero-copy" markdown="1">
 
-<p class="portal-eyebrow">1С: Адаптер Kafka</p>
+# Обмен между 1С и Kafka { #kafka-adapter }
 
-# Соедините 1С и Kafka.
-
-<p class="portal-lead">Двусторонний событийный обмен: отправляйте данные из 1С в Kafka и обрабатывайте входящие сообщения в прикладном решении.</p>
+<p class="portal-lead">Адаптер публикует изменения из 1С и передаёт сообщения Kafka прикладным обработчикам. Состояние обмена хранится в очередях 1С.</p>
 
 <div class="portal-actions" markdown="1">
 
 [Настроить первый обмен](start/index.md){ .portal-button }
-[Открыть настройки](user/configuration/index.md){ .portal-button .portal-button-secondary }
+[Открыть API](user/development/api.md){ .portal-button .portal-button-secondary }
 
 </div>
 
 </div>
 
-<div class="portal-flow" aria-label="Двусторонний обмен между 1С, адаптером и Kafka">
-<div class="portal-flow-node"><strong>1С</strong><span>Объекты и события</span></div>
-<div class="portal-flow-links"><span aria-hidden="true">↔</span><small>Регистрация · обработка</small></div>
-<div class="portal-flow-node"><strong>Адаптер</strong><span>Очереди и обработчики</span></div>
-<div class="portal-flow-links"><span aria-hidden="true">↔</span><small>Публикация · чтение</small></div>
-<div class="portal-flow-node"><strong>Kafka</strong><span>Топики и сообщения</span></div>
+<div class="portal-flow" role="img" aria-label="Двусторонний обмен между 1С, очередями адаптера и Kafka">
+  <div class="portal-flow-node"><strong>1С</strong><span>Объекты и события</span></div>
+  <div class="portal-flow-links"><span aria-hidden="true">↔</span></div>
+  <div class="portal-flow-node"><strong>Адаптер</strong><span>Очереди и обработчики</span></div>
+  <div class="portal-flow-links"><span aria-hidden="true">↔</span></div>
+  <div class="portal-flow-node"><strong>Kafka</strong><span>Топики и сообщения</span></div>
 </div>
-
-<button type="button" class="portal-search-trigger" data-portal-search aria-label="Открыть поиск по документации">Поиск по документации <span aria-hidden="true">↗</span></button>
-
-</div>
-
-## Уже используете адаптер? { .portal-section-title }
-
-<div class="portal-quick-links" markdown="1">
-
-[Брокеры](user/configuration/brokers.md)
-[Выгрузка — продюсеры](user/configuration/producers.md)
-[Загрузка — консьюмеры](user/configuration/consumers.md)
-[Статусы сообщений](user/operations/statuses.md)
-[Диагностика](user/operations/diagnostics.md)
-[Готовые примеры](user/examples/index.md)
 
 </div>
 
-## Что вы хотите сделать? { .portal-section-title }
+## Что вы хотите сделать? { #tasks .portal-section-title }
 
 <div class="portal-routes" markdown="1">
 
@@ -56,11 +39,11 @@ hide:
 
 <span class="portal-route-icon" aria-hidden="true">:material-power-plug-outline:</span>
 
-### Подключить адаптер
+### Подключить адаптер { #install }
 
-Проверьте окружение, выберите способ установки и настройте первый обмен.
+Проверьте требования и выберите способ установки.
 
-[Начать подключение](start/index.md){ .portal-route-link }
+[Установка и подключение](user/installation/index.md){ .portal-route-link }
 
 </div>
 
@@ -68,11 +51,11 @@ hide:
 
 <span class="portal-route-icon" aria-hidden="true">:material-code-braces:</span>
 
-### Разработать интеграцию
+### Написать интеграцию { #integrate }
 
-Подключите прикладной код: API, обработчики продюсера и консьюмера, примеры.
+Справочник обработчиков, контракты сообщений и примеры.
 
-[Руководство по интеграции](user/development/index.md){ .portal-route-link }
+[Разработка интеграции](user/development/index.md){ .portal-route-link }
 
 </div>
 
@@ -80,11 +63,11 @@ hide:
 
 <span class="portal-route-icon" aria-hidden="true">:material-lifebuoy:</span>
 
-### Решить проблему
+### Разобрать сбой { #troubleshoot }
 
-Найдите причину ошибок, проверьте очереди и фоновые задания.
+Проверьте очереди, статусы и журнал сообщения.
 
-[Диагностика и эксплуатация](user/operations/index.md){ .portal-route-link }
+[Эксплуатация и диагностика](user/operations/index.md){ .portal-route-link }
 
 </div>
 
@@ -92,54 +75,27 @@ hide:
 
 <span class="portal-route-icon" aria-hidden="true">:material-source-branch:</span>
 
-### Развивать адаптер
+### Изменить адаптер { #develop }
 
-Подготовьте окружение, изучите устройство подсистемы и правила участия.
+Подготовьте окружение и найдите исходники, тесты и правила работы.
 
-[Руководство разработчика адаптера](project/index.md){ .portal-route-link }
-
-</div>
-
-</div>
-
-## Два направления обмена { .portal-section-title }
-
-<div class="portal-directions" markdown="1">
-
-<div class="portal-route" markdown="1">
-
-### 1С → Kafka
-
-Настройте продюсер, зарегистрируйте данные и проверьте публикацию сообщения в топике.
-
-[Маршрут отправки](start/outgoing.md){ .portal-route-link }
-
-</div>
-
-<div class="portal-route" markdown="1">
-
-### Kafka → 1С
-
-Настройте консьюмер и обработчик, получите сообщение и проверьте результат в 1С.
-
-[Маршрут получения](start/incoming.md){ .portal-route-link }
+[Разработка адаптера](project/index.md){ .portal-route-link }
 
 </div>
 
 </div>
 
-## Частые вопросы { .portal-section-title }
+## Быстрые ссылки { #quick-links .portal-section-title }
 
-<div class="portal-faq-preview" markdown="1">
+<div class="portal-quick-links" markdown="1">
 
-- [Какие платформа и БСП нужны?](faq/index.md#installation)
-- [Как настроить защищённое подключение?](faq/index.md#configuration)
-- [Какие API использовать в прикладном коде?](faq/index.md#integration)
-- [Что проверить, если сообщения остались в очереди?](faq/index.md#operations)
-- [С чего начать разработку самого адаптера?](faq/index.md#contributors)
-
-[Все вопросы и ответы](faq/index.md){ .portal-route-link }
+[Брокеры](user/configuration/brokers.md)
+[Продюсеры](user/configuration/producers.md)
+[Консьюмеры](user/configuration/consumers.md)
+[Статусы сообщений](user/operations/statuses.md)
+[Примеры](user/examples/index.md)
+[Потоки данных](overview/data-flow.md)
 
 </div>
 
-[Возможности и быстрый старт](overview/capabilities.md) · [Глоссарий Kafka](glossary.md)
+[Частые вопросы](faq/index.md) · [Глоссарий Kafka](glossary.md) · [Возможности адаптера](overview/capabilities.md)
