@@ -380,7 +380,8 @@
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>30</precision>
+        <precision>19</precision>
+        <scale>4</scale>
         <nonNegative>true</nonNegative>
       </numberQualifiers>
     </type>
