@@ -351,11 +351,31 @@
     <fillValue xsi:type="core:UndefinedValue"/>
     <mainFilter>true</mainFilter>
   </dimensions>
-  <dimensions uuid="111ca233-437e-423e-bb9a-fac72f0cf50c">
+  <dimensions uuid="33579dc0-bb2e-4e68-94c3-faed2834f89d">
     <name>МеткаЗагрузки</name>
     <synonym>
       <key>ru</key>
       <value>Метка загрузки</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>30</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="111ca233-437e-423e-bb9a-fac72f0cf50c">
+    <name>УдалитьДатаЗагрузкиМС</name>
+    <synonym>
+      <key>ru</key>
+      <value>(не используется) Дата загрузки МС</value>
     </synonym>
     <type>
       <types>Number</types>
